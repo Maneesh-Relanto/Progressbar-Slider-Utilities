@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Progress Controls - Examples</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      color: white;
+      margin-bottom: 60px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero p {
+      font-size: 20px;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .example-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .example-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .example-card .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .example-card h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .example-card p {
+      font-size: 15px;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .example-card .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    .badge.coming-soon {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      margin-top: 60px;
+      opacity: 0.9;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #10b981;
+      color: white;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .status-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="status-badge">
+        In Development
+      </div>
+      <h1>🤖 AI Progress Controls</h1>
+      <p>
+        Framework-agnostic UI components designed specifically for AI/ML workflows.
+        Beautiful, accessible, and developer-friendly.
+      </p>
+    </div>
+
+    <div class="examples-grid">
+      <a href="stream-progress.html" class="example-card">
+        <div class="icon">📊</div>
+        <h2>Stream Progress</h2>
+        <p>
+          Real-time visualization for streaming AI responses with token counting,
+          rate tracking, and cost estimation.
+        </p>
+        <div>
+          <span class="badge">Ready</span>
+          <span class="badge">4 Examples</span>
+        </div>
+      </a>
+
+      <div class="example-card" style="opacity: 0.6; cursor: not-allowed;">
+        <div class="icon">🔄</div>
+        <h2>Model Loader</h2>
+        <p>
+          Multi-stage progress indicator for model download, loading, and initialization
+          with memory tracking.
+        </p>
+        <div>
+          <span class="badge coming-soon">Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="example-card" style="opacity: 0.6; cursor: not-allowed;">
+        <div class="icon">📦</div>
+        <h2>Batch Progress</h2>
+        <p>
+          Track multiple concurrent AI operations with individual status indicators
+          and overall completion metrics.
+        </p>
+        <div>
+          <span class="badge coming-soon">Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="example-card" style="opacity: 0.6; cursor: not-allowed;">
+        <div class="icon">🎚️</div>
+        <h2>LLM Parameter Sliders</h2>
+        <p>
+          Intuitive controls for adjusting temperature, top-p, max tokens with
+          visual feedback and presets.
+        </p>
+        <div>
+          <span class="badge coming-soon">Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="example-card" style="opacity: 0.6; cursor: not-allowed;">
+        <div class="icon">⏳</div>
+        <h2>Queue Position</h2>
+        <p>
+          Show user's position in processing queue with estimated wait time
+          and live updates.
+        </p>
+        <div>
+          <span class="badge coming-soon">Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="example-card" style="opacity: 0.6; cursor: not-allowed;">
+        <div class="icon">🎯</div>
+        <h2>Confidence Threshold</h2>
+        <p>
+          Adjustable threshold sliders for classification tasks with live result
+          previews and trade-off visualization.
+        </p>
+        <div>
+          <span class="badge coming-soon">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Built with ❤️ for the AI developer community<br>
+        <a href="../README.md">Documentation</a> • 
+        <a href="https://github.com">GitHub</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

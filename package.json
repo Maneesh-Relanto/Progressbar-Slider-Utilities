@@ -1,0 +1,70 @@
+{
+  "name": "ai-progress-controls",
+  "version": "0.1.0",
+  "description": "Framework-agnostic UI controls for AI/ML workflows - streaming progress, model loading, LLM parameters, and more",
+  "keywords": [
+    "ai",
+    "progress",
+    "slider",
+    "llm",
+    "web-components",
+    "openai",
+    "anthropic",
+    "streaming",
+    "ui-components",
+    "typescript",
+    "framework-agnostic",
+    "accessibility",
+    "developer-friendly"
+  ],
+  "author": "Maneesh Thakur",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-progress-controls.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ai-progress-controls/issues"
+  },
+  "homepage": "https://github.com/yourusername/ai-progress-controls#readme",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
+    "type-check": "tsc --noEmit",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "@vitest/ui": "^1.0.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.6.0",
+    "vitepress": "^1.0.0",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

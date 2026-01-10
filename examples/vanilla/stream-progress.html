@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamProgress Examples - AI Progress Controls</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 40px;
+    }
+
+    .example-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .example-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .example-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    button.secondary {
+      background: #6b7280;
+    }
+
+    button.secondary:hover {
+      background: #4b5563;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .event-log {
+      background: #111827;
+      color: #10b981;
+      padding: 16px;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 16px;
+    }
+
+    .event-log p {
+      margin: 4px 0;
+    }
+
+    .event-log .timestamp {
+      color: #6b7280;
+      margin-right: 8px;
+    }
+
+    .progress-container {
+      margin: 20px 0;
+    }
+
+    code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 13px;
+      font-family: 'Monaco', 'Menlo', monospace;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 StreamProgress Examples</h1>
+    <p class="subtitle">Real-time progress visualization for AI streaming responses</p>
+
+    <!-- Example 1: Basic Usage -->
+    <div class="example-section">
+      <h2 class="example-title">1. Basic Usage <span class="badge">Simple</span></h2>
+      <p class="example-description">
+        A simple example showing token streaming progress with default settings.
+        Simulates an AI generating text at 25 tokens/second.
+      </p>
+      
+      <div class="progress-container" id="example1"></div>
+      
+      <div class="controls">
+        <button id="btn-start-1">Start Streaming</button>
+        <button id="btn-complete-1" class="secondary">Complete</button>
+        <button id="btn-reset-1" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-1" class="event-log"></div>
+    </div>
+
+    <!-- Example 2: OpenAI Simulation -->
+    <div class="example-section">
+      <h2 class="example-title">2. OpenAI ChatGPT Simulation <span class="badge">Realistic</span></h2>
+      <p class="example-description">
+        Simulates streaming from OpenAI's GPT-4 API with realistic token rates (20-40 tokens/s),
+        cost tracking at $0.03 per 1K tokens, and status messages.
+      </p>
+      
+      <div class="progress-container" id="example2"></div>
+      
+      <div class="controls">
+        <button id="btn-start-2">Start Generation</button>
+        <button id="btn-pause-2" class="secondary">Pause</button>
+        <button id="btn-resume-2" class="secondary">Resume</button>
+        <button id="btn-reset-2" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-2" class="event-log"></div>
+    </div>
+
+    <!-- Example 3: Custom Configuration -->
+    <div class="example-section">
+      <h2 class="example-title">3. Custom Configuration <span class="badge">Advanced</span></h2>
+      <p class="example-description">
+        Demonstrates custom configuration: high token limit (8000), hidden cost display,
+        custom cancel button label, and debug mode enabled.
+      </p>
+      
+      <div class="progress-container" id="example3"></div>
+      
+      <div class="controls">
+        <button id="btn-start-3">Start Long Generation</button>
+        <button id="btn-reset-3" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-3" class="event-log"></div>
+    </div>
+
+    <!-- Example 4: Multiple Concurrent Streams -->
+    <div class="example-section">
+      <h2 class="example-title">4. Multiple Concurrent Streams <span class="badge">Advanced</span></h2>
+      <p class="example-description">
+        Run three streams simultaneously with different configurations to simulate
+        batch processing or parallel AI operations.
+      </p>
+      
+      <div class="progress-container" id="example4a"></div>
+      <div class="progress-container" id="example4b"></div>
+      <div class="progress-container" id="example4c"></div>
+      
+      <div class="controls">
+        <button id="btn-start-all">Start All</button>
+        <button id="btn-stop-all" class="secondary">Stop All</button>
+        <button id="btn-reset-all" class="secondary">Reset All</button>
+      </div>
+      
+      <div id="log-4" class="event-log"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { StreamProgress } from '../../src/index.ts';
+
+    // Utility: Add log entry
+    function addLog(logId, message, type = 'info') {
+      const log = document.getElementById(logId);
+      const timestamp = new Date().toLocaleTimeString();
+      const p = document.createElement('p');
+      p.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+      log.insertBefore(p, log.firstChild);
+      
+      // Keep only last 10 entries
+      while (log.children.length > 10) {
+        log.removeChild(log.lastChild);
+      }
+    }
+
+    // Utility: Simulate streaming
+    function simulateStream(progress, options = {}) {
+      const { 
+        targetTokens = 500,
+        baseRate = 25,
+        rateVariation = 10,
+        updateInterval = 100,
+        messages = []
+      } = options;
+
+      let currentTokens = 0;
+      let isPaused = false;
+      let intervalId;
+
+      const update = () => {
+        if (isPaused) return;
+
+        const rate = baseRate + Math.random() * rateVariation - (rateVariation / 2);
+        const increment = (rate * updateInterval) / 1000;
+        currentTokens = Math.min(targetTokens, currentTokens + increment);
+
+        const messageIndex = Math.floor((currentTokens / targetTokens) * messages.length);
+        const message = messages[messageIndex] || undefined;
+
+        progress.update({
+          tokensGenerated: Math.floor(currentTokens),
+          tokensPerSecond: rate,
+          message
+        });
+
+        if (currentTokens >= targetTokens) {
+          clearInterval(intervalId);
+          setTimeout(() => progress.complete(), 500);
+        }
+      };
+
+      intervalId = setInterval(update, updateInterval);
+
+      return {
+        pause: () => { isPaused = true; },
+        resume: () => { isPaused = false; },
+        stop: () => {
+          clearInterval(intervalId);
+          progress.complete();
+        }
+      };
+    }
+
+    // ===== EXAMPLE 1: Basic Usage =====
+    const progress1 = new StreamProgress({
+      maxTokens: 1000,
+      costPerToken: 0.00002,
+      debug: true
+    });
+    document.getElementById('example1').appendChild(progress1);
+
+    let stream1;
+    
+    progress1.addEventListener('streamstart', (e) => {
+      addLog('log-1', '✅ Stream started');
+    });
+
+    progress1.addEventListener('streamcomplete', (e) => {
+      addLog('log-1', `✅ Stream completed - ${e.detail.tokensGenerated} tokens in ${(e.detail.duration / 1000).toFixed(1)}s`);
+    });
+
+    progress1.addEventListener('streamcancel', (e) => {
+      addLog('log-1', `❌ Stream cancelled - Reason: ${e.detail.reason}`);
+    });
+
+    document.getElementById('btn-start-1').addEventListener('click', () => {
+      progress1.start('Generating response...');
+      stream1 = simulateStream(progress1, {
+        targetTokens: 500,
+        baseRate: 25
+      });
+    });
+
+    document.getElementById('btn-complete-1').addEventListener('click', () => {
+      if (stream1) stream1.stop();
+    });
+
+    document.getElementById('btn-reset-1').addEventListener('click', () => {
+      progress1.reset();
+      addLog('log-1', '🔄 Reset');
+    });
+
+    // ===== EXAMPLE 2: OpenAI Simulation =====
+    const progress2 = new StreamProgress({
+      maxTokens: 2000,
+      costPerToken: 0.00003, // GPT-4 pricing
+      showRate: true,
+      showCost: true,
+    });
+    document.getElementById('example2').appendChild(progress2);
+
+    let stream2;
+    const messages2 = [
+      'Initializing...',
+      'Analyzing request...',
+      'Generating response...',
+      'Finalizing...',
+    ];
+
+    progress2.addEventListener('streamstart', () => addLog('log-2', '✅ OpenAI stream started'));
+    progress2.addEventListener('streamcomplete', (e) => {
+      addLog('log-2', `✅ Generation complete - Cost: $${e.detail.totalCost.toFixed(4)}`);
+    });
+    progress2.addEventListener('streamcancel', () => addLog('log-2', '❌ Generation cancelled'));
+
+    document.getElementById('btn-start-2').addEventListener('click', () => {
+      progress2.start('Connecting to OpenAI...');
+      stream2 = simulateStream(progress2, {
+        targetTokens: 1500,
+        baseRate: 30,
+        rateVariation: 20,
+        messages: messages2
+      });
+    });
+
+    document.getElementById('btn-pause-2').addEventListener('click', () => {
+      if (stream2) {
+        stream2.pause();
+        addLog('log-2', '⏸️ Paused');
+      }
+    });
+
+    document.getElementById('btn-resume-2').addEventListener('click', () => {
+      if (stream2) {
+        stream2.resume();
+        addLog('log-2', '▶️ Resumed');
+      }
+    });
+
+    document.getElementById('btn-reset-2').addEventListener('click', () => {
+      if (stream2) stream2.stop();
+      progress2.reset();
+      addLog('log-2', '🔄 Reset');
+    });
+
+    // ===== EXAMPLE 3: Custom Configuration =====
+    const progress3 = new StreamProgress({
+      maxTokens: 8000,
+      costPerToken: 0.00002,
+      showCost: false,
+      showRate: true,
+      cancelLabel: '🛑 Stop Generation',
+      debug: true,
+    });
+    document.getElementById('example3').appendChild(progress3);
+
+    let stream3;
+
+    progress3.addEventListener('streamstart', () => addLog('log-3', '✅ Long generation started'));
+    progress3.addEventListener('streamcomplete', (e) => {
+      addLog('log-3', `✅ Complete - ${e.detail.tokensGenerated} tokens, Avg rate: ${e.detail.averageRate.toFixed(1)} t/s`);
+    });
+    progress3.addEventListener('streamcancel', () => addLog('log-3', '❌ Generation stopped'));
+
+    document.getElementById('btn-start-3').addEventListener('click', () => {
+      progress3.start('Generating long-form content...');
+      stream3 = simulateStream(progress3, {
+        targetTokens: 5000,
+        baseRate: 35,
+        rateVariation: 15
+      });
+    });
+
+    document.getElementById('btn-reset-3').addEventListener('click', () => {
+      if (stream3) stream3.stop();
+      progress3.reset();
+      addLog('log-3', '🔄 Reset');
+    });
+
+    // ===== EXAMPLE 4: Multiple Concurrent Streams =====
+    const progress4a = new StreamProgress({
+      maxTokens: 1000,
+      costPerToken: 0.00002,
+      showCost: true,
+    });
+    const progress4b = new StreamProgress({
+      maxTokens: 1500,
+      costPerToken: 0.00003,
+      showCost: true,
+    });
+    const progress4c = new StreamProgress({
+      maxTokens: 800,
+      costPerToken: 0.00001,
+      showCost: true,
+    });
+
+    document.getElementById('example4a').appendChild(progress4a);
+    document.getElementById('example4b').appendChild(progress4b);
+    document.getElementById('example4c').appendChild(progress4c);
+
+    let streams4 = [];
+
+    [progress4a, progress4b, progress4c].forEach((progress, i) => {
+      progress.addEventListener('streamcomplete', () => {
+        addLog('log-4', `✅ Stream ${i + 1} completed`);
+      });
+    });
+
+    document.getElementById('btn-start-all').addEventListener('click', () => {
+      progress4a.start('Stream 1: Fast generation');
+      progress4b.start('Stream 2: Medium generation');
+      progress4c.start('Stream 3: Slow generation');
+
+      streams4 = [
+        simulateStream(progress4a, { targetTokens: 800, baseRate: 40 }),
+        simulateStream(progress4b, { targetTokens: 1200, baseRate: 25 }),
+        simulateStream(progress4c, { targetTokens: 600, baseRate: 15 })
+      ];
+
+      addLog('log-4', '✅ All streams started');
+    });
+
+    document.getElementById('btn-stop-all').addEventListener('click', () => {
+      streams4.forEach(s => s.stop());
+      addLog('log-4', '🛑 All streams stopped');
+    });
+
+    document.getElementById('btn-reset-all').addEventListener('click', () => {
+      streams4.forEach(s => s.stop());
+      [progress4a, progress4b, progress4c].forEach(p => p.reset());
+      streams4 = [];
+      addLog('log-4', '🔄 All reset');
+    });
+  </script>
+</body>
+</html>
