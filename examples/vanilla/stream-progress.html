@@ -236,7 +236,7 @@
       
       // Keep only last 10 entries
       while (log.children.length > 10) {
-        log.removeChild(log.lastChild);
+        log.lastChild?.remove();
       }
     }
 

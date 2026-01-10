@@ -1,5 +1,5 @@
 import { AIControl } from '../base/AIControl';
-import { throttle, formatBytes, calculateETA } from '../base/utils';
+import { throttle, formatBytes } from '../base/utils';
 import type {
   ModelLoaderConfig,
   ModelLoaderState,
@@ -61,9 +61,9 @@ import { styles } from './styles';
  * @fires loaderror - Fired when an error occurs
  */
 export class ModelLoader extends AIControl {
-  private config: Required<ModelLoaderConfig>;
+  protected override config: Required<ModelLoaderConfig>;
   private state: ModelLoaderState;
-  private updateThrottled: (update: StageUpdate) => void;
+  private readonly updateThrottled: (update: StageUpdate) => void;
 
   static get observedAttributes() {
     return ['model-name', 'disabled'];
@@ -118,16 +118,16 @@ export class ModelLoader extends AIControl {
     this.attachShadow({ mode: 'open' });
   }
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     this.log('ModelLoader mounted');
   }
 
-  protected getDefaultRole(): string {
+  protected override getDefaultRole(): string {
     return 'progressbar';
   }
 
-  protected handleAttributeChange(name: string, oldValue: string, newValue: string): void {
+  protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
     switch (name) {
       case 'model-name':
         this.config.modelName = newValue || 'AI Model';
@@ -205,9 +205,10 @@ export class ModelLoader extends AIControl {
     }
 
     // Update stage state
+    const currentStageState = this.state.stages[stage];
     const updatedStage: StageState = {
-      ...this.state.stages[stage]!,
-      progress: calculatedProgress ?? this.state.stages[stage]!.progress,
+      ...currentStageState,
+      progress: calculatedProgress ?? currentStageState.progress,
       message,
       bytesLoaded,
       totalBytes,
@@ -243,16 +244,18 @@ export class ModelLoader extends AIControl {
     const previousStage = this.state.currentStage;
 
     // Mark previous stage as completed
+    const prevStageState = this.state.stages[previousStage];
     this.state.stages[previousStage] = {
-      ...this.state.stages[previousStage]!,
+      ...prevStageState,
       status: 'completed',
       progress: 100,
       endTime: Date.now(),
     };
 
     // Set new stage as in-progress
+    const newStageState = this.state.stages[stage];
     this.state.stages[stage] = {
-      ...this.state.stages[stage]!,
+      ...newStageState,
       status: 'in-progress',
       progress: options.progress ?? 0,
       message: options.message,
@@ -305,11 +308,12 @@ export class ModelLoader extends AIControl {
     // Mark all stages as completed
     const completedStages: Record<ModelStage, StageState> = { ...this.state.stages };
     this.config.stages.forEach(stage => {
+      const stageState = completedStages[stage];
       completedStages[stage] = {
-        ...completedStages[stage]!,
+        ...stageState,
         status: 'completed',
         progress: 100,
-        endTime: completedStages[stage]!.endTime ?? Date.now(),
+        endTime: stageState.endTime ?? Date.now(),
       };
     });
 
@@ -336,6 +340,7 @@ export class ModelLoader extends AIControl {
    */
   public error(message: string, stage?: ModelStage): void {
     const errorStage = stage ?? this.state.currentStage;
+    const errorStageState = this.state.stages[errorStage];
 
     this.state = {
       ...this.state,
@@ -345,7 +350,7 @@ export class ModelLoader extends AIControl {
       stages: {
         ...this.state.stages,
         [errorStage]: {
-          ...this.state.stages[errorStage]!,
+          ...errorStageState,
           status: 'error',
         },
       },
@@ -444,35 +449,36 @@ export class ModelLoader extends AIControl {
   }
 
   /**
-   * Render the component
+   * Get overall status for rendering
    */
-  protected render(): void {
-    if (!this.shadowRoot) return;
+  private getOverallStatus(): string {
+    if (this.state.hasError) return 'error';
+    if (this.state.isLoading) return 'loading';
+    if (!this.state.isLoading && this.state.stages.ready?.status === 'completed') return 'completed';
+    return 'idle';
+  }
 
-    const overallStatus = this.state.hasError
-      ? 'error'
-      : this.state.isLoading
-      ? 'loading'
-      : !this.state.isLoading && this.state.stages.ready?.status === 'completed'
-      ? 'completed'
-      : 'idle';
+  /**
+   * Get status badge text
+   */
+  private getStatusBadgeText(overallStatus: string): string {
+    if (this.state.hasError) return 'Error';
+    if (this.state.isLoading) return 'Loading';
+    if (overallStatus === 'completed') return 'Ready';
+    return 'Idle';
+  }
 
-    const statusBadgeText = this.state.hasError
-      ? 'Error'
-      : this.state.isLoading
-      ? 'Loading'
-      : overallStatus === 'completed'
-      ? 'Ready'
-      : 'Idle';
-
-    const stagesHtml = this.config.stages
+  /**
+   * Generate HTML for all stages
+   */
+  private generateStagesHtml(): string {
+    return this.config.stages
       .map(stage => {
         const stageState = this.state.stages[stage];
         if (!stageState) return '';
 
         const icon = this.getStageIcon(stageState.status);
         const progressText = `${Math.round(stageState.progress)}%`;
-
         const messageHtml = stageState.message
           ? `<div class="stage-message">${stageState.message}</div>`
           : '';
@@ -494,8 +500,12 @@ export class ModelLoader extends AIControl {
         `;
       })
       .join('');
+  }
 
-    // Stats section
+  /**
+   * Generate HTML for stats section
+   */
+  private generateStatsHtml(): string {
     const statsItems = [];
 
     // Bytes (for download stage)
@@ -531,10 +541,19 @@ export class ModelLoader extends AIControl {
       `);
     }
 
-    const statsHtml =
-      statsItems.length > 0
-        ? `<div class="stats">${statsItems.join('')}</div>`
-        : '';
+    return statsItems.length > 0 ? `<div class="stats">${statsItems.join('')}</div>` : '';
+  }
+
+  /**
+   * Render the component
+   */
+  protected render(): void {
+    if (!this.shadowRoot) return;
+
+    const overallStatus = this.getOverallStatus();
+    const statusBadgeText = this.getStatusBadgeText(overallStatus);
+    const stagesHtml = this.generateStagesHtml();
+    const statsHtml = this.generateStatsHtml();
 
     // Error message
     const errorHtml = this.state.hasError

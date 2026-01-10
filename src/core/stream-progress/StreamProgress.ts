@@ -1,5 +1,5 @@
 import { AIControl } from '../base/AIControl';
-import { throttle, clamp, formatCurrency } from '../base/utils';
+import { throttle, formatCurrency } from '../base/utils';
 import type {
   StreamProgressConfig,
   StreamProgressState,
@@ -52,9 +52,9 @@ import { styles } from './styles';
  * @fires streamcancel - Fired when streaming is cancelled
  */
 export class StreamProgress extends AIControl {
-  private config: Required<StreamProgressConfig>;
+  protected override config: Required<StreamProgressConfig>;
   private state: StreamProgressState;
-  private updateThrottled: (update: StreamProgressUpdate) => void;
+  private readonly updateThrottled: (update: StreamProgressUpdate) => void;
   private animationFrame: number = 0;
   private displayTokens: number = 0;
 
@@ -108,34 +108,34 @@ export class StreamProgress extends AIControl {
     this.attachShadow({ mode: 'open' });
   }
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     this.log('StreamProgress mounted');
   }
 
-  disconnectedCallback(): void {
+  override disconnectedCallback(): void {
     this.cleanup();
     super.disconnectedCallback();
   }
 
-  protected cleanup(): void {
+  protected override cleanup(): void {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
     }
   }
 
-  protected getDefaultRole(): string {
+  protected override getDefaultRole(): string {
     return 'progressbar';
   }
 
-  protected handleAttributeChange(name: string, oldValue: string, newValue: string): void {
+  protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
     switch (name) {
       case 'max-tokens':
-        this.config.maxTokens = parseInt(newValue, 10) || 4000;
+        this.config.maxTokens = Number.parseInt(newValue, 10) || 4000;
         this.render();
         break;
       case 'cost-per-token':
-        this.config.costPerToken = parseFloat(newValue) || 0.00002;
+        this.config.costPerToken = Number.parseFloat(newValue) || 0.00002;
         this.render();
         break;
       case 'disabled':
@@ -392,11 +392,11 @@ export class StreamProgress extends AIControl {
       `
         : '';
 
-    const statusClass = this.state.isCancelled
-      ? 'cancelled'
-      : this.state.isStreaming
-      ? 'streaming'
-      : 'idle';
+    const statusClass = (() => {
+      if (this.state.isCancelled) return 'cancelled';
+      if (this.state.isStreaming) return 'streaming';
+      return 'idle';
+    })();
 
     this.shadowRoot.innerHTML = `
       ${styles}

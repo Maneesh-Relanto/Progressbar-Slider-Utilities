@@ -12,9 +12,8 @@ export function debounce<T extends (...args: any[]) => any>(
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
   return function (this: any, ...args: Parameters<T>) {
-    const context = this;
     if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
+    timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
 
@@ -27,9 +26,8 @@ export function throttle<T extends (...args: any[]) => any>(
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
   return function (this: any, ...args: Parameters<T>) {
-    const context = this;
     if (!inThrottle) {
-      func.apply(context, args);
+      func.apply(this, args);
       inThrottle = true;
       setTimeout(() => (inThrottle = false), limit);
     }
@@ -61,14 +59,14 @@ export function easeOutCubic(t: number): number {
  * Generate a unique ID
  */
 export function generateId(prefix: string = 'ai-control'): string {
-  return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${prefix}-${Math.random().toString(36).slice(2, 11)}`;
 }
 
 /**
  * Check if reduced motion is preferred
  */
 export function prefersReducedMotion(): boolean {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 /**
@@ -78,12 +76,12 @@ export function formatBytes(bytes: number, decimals: number = 2): string {
   if (bytes === 0) return '0 Bytes';
 
   const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
+  const dm = Math.max(0, decimals);
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  return `${Number.parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
 /**
@@ -119,14 +117,15 @@ export function parseColor(color: string): { r: number; g: number; b: number } |
   document.body.appendChild(div);
 
   const computedColor = getComputedStyle(div).color;
-  document.body.removeChild(div);
+  div.remove();
 
-  const match = computedColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-  if (match) {
+  const regex = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/;
+  const match = regex.exec(computedColor);
+  if (match?.[1] && match?.[2] && match?.[3]) {
     return {
-      r: parseInt(match[1], 10),
-      g: parseInt(match[2], 10),
-      b: parseInt(match[3], 10),
+      r: Number.parseInt(match[1], 10),
+      g: Number.parseInt(match[2], 10),
+      b: Number.parseInt(match[3], 10),
     };
   }
 

@@ -263,7 +263,7 @@
       log.insertBefore(p, log.firstChild);
       
       while (log.children.length > 10) {
-        log.removeChild(log.lastChild);
+        log.lastChild?.remove();
       }
     }
 

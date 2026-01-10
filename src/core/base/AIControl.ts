@@ -73,7 +73,7 @@ export abstract class AIControl extends HTMLElement {
     if (!root) return;
 
     Object.entries(theme).forEach(([key, value]) => {
-      const cssVarName = `--ai-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+      const cssVarName = `--ai-${key.replaceAll(/([A-Z])/g, '-$1').toLowerCase()}`;
       root.style.setProperty(cssVarName, value);
     });
   }
@@ -216,7 +216,7 @@ export abstract class AIControl extends HTMLElement {
    * Handle attribute changes
    * Can be overridden by subclasses to handle specific attributes
    */
-  protected handleAttributeChange(name: string, oldValue: string, newValue: string): void {
+  protected handleAttributeChange(_name: string, _oldValue: string, _newValue: string): void {
     // Override in subclasses
   }
 
