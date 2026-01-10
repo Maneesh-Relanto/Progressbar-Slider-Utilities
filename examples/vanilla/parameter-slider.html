@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParameterSlider Examples - AI Progress Controls</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .subtitle {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    .example-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .example-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+
+    .example-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .slider-demo {
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .btn.secondary {
+      background: #6b7280;
+    }
+
+    .btn.secondary:hover {
+      background: #4b5563;
+    }
+
+    .event-log {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .event-log-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .event-item {
+      font-size: 12px;
+      color: #6b7280;
+      padding: 4px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-family: 'Courier New', monospace;
+    }
+
+    .event-item:last-child {
+      border-bottom: none;
+    }
+
+    .timestamp {
+      color: #9ca3af;
+      margin-right: 8px;
+    }
+
+    .nav {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎚️ ParameterSlider Examples</h1>
+    <p class="subtitle">Interactive sliders for AI parameter configuration</p>
+
+    <div class="examples-grid">
+      <!-- Example 1: Temperature Slider -->
+      <div class="example-card">
+        <h2 class="example-title">1. Temperature Control</h2>
+        <p class="example-description">
+          Classic temperature slider with presets for different response styles. 
+          Lower values = more focused, higher values = more creative.
+        </p>
+        <div class="slider-demo" id="temperature-demo"></div>
+        <div class="controls">
+          <button class="btn" id="temp-get">Get Value</button>
+          <button class="btn secondary" id="temp-reset">Reset</button>
+        </div>
+        <div class="event-log">
+          <div class="event-log-title">Event Log</div>
+          <div id="temp-log"></div>
+        </div>
+      </div>
+
+      <!-- Example 2: Top-P Sampling -->
+      <div class="example-card">
+        <h2 class="example-title">2. Top-P (Nucleus Sampling)</h2>
+        <p class="example-description">
+          Controls diversity via nucleus sampling. Use with temperature for fine-grained control.
+        </p>
+        <div class="slider-demo" id="topp-demo"></div>
+        <div class="controls">
+          <button class="btn" id="topp-set-half">Set to 0.5</button>
+          <button class="btn secondary" id="topp-disable">Toggle Disabled</button>
+        </div>
+        <div class="event-log">
+          <div class="event-log-title">Event Log</div>
+          <div id="topp-log"></div>
+        </div>
+      </div>
+
+      <!-- Example 3: Max Tokens -->
+      <div class="example-card">
+        <h2 class="example-title">3. Max Tokens Limit</h2>
+        <p class="example-description">
+          Control response length with a large range slider. Includes common presets.
+        </p>
+        <div class="slider-demo" id="tokens-demo"></div>
+        <div class="controls">
+          <button class="btn" id="tokens-info">Show Value</button>
+          <button class="btn secondary" id="tokens-reset">Reset to 2000</button>
+        </div>
+        <div class="event-log">
+          <div class="event-log-title">Event Log</div>
+          <div id="tokens-log"></div>
+        </div>
+      </div>
+
+      <!-- Example 4: Complete LLM Config Panel -->
+      <div class="example-card" style="grid-column: 1 / -1;">
+        <h2 class="example-title">4. Complete LLM Configuration Panel</h2>
+        <p class="example-description">
+          Full parameter panel with multiple sliders working together. Typical setup for an AI playground.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+          <div id="temp-slider-panel"></div>
+          <div id="topp-slider-panel"></div>
+          <div id="presence-slider-panel"></div>
+          <div id="frequency-slider-panel"></div>
+        </div>
+        <div class="controls">
+          <button class="btn" id="panel-export">Export Config</button>
+          <button class="btn secondary" id="panel-reset">Reset All</button>
+        </div>
+        <div class="event-log">
+          <div class="event-log-title">Current Configuration</div>
+          <div id="panel-config" style="font-family: 'Courier New', monospace; font-size: 12px; color: #374151;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="/examples/">← Back to Examples</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { ParameterSlider } from '/src/index.ts';
+
+    // Helper: Add log entry
+    function addLog(logId, message) {
+      const log = document.getElementById(logId);
+      const timestamp = new Date().toLocaleTimeString();
+      const p = document.createElement('div');
+      p.className = 'event-item';
+      p.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+      log.insertBefore(p, log.firstChild);
+      
+      while (log.children.length > 10) {
+        log.lastChild?.remove();
+      }
+    }
+
+    // ===== Example 1: Temperature =====
+    const temperatureSlider = new ParameterSlider({
+      label: 'Temperature',
+      min: 0,
+      max: 2,
+      value: 0.7,
+      step: 0.1,
+      decimals: 1,
+      description: 'Controls randomness in model responses',
+      presets: [
+        { value: 0, label: 'Precise', description: 'Deterministic output' },
+        { value: 0.7, label: 'Balanced', description: 'Recommended' },
+        { value: 1.5, label: 'Creative', description: 'More random' }
+      ],
+      showInput: true,
+      showReset: true,
+    });
+
+    document.getElementById('temperature-demo').appendChild(temperatureSlider);
+
+    temperatureSlider.addEventListener('valuechange', (e) => {
+      addLog('temp-log', `Value changed to ${e.detail.value} (source: ${e.detail.source})`);
+    });
+
+    temperatureSlider.addEventListener('presetselect', (e) => {
+      addLog('temp-log', `Preset "${e.detail.preset.label}" selected (${e.detail.preset.value})`);
+    });
+
+    document.getElementById('temp-get').addEventListener('click', () => {
+      const value = temperatureSlider.getValue();
+      alert(`Current temperature: ${value}`);
+    });
+
+    document.getElementById('temp-reset').addEventListener('click', () => {
+      temperatureSlider.reset();
+    });
+
+    // ===== Example 2: Top-P =====
+    const toppSlider = new ParameterSlider({
+      label: 'Top-P (Nucleus Sampling)',
+      min: 0,
+      max: 1,
+      value: 1,
+      step: 0.05,
+      decimals: 2,
+      description: 'Cumulative probability for token selection',
+      presets: [
+        { value: 0.1, label: 'Very Focused' },
+        { value: 0.5, label: 'Moderate' },
+        { value: 0.9, label: 'Diverse' },
+        { value: 1.0, label: 'All Tokens' }
+      ],
+    });
+
+    document.getElementById('topp-demo').appendChild(toppSlider);
+
+    toppSlider.addEventListener('valuechange', (e) => {
+      addLog('topp-log', `Top-P: ${e.detail.value}`);
+    });
+
+    let toppDisabled = false;
+    document.getElementById('topp-disable').addEventListener('click', () => {
+      toppDisabled = !toppDisabled;
+      toppSlider.disabled = toppDisabled;
+      addLog('topp-log', `Slider ${toppDisabled ? 'disabled' : 'enabled'}`);
+    });
+
+    document.getElementById('topp-set-half').addEventListener('click', () => {
+      toppSlider.setValue(0.5);
+    });
+
+    // ===== Example 3: Max Tokens =====
+    const tokensSlider = new ParameterSlider({
+      label: 'Max Tokens',
+      min: 1,
+      max: 4000,
+      value: 2000,
+      defaultValue: 2000,
+      step: 100,
+      decimals: 0,
+      description: 'Maximum length of generated response',
+      unit: 'tokens',
+      presets: [
+        { value: 500, label: 'Short' },
+        { value: 2000, label: 'Medium' },
+        { value: 4000, label: 'Long' }
+      ],
+      showRangeLabels: true,
+    });
+
+    document.getElementById('tokens-demo').appendChild(tokensSlider);
+
+    tokensSlider.addEventListener('valuechange', (e) => {
+      addLog('tokens-log', `Max tokens: ${e.detail.value}`);
+    });
+
+    document.getElementById('tokens-info').addEventListener('click', () => {
+      const value = tokensSlider.getValue();
+      const cost = (value / 1000) * 0.002; // $0.002 per 1K tokens
+      alert(`Max Tokens: ${value}\nEstimated max cost: $${cost.toFixed(4)}`);
+    });
+
+    document.getElementById('tokens-reset').addEventListener('click', () => {
+      tokensSlider.reset();
+    });
+
+    // ===== Example 4: Complete Panel =====
+    const panelSliders = {
+      temperature: new ParameterSlider({
+        label: 'Temperature',
+        min: 0,
+        max: 2,
+        value: 0.7,
+        step: 0.1,
+        decimals: 1,
+        description: 'Response randomness',
+        showInput: false,
+        showReset: false,
+        showPresets: false,
+      }),
+      topP: new ParameterSlider({
+        label: 'Top-P',
+        min: 0,
+        max: 1,
+        value: 1,
+        step: 0.05,
+        decimals: 2,
+        description: 'Nucleus sampling',
+        showInput: false,
+        showReset: false,
+        showPresets: false,
+      }),
+      presencePenalty: new ParameterSlider({
+        label: 'Presence Penalty',
+        min: -2,
+        max: 2,
+        value: 0,
+        step: 0.1,
+        decimals: 1,
+        description: 'Penalize new topics',
+        showInput: false,
+        showReset: false,
+        showPresets: false,
+      }),
+      frequencyPenalty: new ParameterSlider({
+        label: 'Frequency Penalty',
+        min: -2,
+        max: 2,
+        value: 0,
+        step: 0.1,
+        decimals: 1,
+        description: 'Penalize repetition',
+        showInput: false,
+        showReset: false,
+        showPresets: false,
+      }),
+    };
+
+    document.getElementById('temp-slider-panel').appendChild(panelSliders.temperature);
+    document.getElementById('topp-slider-panel').appendChild(panelSliders.topP);
+    document.getElementById('presence-slider-panel').appendChild(panelSliders.presencePenalty);
+    document.getElementById('frequency-slider-panel').appendChild(panelSliders.frequencyPenalty);
+
+    function updatePanelConfig() {
+      const config = {
+        temperature: panelSliders.temperature.getValue(),
+        top_p: panelSliders.topP.getValue(),
+        presence_penalty: panelSliders.presencePenalty.getValue(),
+        frequency_penalty: panelSliders.frequencyPenalty.getValue(),
+      };
+      document.getElementById('panel-config').textContent = JSON.stringify(config, null, 2);
+    }
+
+    Object.values(panelSliders).forEach(slider => {
+      slider.addEventListener('valuechange', updatePanelConfig);
+    });
+
+    updatePanelConfig();
+
+    document.getElementById('panel-export').addEventListener('click', () => {
+      const config = {
+        temperature: panelSliders.temperature.getValue(),
+        top_p: panelSliders.topP.getValue(),
+        presence_penalty: panelSliders.presencePenalty.getValue(),
+        frequency_penalty: panelSliders.frequencyPenalty.getValue(),
+      };
+      
+      const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'llm-config.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('panel-reset').addEventListener('click', () => {
+      Object.values(panelSliders).forEach(slider => slider.reset());
+    });
+  </script>
+</body>
+</html>

@@ -502,6 +502,35 @@
           View 4 Examples →
         </a>
       </div>
+
+      <!-- ParameterSlider Card -->
+      <div class="component-card">
+        <div class="component-header">
+          <div class="component-icon">🎚️</div>
+          <div class="component-info">
+            <h3>ParameterSlider</h3>
+            <span class="component-badge">Production Ready</span>
+          </div>
+        </div>
+        
+        <p class="component-description">
+          Interactive sliders for AI parameter configuration. Perfect for temperature, top-p, penalties
+          with presets and live feedback.
+        </p>
+        
+        <div class="demo-area">
+          <div id="slider-demo"></div>
+        </div>
+        
+        <div class="demo-controls">
+          <button class="demo-btn" id="set-creative">🎨 Creative</button>
+          <button class="demo-btn secondary" id="reset-slider">Reset</button>
+        </div>
+        
+        <a href="/examples/vanilla/parameter-slider.html" class="view-examples-link">
+          View 4 Examples →
+        </a>
+      </div>
     </div>
   </div>
 
@@ -576,7 +605,7 @@
   </div>
 
   <script type="module">
-    import { StreamProgress, ModelLoader } from './src/index.ts';
+    import { StreamProgress, ModelLoader, ParameterSlider } from './src/index.ts';
 
     // ===== StreamProgress Demo =====
     const streamProgress = new StreamProgress({
@@ -683,6 +712,37 @@
 
     modelLoader.addEventListener('loadcomplete', (e) => {
       console.log('Model loaded!', e.detail);
+    });
+
+    // ===== ParameterSlider Demo =====
+    const tempSlider = new ParameterSlider({
+      label: 'Temperature',
+      description: 'Controls randomness in generation',
+      min: 0,
+      max: 2,
+      step: 0.1,
+      defaultValue: 0.7,
+      showInput: true,
+      showReset: true,
+      presets: [
+        { label: 'Precise', value: 0.1, description: 'Deterministic, focused responses' },
+        { label: 'Balanced', value: 0.7, description: 'Good mix of creativity and coherence' },
+        { label: 'Creative', value: 1.5, description: 'More random and creative outputs' }
+      ]
+    });
+
+    document.getElementById('slider-demo').appendChild(tempSlider);
+
+    document.getElementById('set-creative').addEventListener('click', () => {
+      tempSlider.selectPreset(2); // Select "Creative" preset
+    });
+
+    document.getElementById('reset-slider').addEventListener('click', () => {
+      tempSlider.reset();
+    });
+
+    tempSlider.addEventListener('valuechange', (e) => {
+      console.log('Temperature changed:', e.detail.value);
     });
   </script>
 </body>
