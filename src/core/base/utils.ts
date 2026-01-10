@@ -92,6 +92,23 @@ export function formatCurrency(amount: number, decimals: number = 4): string {
 }
 
 /**
+ * Format seconds to human-readable time string
+ */
+export function formatTime(seconds: number): string {
+  if (seconds < 60) {
+    return `${Math.round(seconds)}s`;
+  }
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.round(seconds % 60);
+  if (minutes < 60) {
+    return remainingSeconds > 0 ? `${minutes}m ${remainingSeconds}s` : `${minutes}m`;
+  }
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
+}
+
+/**
  * Calculate estimated time remaining
  */
 export function calculateETA(
@@ -149,7 +166,7 @@ export function isInViewport(element: HTMLElement): boolean {
   return (
     rect.top >= 0 &&
     rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    rect.bottom <= (globalThis.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (globalThis.innerWidth || document.documentElement.clientWidth)
   );
 }

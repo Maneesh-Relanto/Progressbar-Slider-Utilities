@@ -36,6 +36,30 @@
       margin-bottom: 40px;
     }
 
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 14px;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .nav-btn:hover {
+      background: #f9fafb;
+      border-color: #667eea;
+    }
+
     .examples-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
@@ -133,6 +157,11 @@
     .timestamp {
       color: #9ca3af;
       margin-right: 8px;
+    }
+
+    .nav {
+      text-align: center;
+      margin-top: 40px;
     }
 
     .nav {
@@ -243,10 +272,6 @@
           <button class="btn secondary" id="panel-reset">Reset All</button>
         </div>
         <div class="event-log">
-          <div class="event-log-title">Current Configuration</div>
-          <div id="panel-config" style="font-family: 'Courier New', monospace; font-size: 12px; color: #374151;"></div>
-        </div>
-      </div>
     </div>
 
     <div class="nav">

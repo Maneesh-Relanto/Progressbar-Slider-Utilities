@@ -268,7 +268,7 @@ export class QueueProgress extends AIControl {
       timestamp: Date.now(),
     } as QueueErrorEvent);
 
-    this.logError('Queue error', errorMessage);
+    this.logError('Queue error', new Error(errorMessage));
   }
 
   /**
@@ -310,9 +310,9 @@ export class QueueProgress extends AIControl {
   /**
    * Start elapsed time timer
    */
-  private startTimer(): void {
+  protected override startTimer(): void {
     this.stopTimer();
-    this.timerInterval = window.setInterval(() => {
+    this.timerInterval = globalThis.setInterval(() => {
       if (this.state.startTime > 0) {
         this.state.elapsedTime = Date.now() - this.state.startTime;
         this.render();

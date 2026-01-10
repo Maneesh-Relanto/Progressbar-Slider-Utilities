@@ -71,3 +71,9 @@ confidential/
 *.orig
 *.rej
 .scratch/
+
+# Test and debug files
+test.html
+debug.html
+*TEST*.md
+DEBUG*.md
