@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Progress Controls - Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      background: white;
+      border-radius: 20px;
+      padding: 48px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 64px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #10b981;
+      color: white;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    .status::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #demo-container {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .demo-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .demo-btn {
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .demo-btn:hover {
+      background: #2563eb;
+    }
+
+    .demo-btn.secondary {
+      background: #6b7280;
+    }
+
+    .demo-btn.secondary:hover {
+      background: #4b5563;
+    }
+
+    .features {
+      text-align: left;
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .features h3 {
+      font-size: 18px;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+
+    .features ul {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .features li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    .features li::before {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 50%;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">🤖</div>
+    
+    <h1>AI Progress Controls</h1>
+    
+    <p class="subtitle">
+      Beautiful, accessible progress bars designed specifically for AI/ML workflows.
+      Framework-agnostic and developer-friendly.
+    </p>
+
+    <div class="status">
+      Live Demo Running
+    </div>
+
+    <div class="buttons">
+      <a href="/examples/vanilla/stream-progress.html" class="btn btn-primary">
+        View Examples
+      </a>
+      <a href="https://github.com/yourusername/ai-progress-controls" class="btn btn-secondary">
+        GitHub
+      </a>
+    </div>
+
+    <div id="demo-container">
+      <h3 style="margin-bottom: 16px; color: #111827;">Quick Demo</h3>
+      <!-- Stream Progress will be inserted here -->
+    </div>
+
+    <div class="demo-controls">
+      <button class="demo-btn" id="start-demo">Start Streaming</button>
+      <button class="demo-btn secondary" id="reset-demo">Reset</button>
+    </div>
+
+    <div class="features">
+      <h3>Why Developers Love It</h3>
+      <ul>
+        <li>Zero configuration - works out of the box</li>
+        <li>Framework agnostic - React, Vue, Svelte, vanilla JS</li>
+        <li>TypeScript support with full type definitions</li>
+        <li>Beautiful by default with dark mode support</li>
+        <li>Accessible (WCAG 2.1 AA compliant)</li>
+        <li>3 lines of code to get started</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module">
+    import { StreamProgress } from './src/index.ts';
+
+    // Create demo progress bar
+    const progress = new StreamProgress({
+      maxTokens: 1000,
+      costPerToken: 0.00002,
+      showRate: true,
+      showCost: true,
+    });
+
+    document.getElementById('demo-container').appendChild(progress);
+
+    // Demo controls
+    let simulationInterval;
+
+    document.getElementById('start-demo').addEventListener('click', () => {
+      progress.start('Generating AI response...');
+      
+      let tokens = 0;
+      const targetTokens = 500;
+      
+      simulationInterval = setInterval(() => {
+        tokens += Math.floor(Math.random() * 30) + 20;
+        const rate = Math.floor(Math.random() * 20) + 20;
+        
+        progress.update({
+          tokensGenerated: Math.min(tokens, targetTokens),
+          tokensPerSecond: rate
+        });
+
+        if (tokens >= targetTokens) {
+          clearInterval(simulationInterval);
+          setTimeout(() => progress.complete(), 500);
+        }
+      }, 100);
+    });
+
+    document.getElementById('reset-demo').addEventListener('click', () => {
+      if (simulationInterval) {
+        clearInterval(simulationInterval);
+      }
+      progress.reset();
+    });
+
+    progress.addEventListener('streamcomplete', (e) => {
+      console.log('Stream completed!', e.detail);
+    });
+  </script>
+</body>
+</html>
