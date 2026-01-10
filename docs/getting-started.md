@@ -4,34 +4,42 @@ Welcome! This guide will help you get up and running with AI Progress Controls i
 
 ## Installation
 
-### NPM / Yarn / PNPM
+**⚠️ Development Preview:** Package not yet published to npm. For now, clone and build locally.
+
+### Local Development (Current)
 
 ```bash
-# Using npm
-npm install ai-progress-controls
+# Clone repository
+git clone https://github.com/yourusername/ai-progress-controls.git
+cd ai-progress-controls
 
-# Using yarn
-yarn add ai-progress-controls
+# Install dependencies
+npm install
 
-# Using pnpm
-pnpm add ai-progress-controls
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
 ```
 
-### CDN
+### NPM / Yarn / PNPM (Coming Soon)
 
-For quick prototyping or simple projects, you can use a CDN:
+```bash
+# Once published:
+# npm install ai-progress-controls
+# yarn add ai-progress-controls
+# pnpm add ai-progress-controls
+```
+
+### CDN (Coming Soon)
 
 ```html
-<!-- ES Module -->
+<!-- Will be available after npm publish:
 <script type="module">
   import { StreamProgress } from 'https://cdn.jsdelivr.net/npm/ai-progress-controls/+esm';
 </script>
-
-<!-- UMD (Universal Module Definition) -->
-<script src="https://cdn.jsdelivr.net/npm/ai-progress-controls"></script>
-<script>
-  const { StreamProgress } = AIProgressControls;
-</script>
+-->
 ```
 
 ## Quick Start

@@ -1,9 +1,18 @@
 # 🚀 Quick Start for Developers
 
-## Installation (Super Easy!)
+## Installation
+
+**⚠️ Note:** Package not yet published to npm. Currently in development.
 
 ```bash
-npm install ai-progress-controls
+# Clone and run locally:
+git clone https://github.com/yourusername/ai-progress-controls.git
+cd ai-progress-controls
+npm install
+npm run dev
+
+# Once published (coming soon):
+# npm install ai-progress-controls
 ```
 
 ## Usage in 3 Lines of Code

@@ -531,6 +531,35 @@
           View 4 Examples →
         </a>
       </div>
+
+      <!-- QueueProgress Card -->
+      <div class="component-card">
+        <div class="component-header">
+          <div class="component-icon">⏳</div>
+          <div class="component-info">
+            <h3>QueueProgress</h3>
+            <span class="component-badge">Production Ready</span>
+          </div>
+        </div>
+        
+        <p class="component-description">
+          Queue position tracking for rate-limited APIs. Shows wait time, processing rate,
+          and estimated completion time during high-traffic periods.
+        </p>
+        
+        <div class="demo-area">
+          <div id="queue-demo"></div>
+        </div>
+        
+        <div class="demo-controls">
+          <button class="demo-btn" id="start-queue">▶ Enter Queue</button>
+          <button class="demo-btn secondary" id="reset-queue">Reset</button>
+        </div>
+        
+        <a href="/examples/vanilla/queue-progress.html" class="view-examples-link">
+          View 4 Examples →
+        </a>
+      </div>
     </div>
   </div>
 
@@ -605,7 +634,7 @@
   </div>
 
   <script type="module">
-    import { StreamProgress, ModelLoader, ParameterSlider } from './src/index.ts';
+    import { StreamProgress, ModelLoader, ParameterSlider, QueueProgress } from './src/index.ts';
 
     // ===== StreamProgress Demo =====
     const streamProgress = new StreamProgress({
@@ -743,6 +772,58 @@
 
     tempSlider.addEventListener('valuechange', (e) => {
       console.log('Temperature changed:', e.detail.value);
+    });
+
+    // ===== QueueProgress Demo =====
+    const queueProgress = new QueueProgress({
+      position: 73,
+      queueSize: 150,
+      estimatedWait: 220,
+      processingRate: 3.5,
+      message: 'Rate limit active'
+    });
+
+    document.getElementById('queue-demo').appendChild(queueProgress);
+
+    let queueInterval;
+
+    document.getElementById('start-queue').addEventListener('click', () => {
+      queueProgress.start('Waiting in processing queue...');
+      
+      let position = 73;
+      clearInterval(queueInterval);
+      
+      queueInterval = setInterval(() => {
+        const decrease = Math.floor(Math.random() * 5) + 2;
+        position = Math.max(0, position - decrease);
+        
+        if (position <= 0) {
+          clearInterval(queueInterval);
+          queueProgress.complete();
+          return;
+        }
+        
+        const wait = Math.max(15, position * 3);
+        const rate = 3.0 + (Math.random() * 1.5);
+        
+        queueProgress.update({
+          position,
+          estimatedWait: wait,
+          processingRate: rate,
+          queueSize: 150 - (73 - position)
+        });
+      }, 1500);
+    });
+
+    document.getElementById('reset-queue').addEventListener('click', () => {
+      if (queueInterval) {
+        clearInterval(queueInterval);
+      }
+      queueProgress.reset();
+    });
+
+    queueProgress.addEventListener('queuecomplete', (e) => {
+      console.log('Queue processing started!', e.detail);
     });
   </script>
 </body>

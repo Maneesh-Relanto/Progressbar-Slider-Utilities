@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueueProgress Examples - AI Progress Controls</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 40px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: #f9fafb;
+      border-color: #667eea;
+    }
+
+    .example-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .example-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      background: #ede9fe;
+      color: #7c3aed;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .example-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .queue-container {
+      margin: 20px 0;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .controls button:hover {
+      background: #5568d3;
+      transform: translateY(-1px);
+    }
+
+    .controls button.secondary {
+      background: #e5e7eb;
+      color: #1f2937;
+    }
+
+    .controls button.secondary:hover {
+      background: #d1d5db;
+    }
+
+    .event-log {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .event-log-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .log-entry {
+      padding: 4px 0;
+      color: #374151;
+    }
+
+    .log-entry .timestamp {
+      color: #9ca3af;
+      margin-right: 8px;
+    }
+
+    .log-entry .event-name {
+      color: #667eea;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-buttons">
+      <a href="../../index.html" class="nav-btn">← Home</a>
+      <a href="stream-progress.html" class="nav-btn">StreamProgress</a>
+      <a href="model-loader.html" class="nav-btn">ModelLoader</a>
+      <a href="parameter-slider.html" class="nav-btn">ParameterSlider</a>
+    </div>
+
+    <h1>⏳ QueueProgress Examples</h1>
+    <p class="subtitle">Queue position visualization for rate-limited AI APIs and high-traffic scenarios</p>
+
+    <!-- Example 1: Basic Queue -->
+    <div class="example-section">
+      <h2 class="example-title">1. Basic Queue Position <span class="badge">Simple</span></h2>
+      <p class="example-description">
+        Simple queue tracking showing your position, estimated wait time, and processing rate.
+        Position automatically decrements every 2 seconds.
+      </p>
+      
+      <div class="queue-container" id="example1"></div>
+      
+      <div class="controls">
+        <button id="btn-start-1">Start Queue</button>
+        <button id="btn-reset-1" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-1" class="event-log" style="display: none;">
+        <div class="event-log-title">Event Log</div>
+        <div id="log-content-1"></div>
+      </div>
+    </div>
+
+    <!-- Example 2: OpenAI Rate Limit Simulation -->
+    <div class="example-section">
+      <h2 class="example-title">2. OpenAI Rate Limit Simulation <span class="badge">Realistic</span></h2>
+      <p class="example-description">
+        Simulates being rate-limited by OpenAI's API during peak hours. Shows realistic
+        queue behavior with 150 requests ahead and variable processing rate.
+      </p>
+      
+      <div class="queue-container" id="example2"></div>
+      
+      <div class="controls">
+        <button id="btn-start-2">Simulate Rate Limit</button>
+        <button id="btn-complete-2" class="secondary">Jump to Front</button>
+        <button id="btn-reset-2" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-2" class="event-log" style="display: none;">
+        <div class="event-log-title">Event Log</div>
+        <div id="log-content-2"></div>
+      </div>
+    </div>
+
+    <!-- Example 3: High-Traffic Queue -->
+    <div class="example-section">
+      <h2 class="example-title">3. High-Traffic Queue <span class="badge">Advanced</span></h2>
+      <p class="example-description">
+        Large queue simulation with 500+ requests. Watch your position move as the
+        system processes requests at varying speeds based on server load.
+      </p>
+      
+      <div class="queue-container" id="example3"></div>
+      
+      <div class="controls">
+        <button id="btn-start-3">Enter High-Traffic Queue</button>
+        <button id="btn-error-3" class="secondary">Simulate Error</button>
+        <button id="btn-reset-3" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-3" class="event-log" style="display: none;">
+        <div class="event-log-title">Event Log</div>
+        <div id="log-content-3"></div>
+      </div>
+    </div>
+
+    <!-- Example 4: Priority Queue -->
+    <div class="example-section">
+      <h2 class="example-title">4. Priority Queue with Fast Lane <span class="badge">Premium</span></h2>
+      <p class="example-description">
+        Demonstrates a priority queue where premium users get faster processing.
+        Position drops rapidly as you get priority processing.
+      </p>
+      
+      <div class="queue-container" id="example4"></div>
+      
+      <div class="controls">
+        <button id="btn-start-4">Standard Queue</button>
+        <button id="btn-priority-4" class="secondary">Activate Priority</button>
+        <button id="btn-reset-4" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-4" class="event-log" style="display: none;">
+        <div class="event-log-title">Event Log</div>
+        <div id="log-content-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { QueueProgress } from '../../src/index.ts';
+
+    // ===== Example 1: Basic Queue =====
+    const queue1 = new QueueProgress({
+      position: 47,
+      queueSize: 120,
+      estimatedWait: 180, // 3 minutes
+      processingRate: 3.2,
+      message: 'Processing requests...'
+    });
+
+    document.getElementById('example1').appendChild(queue1);
+
+    let interval1;
+    const log1 = document.getElementById('log-content-1');
+
+    function addLog(logId, message) {
+      const log = document.getElementById(logId);
+      const timestamp = new Date().toLocaleTimeString();
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+      log.appendChild(entry);
+      log.scrollTop = log.scrollHeight;
+      document.getElementById(logId.replace('-content', '')).style.display = 'block';
+    }
+
+    document.getElementById('btn-start-1').addEventListener('click', () => {
+      queue1.start();
+      addLog('log-content-1', '<span class="event-name">queuestart</span> - Position: 47');
+      
+      let position = 47;
+      clearInterval(interval1);
+      interval1 = setInterval(() => {
+        position -= 1;
+        if (position <= 0) {
+          clearInterval(interval1);
+          queue1.complete();
+          addLog('log-content-1', '<span class="event-name">queuecomplete</span> - Processing started!');
+          return;
+        }
+        
+        const wait = Math.max(10, position * 4);
+        queue1.update({
+          position,
+          estimatedWait: wait,
+          queueSize: 120 - (47 - position)
+        });
+
+        if (position % 10 === 0) {
+          addLog('log-content-1', `<span class="event-name">positionchange</span> - Position: ${position}`);
+        }
+      }, 2000);
+    });
+
+    document.getElementById('btn-reset-1').addEventListener('click', () => {
+      clearInterval(interval1);
+      queue1.reset();
+      log1.innerHTML = '';
+    });
+
+    // ===== Example 2: OpenAI Rate Limit =====
+    const queue2 = new QueueProgress({
+      position: 87,
+      queueSize: 150,
+      estimatedWait: 290,
+      processingRate: 2.8,
+      message: 'High API usage detected'
+    });
+
+    document.getElementById('example2').appendChild(queue2);
+
+    let interval2;
+    const log2 = document.getElementById('log-content-2');
+
+    document.getElementById('btn-start-2').addEventListener('click', () => {
+      queue2.start('OpenAI API - Rate limit queue');
+      addLog('log-content-2', '<span class="event-name">queuestart</span> - Rate limit detected, position: 87');
+      
+      let position = 87;
+      clearInterval(interval2);
+      interval2 = setInterval(() => {
+        // Variable rate
+        const decrease = Math.floor(Math.random() * 3) + 1;
+        position = Math.max(0, position - decrease);
+        
+        if (position <= 0) {
+          clearInterval(interval2);
+          queue2.complete();
+          addLog('log-content-2', '<span class="event-name">queuecomplete</span> - Your request is now processing');
+          return;
+        }
+        
+        const wait = Math.max(15, position * 3.5);
+        const rate = 2.5 + (Math.random() * 1);
+        queue2.update({
+          position,
+          estimatedWait: wait,
+          processingRate: rate,
+          queueSize: 150 - (87 - position)
+        });
+
+        if (position % 15 === 0) {
+          addLog('log-content-2', `<span class="event-name">positionchange</span> - Position: ${position}, Rate: ${rate.toFixed(1)}/s`);
+        }
+      }, 1500);
+    });
+
+    document.getElementById('btn-complete-2').addEventListener('click', () => {
+      clearInterval(interval2);
+      queue2.complete();
+      addLog('log-content-2', '<span class="event-name">queuecomplete</span> - Skipped to front');
+    });
+
+    document.getElementById('btn-reset-2').addEventListener('click', () => {
+      clearInterval(interval2);
+      queue2.reset();
+      log2.innerHTML = '';
+    });
+
+    // ===== Example 3: High-Traffic Queue =====
+    const queue3 = new QueueProgress({
+      position: 342,
+      queueSize: 523,
+      estimatedWait: 680,
+      processingRate: 5.5,
+      message: 'Server under high load'
+    });
+
+    document.getElementById('example3').appendChild(queue3);
+
+    let interval3;
+    const log3 = document.getElementById('log-content-3');
+
+    document.getElementById('btn-start-3').addEventListener('click', () => {
+      queue3.start('High-traffic queue - Please wait');
+      addLog('log-content-3', '<span class="event-name">queuestart</span> - Entered queue at position 342');
+      
+      let position = 342;
+      clearInterval(interval3);
+      interval3 = setInterval(() => {
+        // Faster processing
+        const decrease = Math.floor(Math.random() * 8) + 3;
+        position = Math.max(0, position - decrease);
+        
+        if (position <= 0) {
+          clearInterval(interval3);
+          queue3.complete();
+          addLog('log-content-3', '<span class="event-name">queuecomplete</span> - Processing your request');
+          return;
+        }
+        
+        const wait = Math.max(20, position * 2);
+        const rate = 4.5 + (Math.random() * 2.5);
+        queue3.update({
+          position,
+          estimatedWait: wait,
+          processingRate: rate,
+          queueSize: 523 - (342 - position)
+        });
+
+        if (position % 50 === 0 || position < 10) {
+          addLog('log-content-3', `<span class="event-name">positionchange</span> - Position: ${position}, ETA: ${Math.floor(wait)}s`);
+        }
+      }, 1000);
+    });
+
+    document.getElementById('btn-error-3').addEventListener('click', () => {
+      clearInterval(interval3);
+      queue3.error('Server temporarily unavailable. Please try again.');
+      addLog('log-content-3', '<span class="event-name">queueerror</span> - Server error occurred');
+    });
+
+    document.getElementById('btn-reset-3').addEventListener('click', () => {
+      clearInterval(interval3);
+      queue3.reset();
+      log3.innerHTML = '';
+    });
+
+    // ===== Example 4: Priority Queue =====
+    const queue4 = new QueueProgress({
+      position: 125,
+      queueSize: 200,
+      estimatedWait: 375,
+      processingRate: 3.0,
+      message: 'Standard processing queue'
+    });
+
+    document.getElementById('example4').appendChild(queue4);
+
+    let interval4;
+    let isPriority = false;
+    const log4 = document.getElementById('log-content-4');
+
+    document.getElementById('btn-start-4').addEventListener('click', () => {
+      queue4.start('Standard queue processing');
+      addLog('log-content-4', '<span class="event-name">queuestart</span> - Standard queue, position: 125');
+      isPriority = false;
+      
+      let position = 125;
+      clearInterval(interval4);
+      interval4 = setInterval(() => {
+        const decrease = isPriority ? Math.floor(Math.random() * 15) + 5 : Math.floor(Math.random() * 3) + 1;
+        position = Math.max(0, position - decrease);
+        
+        if (position <= 0) {
+          clearInterval(interval4);
+          queue4.complete();
+          addLog('log-content-4', '<span class="event-name">queuecomplete</span> - Processing started');
+          return;
+        }
+        
+        const wait = Math.max(10, position * (isPriority ? 1 : 3));
+        const rate = isPriority ? 12.0 : 3.0;
+        queue4.update({
+          position,
+          estimatedWait: wait,
+          processingRate: rate,
+          message: isPriority ? '⚡ Priority processing active' : 'Standard processing queue'
+        });
+
+        if (position % 20 === 0 || (isPriority && position % 5 === 0)) {
+          addLog('log-content-4', `<span class="event-name">positionchange</span> - Position: ${position} ${isPriority ? '(PRIORITY)' : ''}`);
+        }
+      }, isPriority ? 800 : 2000);
+    });
+
+    document.getElementById('btn-priority-4').addEventListener('click', () => {
+      if (interval4) {
+        isPriority = true;
+        addLog('log-content-4', '<span class="event-name">priority</span> - ⚡ Priority processing activated!');
+        clearInterval(interval4);
+        
+        let position = queue4.getPosition();
+        interval4 = setInterval(() => {
+          const decrease = Math.floor(Math.random() * 15) + 5;
+          position = Math.max(0, position - decrease);
+          
+          if (position <= 0) {
+            clearInterval(interval4);
+            queue4.complete();
+            addLog('log-content-4', '<span class="event-name">queuecomplete</span> - Processing started');
+            return;
+          }
+          
+          const wait = Math.max(10, position * 1);
+          queue4.update({
+            position,
+            estimatedWait: wait,
+            processingRate: 12.0,
+            message: '⚡ Priority processing active'
+          });
+
+          if (position % 10 === 0) {
+            addLog('log-content-4', `<span class="event-name">positionchange</span> - Position: ${position} (PRIORITY)`);
+          }
+        }, 800);
+      }
+    });
+
+    document.getElementById('btn-reset-4').addEventListener('click', () => {
+      clearInterval(interval4);
+      isPriority = false;
+      queue4.reset();
+      log4.innerHTML = '';
+    });
+
+    // Event listeners for all queues
+    [queue1, queue2, queue3, queue4].forEach((queue, index) => {
+      const logId = `log-content-${index + 1}`;
+      
+      queue.addEventListener('positionchange', (e) => {
+        console.log(`Queue ${index + 1} position changed:`, e.detail);
+      });
+
+      queue.addEventListener('queuecomplete', (e) => {
+        console.log(`Queue ${index + 1} completed:`, e.detail);
+      });
+    });
+  </script>
+</body>
+</html>
