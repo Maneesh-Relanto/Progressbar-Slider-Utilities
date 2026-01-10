@@ -67,28 +67,77 @@ progress.complete();
 ### ✅ Zero Configuration
 Works out of the box with sensible defaults.
 
-### ✅ Framework Agnostic
+### ✅ Framework Agnostic - Works With Everything!
 ```javascript
-// Works everywhere
+// Vanilla JS/HTML - 3 lines!
 const progress = new StreamProgress();
+document.body.appendChild(progress);
+progress.start();
 
-// React
+// React - 3 lines in useEffect!
 useEffect(() => {
   const progress = new StreamProgress();
   containerRef.current.appendChild(progress);
+  return () => containerRef.current.removeChild(progress);
 }, []);
 
-// Vue
+// Vue 3 - 3 lines in onMounted!
 onMounted(() => {
   const progress = new StreamProgress();
   container.value.appendChild(progress);
 });
 
-// Svelte
+// Svelte - 3 lines in onMount!
 onMount(() => {
   const progress = new StreamProgress();
   container.appendChild(progress);
 });
+
+// Angular - 3 lines in ngAfterViewInit!
+ngAfterViewInit() {
+  const progress = new StreamProgress();
+  this.container.nativeElement.appendChild(progress);
+}
+
+// Next.js (React) - Same as React!
+useEffect(() => {
+  const progress = new StreamProgress();
+  ref.current.appendChild(progress);
+}, []);
+
+// Nuxt (Vue) - Same as Vue!
+onMounted(() => {
+  const progress = new StreamProgress();
+  container.value.appendChild(progress);
+});
+
+// SolidJS - 3 lines with onMount!
+onMount(() => {
+  const progress = new StreamProgress();
+  container.appendChild(progress);
+});
+
+// Preact - Same as React!
+useEffect(() => {
+  const progress = new StreamProgress();
+  ref.current.appendChild(progress);
+}, []);
+
+// Lit - Native Web Components!
+render() {
+  return html`<div id="container"></div>`;
+}
+firstUpdated() {
+  const progress = new StreamProgress();
+  this.shadowRoot.querySelector('#container').appendChild(progress);
+}
+
+// Astro - Just use it in your component!
+<div id="app"></div>
+<script>
+  const progress = new StreamProgress();
+  document.getElementById('app').appendChild(progress);
+</script>
 ```
 
 ### ✅ TypeScript Support

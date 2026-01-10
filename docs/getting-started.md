@@ -295,6 +295,274 @@ function startStream() {
 </script>
 ```
 
+### 5. With Angular
+
+```typescript
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { StreamProgress } from 'ai-progress-controls';
+
+@Component({
+  selector: 'app-chat',
+  template: `
+    <div>
+      <div #progressContainer></div>
+      <button (click)="startStream()">Start Streaming</button>
+    </div>
+  `
+})
+export class ChatComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('progressContainer') container!: ElementRef;
+  private progress: StreamProgress | null = null;
+
+  ngAfterViewInit() {
+    // 3 lines to set up!
+    this.progress = new StreamProgress({
+      maxTokens: 2000,
+      costPerToken: 0.00002,
+      showRate: true,
+      showCost: true,
+    });
+
+    this.container.nativeElement.appendChild(this.progress);
+
+    this.progress.addEventListener('streamcomplete', (e: any) => {
+      console.log('Completed:', e.detail);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.progress && this.container) {
+      this.container.nativeElement.removeChild(this.progress);
+    }
+  }
+
+  startStream() {
+    if (!this.progress) return;
+
+    this.progress.start('Starting generation...');
+
+    let tokens = 0;
+    const interval = setInterval(() => {
+      tokens += 30;
+      this.progress?.update({
+        tokensGenerated: tokens,
+        tokensPerSecond: 30
+      });
+
+      if (tokens >= 500) {
+        clearInterval(interval);
+        this.progress?.complete();
+      }
+    }, 100);
+  }
+}
+```
+
+### 6. With Next.js (React)
+
+```tsx
+'use client'; // For Next.js 13+ App Router
+
+import { useEffect, useRef } from 'react';
+import { StreamProgress } from 'ai-progress-controls';
+
+export default function ChatPage() {
+  const progressRef = useRef<StreamProgress | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 3 lines to set up!
+    const progress = new StreamProgress({
+      maxTokens: 2000,
+      costPerToken: 0.00002,
+    });
+
+    if (containerRef.current) {
+      containerRef.current.appendChild(progress);
+    }
+
+    progressRef.current = progress;
+
+    return () => {
+      if (containerRef.current && progress.parentNode) {
+        containerRef.current.removeChild(progress);
+      }
+    };
+  }, []);
+
+  const handleStartStream = async () => {
+    if (!progressRef.current) return;
+
+    progressRef.current.start('Generating...');
+
+    // Call your Next.js API route
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      body: JSON.stringify({ prompt: 'Hello!' })
+    });
+
+    const reader = response.body?.getReader();
+    // Handle streaming...
+  };
+
+  return (
+    <div>
+      <div ref={containerRef}></div>
+      <button onClick={handleStartStream}>Start</button>
+    </div>
+  );
+}
+```
+
+### 7. With Svelte
+
+```svelte
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { StreamProgress } from 'ai-progress-controls';
+
+  let container: HTMLDivElement;
+  let progress: StreamProgress;
+
+  onMount(() => {
+    // 3 lines to set up!
+    progress = new StreamProgress({
+      maxTokens: 2000,
+      costPerToken: 0.00002,
+    });
+
+    container.appendChild(progress);
+
+    progress.addEventListener('streamcomplete', (e) => {
+      console.log('Completed:', e.detail);
+    });
+  });
+
+  function startStream() {
+    if (!progress) return;
+
+    progress.start('Starting generation...');
+
+    let tokens = 0;
+    const interval = setInterval(() => {
+      tokens += 30;
+      progress?.update({
+        tokensGenerated: tokens,
+        tokensPerSecond: 30
+      });
+
+      if (tokens >= 500) {
+        clearInterval(interval);
+        progress?.complete();
+      }
+    }, 100);
+  }
+</script>
+
+<div>
+  <div bind:this={container}></div>
+  <button on:click={startStream}>Start Streaming</button>
+</div>
+```
+
+### 8. With SolidJS
+
+```tsx
+import { onMount } from 'solid-js';
+import { StreamProgress } from 'ai-progress-controls';
+
+function ChatComponent() {
+  let container: HTMLDivElement | undefined;
+  let progress: StreamProgress;
+
+  onMount(() => {
+    // 3 lines to set up!
+    progress = new StreamProgress({
+      maxTokens: 2000,
+      costPerToken: 0.00002,
+    });
+
+    container?.appendChild(progress);
+
+    progress.addEventListener('streamcomplete', (e: any) => {
+      console.log('Completed:', e.detail);
+    });
+  });
+
+  const startStream = () => {
+    if (!progress) return;
+
+    progress.start('Starting generation...');
+
+    let tokens = 0;
+    const interval = setInterval(() => {
+      tokens += 30;
+      progress?.update({
+        tokensGenerated: tokens,
+        tokensPerSecond: 30
+      });
+
+      if (tokens >= 500) {
+        clearInterval(interval);
+        progress?.complete();
+      }
+    }, 100);
+  };
+
+  return (
+    <div>
+      <div ref={container}></div>
+      <button onClick={startStream}>Start Streaming</button>
+    </div>
+  );
+}
+
+export default ChatComponent;
+```
+
+### 9. With Astro
+
+```astro
+---
+// src/components/ChatComponent.astro
+---
+
+<div>
+  <div id="progress-container"></div>
+  <button id="start-btn">Start Streaming</button>
+</div>
+
+<script>
+  import { StreamProgress } from 'ai-progress-controls';
+
+  // 3 lines to set up!
+  const progress = new StreamProgress({
+    maxTokens: 2000,
+    costPerToken: 0.00002,
+  });
+
+  document.getElementById('progress-container')?.appendChild(progress);
+
+  document.getElementById('start-btn')?.addEventListener('click', () => {
+    progress.start('Starting generation...');
+
+    let tokens = 0;
+    const interval = setInterval(() => {
+      tokens += 30;
+      progress.update({
+        tokensGenerated: tokens,
+        tokensPerSecond: 30
+      });
+
+      if (tokens >= 500) {
+        clearInterval(interval);
+        progress.complete();
+      }
+    }, 100);
+  });
+</script>
+```
+
 ## Configuration Options
 
 ### StreamProgress Configuration
