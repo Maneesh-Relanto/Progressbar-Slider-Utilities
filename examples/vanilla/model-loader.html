@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ModelLoader Examples - AI Progress Controls</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 40px;
+    }
+
+    .example-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .example-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .example-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    button.secondary {
+      background: #6b7280;
+    }
+
+    button.secondary:hover {
+      background: #4b5563;
+    }
+
+    button.danger {
+      background: #ef4444;
+    }
+
+    button.danger:hover {
+      background: #dc2626;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .event-log {
+      background: #111827;
+      color: #10b981;
+      padding: 16px;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 16px;
+    }
+
+    .event-log p {
+      margin: 4px 0;
+    }
+
+    .event-log .timestamp {
+      color: #6b7280;
+      margin-right: 8px;
+    }
+
+    .loader-container {
+      margin: 20px 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .nav-btn {
+      padding: 10px 20px;
+      background: white;
+      color: #3b82f6;
+      border: 2px solid #3b82f6;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover {
+      background: #3b82f6;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-buttons">
+      <a href="../../index.html" class="nav-btn">← Home</a>
+      <a href="stream-progress.html" class="nav-btn">StreamProgress Examples</a>
+    </div>
+
+    <h1>🔄 ModelLoader Examples</h1>
+    <p class="subtitle">Multi-stage progress visualization for AI model loading and initialization</p>
+
+    <!-- Example 1: Basic Model Loading -->
+    <div class="example-section">
+      <h2 class="example-title">1. Basic Model Loading <span class="badge">Simple</span></h2>
+      <p class="example-description">
+        Simple model loading simulation with 4 stages: Download → Load → Initialize → Ready.
+        Each stage progresses automatically with realistic timing.
+      </p>
+      
+      <div class="loader-container" id="example1"></div>
+      
+      <div class="controls">
+        <button id="btn-start-1">Start Loading</button>
+        <button id="btn-reset-1" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-1" class="event-log"></div>
+    </div>
+
+    <!-- Example 2: Large Model with Download Progress -->
+    <div class="example-section">
+      <h2 class="example-title">2. Large Model Download <span class="badge">Realistic</span></h2>
+      <p class="example-description">
+        Simulates downloading a large AI model (500MB) with byte-level progress tracking,
+        memory usage monitoring, and ETA calculation.
+      </p>
+      
+      <div class="loader-container" id="example2"></div>
+      
+      <div class="controls">
+        <button id="btn-start-2">Download Model</button>
+        <button id="btn-reset-2" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-2" class="event-log"></div>
+    </div>
+
+    <!-- Example 3: Error Handling -->
+    <div class="example-section">
+      <h2 class="example-title">3. Error Handling & Retry <span class="badge">Advanced</span></h2>
+      <p class="example-description">
+        Demonstrates error handling during the loading process. Simulates a failure
+        during the "load" stage with automatic retry capability.
+      </p>
+      
+      <div class="loader-container" id="example3"></div>
+      
+      <div class="controls">
+        <button id="btn-start-3">Start (Will Fail)</button>
+        <button id="btn-error-3" class="danger">Trigger Error</button>
+        <button id="btn-reset-3" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-3" class="event-log"></div>
+    </div>
+
+    <!-- Example 4: Custom Stages -->
+    <div class="example-section">
+      <h2 class="example-title">4. Custom Model Pipeline <span class="badge">Advanced</span></h2>
+      <p class="example-description">
+        Advanced example with manual stage control. Demonstrates fine-grained control
+        over the loading process with custom messages and progress updates.
+      </p>
+      
+      <div class="loader-container" id="example4"></div>
+      
+      <div class="controls">
+        <button id="btn-download-4">Download</button>
+        <button id="btn-load-4" class="secondary">Load</button>
+        <button id="btn-init-4" class="secondary">Initialize</button>
+        <button id="btn-ready-4" class="secondary">Complete</button>
+        <button id="btn-reset-4" class="secondary">Reset</button>
+      </div>
+      
+      <div id="log-4" class="event-log"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { ModelLoader } from '../../src/index.ts';
+
+    // Utility: Add log entry
+    function addLog(logId, message) {
+      const log = document.getElementById(logId);
+      const timestamp = new Date().toLocaleTimeString();
+      const p = document.createElement('p');
+      p.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+      log.insertBefore(p, log.firstChild);
+      
+      while (log.children.length > 10) {
+        log.removeChild(log.lastChild);
+      }
+    }
+
+    // Utility: Simulate stage progression
+    function simulateStageProgress(loader, stage, options = {}) {
+      const { duration = 2000, bytesTotal = 0, memoryIncrease = 0 } = options;
+      
+      return new Promise((resolve) => {
+        let progress = 0;
+        let bytesLoaded = 0;
+        let currentMemory = options.startMemory || 0;
+        const interval = 50;
+        const increment = (100 / duration) * interval;
+        const bytesIncrement = bytesTotal > 0 ? (bytesTotal / duration) * interval : 0;
+        const memoryIncrement = memoryIncrease > 0 ? (memoryIncrease / duration) * interval : 0;
+
+        const timer = setInterval(() => {
+          progress = Math.min(100, progress + increment);
+          bytesLoaded = Math.min(bytesTotal, bytesLoaded + bytesIncrement);
+          currentMemory = Math.min(options.startMemory + memoryIncrease, currentMemory + memoryIncrement);
+
+          const updateData = { progress: Math.floor(progress) };
+          
+          if (bytesTotal > 0) {
+            updateData.bytesLoaded = Math.floor(bytesLoaded);
+            updateData.totalBytes = bytesTotal;
+          }
+          
+          if (memoryIncrease > 0) {
+            updateData.memoryUsage = Math.floor(currentMemory);
+          }
+
+          loader.updateStage(stage, updateData);
+
+          if (progress >= 100) {
+            clearInterval(timer);
+            resolve(currentMemory);
+          }
+        }, interval);
+      });
+    }
+
+    // ===== EXAMPLE 1: Basic Model Loading =====
+    const loader1 = new ModelLoader({
+      modelName: 'GPT-3.5 Turbo',
+      showBytes: false,
+      showMemoryUsage: false,
+      showETA: true,
+    });
+    document.getElementById('example1').appendChild(loader1);
+
+    loader1.addEventListener('loadstart', () => addLog('log-1', '✅ Loading started'));
+    loader1.addEventListener('stagechange', (e) => 
+      addLog('log-1', `🔄 Stage: ${e.detail.previousStage} → ${e.detail.currentStage}`)
+    );
+    loader1.addEventListener('loadcomplete', (e) => 
+      addLog('log-1', `✅ Completed in ${(e.detail.duration / 1000).toFixed(1)}s`)
+    );
+
+    document.getElementById('btn-start-1').addEventListener('click', async () => {
+      loader1.start('Starting download...');
+      
+      await simulateStageProgress(loader1, 'download', { duration: 2000 });
+      loader1.setStage('load', { message: 'Loading into memory...' });
+      
+      await simulateStageProgress(loader1, 'load', { duration: 1500 });
+      loader1.setStage('initialize', { message: 'Initializing model...' });
+      
+      await simulateStageProgress(loader1, 'initialize', { duration: 1000 });
+      loader1.complete();
+    });
+
+    document.getElementById('btn-reset-1').addEventListener('click', () => {
+      loader1.reset();
+      addLog('log-1', '🔄 Reset');
+    });
+
+    // ===== EXAMPLE 2: Large Model Download =====
+    const loader2 = new ModelLoader({
+      modelName: 'LLaMA 7B',
+      showBytes: true,
+      showMemoryUsage: true,
+      showETA: true,
+    });
+    document.getElementById('example2').appendChild(loader2);
+
+    loader2.addEventListener('loadstart', () => addLog('log-2', '✅ Download started'));
+    loader2.addEventListener('stagechange', (e) => 
+      addLog('log-2', `🔄 ${e.detail.currentStage} stage`)
+    );
+    loader2.addEventListener('loadcomplete', (e) => 
+      addLog('log-2', `✅ Model loaded - Memory: ${e.detail.memoryUsage}MB`)
+    );
+
+    document.getElementById('btn-start-2').addEventListener('click', async () => {
+      loader2.start('Downloading model weights...');
+      
+      const memory1 = await simulateStageProgress(loader2, 'download', {
+        duration: 3000,
+        bytesTotal: 500000000, // 500MB
+        memoryIncrease: 0,
+        startMemory: 100
+      });
+      
+      loader2.setStage('load', { message: 'Loading into GPU memory...' });
+      const memory2 = await simulateStageProgress(loader2, 'load', {
+        duration: 2000,
+        memoryIncrease: 2000,
+        startMemory: memory1
+      });
+      
+      loader2.setStage('initialize', { message: 'Initializing inference engine...' });
+      await simulateStageProgress(loader2, 'initialize', {
+        duration: 1500,
+        memoryIncrease: 500,
+        startMemory: memory2
+      });
+      
+      loader2.complete();
+    });
+
+    document.getElementById('btn-reset-2').addEventListener('click', () => {
+      loader2.reset();
+      addLog('log-2', '🔄 Reset');
+    });
+
+    // ===== EXAMPLE 3: Error Handling =====
+    const loader3 = new ModelLoader({
+      modelName: 'DALL-E 3',
+      showBytes: false,
+      showMemoryUsage: true,
+      showETA: true,
+      showRetryButton: true,
+    });
+    document.getElementById('example3').appendChild(loader3);
+
+    loader3.addEventListener('loaderror', (e) => 
+      addLog('log-3', `❌ Error at ${e.detail.stage}: ${e.detail.message}`)
+    );
+    loader3.addEventListener('loadretry', () => 
+      addLog('log-3', '🔄 Retrying...')
+    );
+    loader3.addEventListener('loadcomplete', () => 
+      addLog('log-3', '✅ Load completed successfully')
+    );
+
+    document.getElementById('btn-start-3').addEventListener('click', async () => {
+      loader3.start('Starting load...');
+      
+      await simulateStageProgress(loader3, 'download', { duration: 1500 });
+      loader3.setStage('load');
+      await simulateStageProgress(loader3, 'load', { duration: 1000 });
+      
+      // Simulate error
+      setTimeout(() => {
+        loader3.error('Insufficient GPU memory', 'load');
+      }, 1200);
+    });
+
+    document.getElementById('btn-error-3').addEventListener('click', () => {
+      if (loader3.getState().isLoading) {
+        loader3.error('Manually triggered error', loader3.getState().currentStage);
+      }
+    });
+
+    document.getElementById('btn-reset-3').addEventListener('click', () => {
+      loader3.reset();
+      addLog('log-3', '🔄 Reset');
+    });
+
+    // ===== EXAMPLE 4: Custom Manual Control =====
+    const loader4 = new ModelLoader({
+      modelName: 'Custom Model',
+      showBytes: true,
+      showMemoryUsage: true,
+      showETA: false,
+    });
+    document.getElementById('example4').appendChild(loader4);
+
+    loader4.addEventListener('stagechange', (e) => 
+      addLog('log-4', `📍 Now at: ${e.detail.currentStage}`)
+    );
+
+    let example4Started = false;
+
+    document.getElementById('btn-download-4').addEventListener('click', () => {
+      if (!example4Started) {
+        loader4.start('Manual control demo');
+        example4Started = true;
+      }
+      loader4.setStage('download', { message: 'Downloading...' });
+      addLog('log-4', '▶️ Download started');
+    });
+
+    document.getElementById('btn-load-4').addEventListener('click', () => {
+      loader4.setStage('load', { message: 'Loading...' });
+      addLog('log-4', '▶️ Load started');
+    });
+
+    document.getElementById('btn-init-4').addEventListener('click', () => {
+      loader4.setStage('initialize', { message: 'Initializing...' });
+      addLog('log-4', '▶️ Initialize started');
+    });
+
+    document.getElementById('btn-ready-4').addEventListener('click', () => {
+      loader4.complete();
+      example4Started = false;
+      addLog('log-4', '✅ Completed');
+    });
+
+    document.getElementById('btn-reset-4').addEventListener('click', () => {
+      loader4.reset();
+      example4Started = false;
+      addLog('log-4', '🔄 Reset');
+    });
+  </script>
+</body>
+</html>
