@@ -57,7 +57,7 @@ export class QueueProgress extends AIControl {
   protected override config: Required<QueueProgressConfig>;
   private state: QueueProgressState;
   private readonly updateThrottled: (update: QueueUpdate) => void;
-  private timerInterval: number = 0;
+  private timerInterval: ReturnType<typeof setInterval> | undefined;
   private initialPosition: number = 0;
 
   static get observedAttributes() {
@@ -327,7 +327,7 @@ export class QueueProgress extends AIControl {
   private stopTimer(): void {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
-      this.timerInterval = 0;
+      this.timerInterval = undefined;
     }
   }
 

@@ -54,9 +54,9 @@ import { styles } from './styles';
 export class RetryProgress extends AIControl {
   protected override config: Required<RetryProgressConfig>;
   private state: RetryProgressState;
-  private waitTimer?: number;
-  private elapsedTimer?: number;
-  private progressTimer?: number;
+  private waitTimer?: ReturnType<typeof setTimeout>;
+  private elapsedTimer?: ReturnType<typeof setInterval>;
+  private progressTimer?: ReturnType<typeof setInterval>;
 
   constructor(config: RetryProgressConfig = {}) {
     super(config);

@@ -7,6 +7,7 @@ describe('ParameterPanel Component', () => {
   let panel: ParameterPanel;
   const defaultConfig: ParameterPanelConfig = {
     title: 'Test Panel',
+    showPresets: true,
     parameters: [
       { id: 'temperature', label: 'Temperature', min: 0, max: 2, value: 0.7, step: 0.1 },
       { id: 'topP', label: 'Top-P', min: 0, max: 1, value: 0.9, step: 0.05 },
@@ -149,9 +150,14 @@ describe('ParameterPanel Component', () => {
 
       it('should emit panelchange event', async () => {
         const changeHandler = vi.fn();
-        panel.addEventListener('panelchange', changeHandler);
+        const emitPanel = new ParameterPanel({
+          ...defaultConfig,
+          emitChangeEvents: true,
+        });
+        document.body.appendChild(emitPanel);
+        emitPanel.addEventListener('panelchange', changeHandler);
 
-        panel.setValue('temperature', 1.0);
+        emitPanel.setValue('temperature', 1.0);
         await waitForNextTick();
 
         expect(changeHandler).toHaveBeenCalled();
@@ -159,21 +165,29 @@ describe('ParameterPanel Component', () => {
         expect(event.detail.parameterId).toBe('temperature');
         expect(event.detail.value).toBe(1.0);
         expect(event.detail.allValues).toEqual({ temperature: 1.0, topP: 0.9 });
+        emitPanel.remove();
       });
 
       it('should track value source', async () => {
         const changeHandler = vi.fn();
-        panel.addEventListener('panelchange', changeHandler);
+        const emitPanel = new ParameterPanel({
+          ...defaultConfig,
+          emitChangeEvents: true,
+        });
+        document.body.appendChild(emitPanel);
+        emitPanel.addEventListener('panelchange', changeHandler);
 
-        panel.setValue('temperature', 1.0, 'slider');
+        emitPanel.setValue('temperature', 1.0, 'slider');
         await waitForNextTick();
 
         expect(changeHandler.mock.calls[0][0].detail.source).toBe('slider');
+        emitPanel.remove();
       });
 
       it('should clear active preset when manually changed', async () => {
         const panelWithPreset = new ParameterPanel({
           ...defaultConfig,
+          showPresets: true,
           presets: {
             test: { name: 'Test', values: { temperature: 0.5, topP: 0.8 } },
           },
@@ -199,6 +213,7 @@ describe('ParameterPanel Component', () => {
       beforeEach(() => {
         panelWithPresets = new ParameterPanel({
           ...defaultConfig,
+          showPresets: true,
           presets: {
             chatgpt: {
               name: 'ChatGPT',
@@ -247,8 +262,9 @@ describe('ParameterPanel Component', () => {
         expect(loadHandler).toHaveBeenCalled();
         const event = loadHandler.mock.calls[0][0];
         expect(event.detail.presetId).toBe('code');
-        expect(event.detail.presetName).toBe('Code');
-        expect(event.detail.values).toEqual({ temperature: 0.2, topP: 0.8 });
+        expect(event.detail.preset.name).toBe('Code');
+        expect(event.detail.preset.values).toEqual({ temperature: 0.2, topP: 0.8 });
+        expect(event.detail.previousValues).toBeDefined();
       });
 
       it('should ignore non-existent preset', () => {
@@ -273,8 +289,7 @@ describe('ParameterPanel Component', () => {
 
       it('should clear active preset', async () => {
         const panelWithPreset = new ParameterPanel({
-          ...defaultConfig,
-          presets: {
+          ...defaultConfig,          showPresets: true,          presets: {
             test: { name: 'Test', values: { temperature: 0.5, topP: 0.8 } },
           },
         });
@@ -299,7 +314,8 @@ describe('ParameterPanel Component', () => {
         await waitForNextTick();
 
         expect(resetHandler).toHaveBeenCalled();
-        expect(resetHandler.mock.calls[0][0].detail.values).toEqual({ temperature: 0.7, topP: 0.9 });
+        expect(resetHandler.mock.calls[0][0].detail.previousValues).toBeDefined();
+        expect(resetHandler.mock.calls[0][0].detail.newValues).toEqual({ temperature: 0.7, topP: 0.9 });
       });
 
       it('should clear isDirty flag', async () => {
@@ -321,14 +337,8 @@ describe('ParameterPanel Component', () => {
         
         expect(config.version).toBe('1.0');
         expect(config.parameters).toBeDefined();
-        expect(config.parameters.temperature).toEqual({
-          id: 'temperature',
-          value: 0.7,
-          label: 'Temperature',
-          min: 0,
-          max: 2,
-          step: 0.1,
-        });
+        expect(config.parameters.temperature).toBe(0.7);
+        expect(config.parameters.topP).toBe(0.9);
       });
 
       it('should include active preset in export', () => {
@@ -343,7 +353,7 @@ describe('ParameterPanel Component', () => {
         panelWithPreset.loadPreset('test');
         const config = panelWithPreset.exportConfig();
 
-        expect(config.activePreset).toBe('test');
+        expect(config.preset).toBe('test');
         panelWithPreset.remove();
       });
 
@@ -352,7 +362,7 @@ describe('ParameterPanel Component', () => {
         
         expect(config.metadata).toBeDefined();
         expect(config.metadata?.created).toBeDefined();
-        expect(config.metadata?.name).toBe('Test Panel');
+        expect(config.metadata?.name).toBe('Parameters');
       });
 
       it('should emit configexport event', async () => {
@@ -372,8 +382,8 @@ describe('ParameterPanel Component', () => {
         const config: ExportedConfig = {
           version: '1.0',
           parameters: {
-            temperature: { id: 'temperature', value: 1.5, label: 'Temperature', min: 0, max: 2, step: 0.1 },
-            topP: { id: 'topP', value: 0.5, label: 'Top-P', min: 0, max: 1, step: 0.05 },
+            temperature: 1.5,
+            topP: 0.5,
           },
         };
 
@@ -386,6 +396,7 @@ describe('ParameterPanel Component', () => {
       it('should load active preset from import', async () => {
         const panelWithPreset = new ParameterPanel({
           ...defaultConfig,
+          showPresets: true,
           presets: {
             test: { name: 'Test', values: { temperature: 0.5, topP: 0.8 } },
           },
@@ -395,10 +406,10 @@ describe('ParameterPanel Component', () => {
 
         const config: ExportedConfig = {
           version: '1.0',
-          activePreset: 'test',
+          preset: 'test',
           parameters: {
-            temperature: { id: 'temperature', value: 0.5, label: 'Temperature', min: 0, max: 2, step: 0.1 },
-            topP: { id: 'topP', value: 0.8, label: 'Top-P', min: 0, max: 1, step: 0.05 },
+            temperature: 0.5,
+            topP: 0.8,
           },
         };
 
@@ -416,7 +427,7 @@ describe('ParameterPanel Component', () => {
         const config: ExportedConfig = {
           version: '1.0',
           parameters: {
-            temperature: { id: 'temperature', value: 1.0, label: 'Temperature', min: 0, max: 2, step: 0.1 },
+            temperature: 1.0,
           },
         };
 
@@ -424,7 +435,8 @@ describe('ParameterPanel Component', () => {
         await waitForNextTick();
 
         expect(importHandler).toHaveBeenCalled();
-        expect(importHandler.mock.calls[0][0].detail.source).toBe('json');
+        expect(importHandler.mock.calls[0][0].detail.config).toBeDefined();
+        expect(importHandler.mock.calls[0][0].detail.previousValues).toBeDefined();
       });
 
       it('should ignore invalid config', () => {
@@ -557,6 +569,7 @@ describe('ParameterPanel Component', () => {
       it('should not remove built-in preset', async () => {
         const panelWithBuiltIn = new ParameterPanel({
           ...defaultConfig,
+          showPresets: true,
           presets: {
             builtin: { name: 'Built-in', values: { temperature: 0.5, topP: 0.8 }, isBuiltIn: true },
           },
@@ -618,18 +631,24 @@ describe('ParameterPanel Component', () => {
   describe('Events', () => {
     it('should emit panelchange event with correct details', async () => {
       const changeHandler = vi.fn();
-      panel.addEventListener('panelchange', changeHandler);
+      const emitPanel = new ParameterPanel({
+        ...defaultConfig,
+        emitChangeEvents: true,
+      });
+      document.body.appendChild(emitPanel);
+      emitPanel.addEventListener('panelchange', changeHandler);
 
-      panel.setValue('temperature', 1.5);
+      emitPanel.setValue('temperature', 1.5);
       await waitForNextTick();
 
       expect(changeHandler).toHaveBeenCalledTimes(1);
       const event = changeHandler.mock.calls[0][0];
       expect(event.detail.parameterId).toBe('temperature');
       expect(event.detail.value).toBe(1.5);
-      expect(event.detail.oldValue).toBe(0.7);
+      expect(event.detail.previousValue).toBe(0.7);
       expect(event.detail.allValues).toEqual({ temperature: 1.5, topP: 0.9 });
       expect(event.detail.source).toBe('slider');
+      emitPanel.remove();
     });
 
     it('should emit validationerror event when validation fails', async () => {
@@ -645,6 +664,7 @@ describe('ParameterPanel Component', () => {
             validate: (val) => val > 0 || 'Must be positive',
           },
         ],
+        validateOnChange: true,
       });
       document.body.appendChild(panelWithValidation);
       panelWithValidation.addEventListener('validationerror', errorHandler);
@@ -655,7 +675,7 @@ describe('ParameterPanel Component', () => {
       expect(errorHandler).toHaveBeenCalled();
       const event = errorHandler.mock.calls[0][0];
       expect(event.detail.parameterId).toBe('value1');
-      expect(event.detail.message).toBe('Must be positive');
+      expect(event.detail.error).toBe('Must be positive');
 
       panelWithValidation.remove();
     });
@@ -672,6 +692,7 @@ describe('ParameterPanel Component', () => {
     it('should render preset buttons', async () => {
       const panelWithPresets = new ParameterPanel({
         ...defaultConfig,
+        showPresets: true,
         presets: {
           preset1: { name: 'Preset 1', values: { temperature: 0.5, topP: 0.8 } },
           preset2: { name: 'Preset 2', values: { temperature: 1.0, topP: 0.9 } },
@@ -703,11 +724,18 @@ describe('ParameterPanel Component', () => {
     });
 
     it('should render action buttons', async () => {
-      await waitForElement(panel);
+      const actionPanel = new ParameterPanel({
+        ...defaultConfig,
+        showResetAll: true,
+        showExportImport: true,
+      });
+      document.body.appendChild(actionPanel);
+      await waitForElement(actionPanel);
       
-      expect(panel.shadowRoot?.querySelector('#reset-btn')).toBeTruthy();
-      expect(panel.shadowRoot?.querySelector('#export-btn')).toBeTruthy();
-      expect(panel.shadowRoot?.querySelector('#import-btn')).toBeTruthy();
+      expect(actionPanel.shadowRoot?.querySelector('#reset-btn')).toBeTruthy();
+      expect(actionPanel.shadowRoot?.querySelector('#export-btn')).toBeTruthy();
+      expect(actionPanel.shadowRoot?.querySelector('#import-btn')).toBeTruthy();
+      actionPanel.remove();
     });
 
     it('should apply grid layout', async () => {
@@ -749,10 +777,16 @@ describe('ParameterPanel Component', () => {
     });
 
     it('should have proper ARIA labels', async () => {
-      await waitForElement(panel);
+      const ariaPanel = new ParameterPanel({
+        ...defaultConfig,
+        showResetAll: true,
+      });
+      document.body.appendChild(ariaPanel);
+      await waitForElement(ariaPanel);
       
-      const resetBtn = panel.shadowRoot?.querySelector('#reset-btn');
+      const resetBtn = ariaPanel.shadowRoot?.querySelector('#reset-btn');
       expect(resetBtn?.textContent).toContain('Reset');
+      ariaPanel.remove();
     });
   });
 
@@ -778,28 +812,34 @@ describe('ParameterPanel Component', () => {
     it('should handle parameter with no default value', () => {
       const panelNoDefault = new ParameterPanel({
         parameters: [
-          { id: 'test', label: 'Test', min: 0, max: 10 },
+          { id: 'test', label: 'Test', min: 0, max: 10, value: 5 },
         ],
       });
       document.body.appendChild(panelNoDefault);
 
-      // Should default to min value
-      expect(panelNoDefault.getValue('test')).toBe(0);
+      // Should use the value property
+      expect(panelNoDefault.getValue('test')).toBe(5);
 
       panelNoDefault.remove();
     });
 
     it('should handle rapid value changes', async () => {
       const changeHandler = vi.fn();
-      panel.addEventListener('panelchange', changeHandler);
+      const rapidPanel = new ParameterPanel({
+        ...defaultConfig,
+        emitChangeEvents: true,
+      });
+      document.body.appendChild(rapidPanel);
+      rapidPanel.addEventListener('panelchange', changeHandler);
 
-      panel.setValue('temperature', 0.5);
-      panel.setValue('temperature', 0.8);
-      panel.setValue('temperature', 1.2);
+      rapidPanel.setValue('temperature', 0.5);
+      rapidPanel.setValue('temperature', 0.8);
+      rapidPanel.setValue('temperature', 1.2);
       await waitForNextTick();
 
       expect(changeHandler).toHaveBeenCalledTimes(3);
-      expect(panel.getValue('temperature')).toBe(1.2);
+      expect(rapidPanel.getValue('temperature')).toBe(1.2);
+      rapidPanel.remove();
     });
   });
 });

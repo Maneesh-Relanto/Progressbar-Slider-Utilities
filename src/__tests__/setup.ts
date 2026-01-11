@@ -5,15 +5,15 @@
 
 import { beforeAll, afterEach, vi } from 'vitest';
 
-// Mock window.customElements if not available
+// Mock globalThis.customElements if not available
 beforeAll(() => {
-  if (!window.customElements) {
+  if (!globalThis.customElements) {
     // @ts-ignore - Mock for testing
-    window.customElements = {
+    globalThis.customElements = {
       define: vi.fn(),
       get: vi.fn(),
       upgrade: vi.fn(),
-      whenDefined: vi.fn(() => Promise.resolve()),
+      whenDefined: vi.fn(() => Promise.resolve(class {} as CustomElementConstructor)),
     };
   }
 });
@@ -26,9 +26,9 @@ afterEach(() => {
 });
 
 // Polyfill for Custom Elements if needed
-if (!window.customElements) {
+if (!globalThis.customElements) {
   class CustomElementRegistry {
-    private definitions = new Map<string, CustomElementConstructor>();
+    private readonly definitions = new Map<string, CustomElementConstructor>();
 
     define(name: string, constructor: CustomElementConstructor) {
       this.definitions.set(name, constructor);
@@ -42,21 +42,21 @@ if (!window.customElements) {
       return Promise.resolve(this.definitions.get(name)!);
     }
 
-    upgrade(root: Node) {
+    upgrade(_root: Node) {
       // No-op for testing
     }
   }
 
   // @ts-ignore
-  window.customElements = new CustomElementRegistry();
+  globalThis.customElements = new CustomElementRegistry();
 }
 
 // Mock requestAnimationFrame for testing
-global.requestAnimationFrame = (callback: FrameRequestCallback) => {
+globalThis.requestAnimationFrame = (callback: FrameRequestCallback) => {
   return setTimeout(callback, 0) as unknown as number;
 };
 
-global.cancelAnimationFrame = (id: number) => {
+globalThis.cancelAnimationFrame = (id: number) => {
   clearTimeout(id);
 };
 
