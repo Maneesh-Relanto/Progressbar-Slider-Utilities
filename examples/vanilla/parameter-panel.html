@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParameterPanel Examples - AI Progress Controls</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 40px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 14px;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .nav-btn:hover {
+      background: #f9fafb;
+      border-color: #667eea;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    .example-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .example-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+
+    .example-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .panel-demo {
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn.secondary {
+      background: #6b7280;
+    }
+
+    .btn.secondary:hover {
+      background: #4b5563;
+    }
+
+    .event-log {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+    }
+
+    .event-log-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .event-item {
+      font-size: 12px;
+      color: #6b7280;
+      padding: 4px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .current-values {
+      background: #eff6ff;
+      border-left: 3px solid #2563eb;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .current-values-title {
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 8px;
+    }
+
+    .value-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      color: #1e3a8a;
+    }
+
+    .value-label {
+      font-weight: 500;
+    }
+
+    .value-number {
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+    }
+
+    code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      color: #be123c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎛️ ParameterPanel Examples</h1>
+    <p class="subtitle">Grouped AI parameter controls with presets, validation, and export/import</p>
+
+    <div class="nav-buttons">
+      <a href="../../index.html" class="nav-btn">← Home</a>
+      <a href="stream-progress.html" class="nav-btn">← Stream Progress</a>
+      <a href="batch-progress.html" class="nav-btn">Batch Progress →</a>
+      <a href="index.html" class="nav-btn">🏠 All Examples</a>
+    </div>
+
+    <div class="examples-grid">
+      
+      <!-- Example 1: LLM Configuration -->
+      <div class="example-card">
+        <h3 class="example-title">Example 1: LLM Configuration</h3>
+        <p class="example-description">
+          Complete LLM parameter panel with common presets (ChatGPT, Code, Creative).
+          Demonstrates coordinated control of temperature, top-p, max tokens, and penalties.
+        </p>
+        
+        <div class="panel-demo" id="llm-panel"></div>
+
+        <div class="current-values" id="llm-values">
+          <div class="current-values-title">Current Configuration:</div>
+          <div class="value-item">
+            <span class="value-label">Temperature:</span>
+            <span class="value-number" id="llm-temp">0.70</span>
+          </div>
+          <div class="value-item">
+            <span class="value-label">Top-P:</span>
+            <span class="value-number" id="llm-topp">0.90</span>
+          </div>
+          <div class="value-item">
+            <span class="value-label">Max Tokens:</span>
+            <span class="value-number" id="llm-tokens">2000</span>
+          </div>
+          <div class="value-item">
+            <span class="value-label">Frequency Penalty:</span>
+            <span class="value-number" id="llm-freq">0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 2: Image Generation Settings -->
+      <div class="example-card">
+        <h3 class="example-title">Example 2: Image Generation</h3>
+        <p class="example-description">
+          Stable Diffusion / DALL-E parameter panel with steps, guidance scale, and seed.
+          Includes presets for different artistic styles.
+        </p>
+        
+        <div class="panel-demo" id="image-panel"></div>
+
+        <div class="current-values" id="image-values">
+          <div class="current-values-title">Current Settings:</div>
+          <div class="value-item">
+            <span class="value-label">Steps:</span>
+            <span class="value-number" id="image-steps">30</span>
+          </div>
+          <div class="value-item">
+            <span class="value-label">Guidance Scale:</span>
+            <span class="value-number" id="image-guidance">7.5</span>
+          </div>
+          <div class="value-item">
+            <span class="value-label">Seed:</span>
+            <span class="value-number" id="image-seed">42</span>
+          </div>
+          <div class="value-item">
+            <span class="value-label">Strength:</span>
+            <span class="value-number" id="image-strength">0.75</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example 3: Export/Import Configuration -->
+      <div class="example-card">
+        <h3 class="example-title">Example 3: Export/Import</h3>
+        <p class="example-description">
+          Save and load configurations as JSON files. Perfect for sharing settings or creating templates.
+        </p>
+        
+        <div class="panel-demo" id="export-panel"></div>
+
+        <div class="controls">
+          <button class="btn" id="export-json">📤 Export JSON</button>
+          <button class="btn secondary" id="import-json">📥 Import JSON</button>
+          <button class="btn secondary" id="copy-json">📋 Copy to Clipboard</button>
+        </div>
+
+        <div class="event-log">
+          <div class="event-log-title">Export/Import Log</div>
+          <div id="export-log"></div>
+        </div>
+      </div>
+
+      <!-- Example 4: Validation & Constraints -->
+      <div class="example-card">
+        <h3 class="example-title">Example 4: Validation</h3>
+        <p class="example-description">
+          Parameters with custom validation rules. Example: ensure batch size doesn't exceed model capacity.
+        </p>
+        
+        <div class="panel-demo" id="validation-panel"></div>
+
+        <div class="event-log">
+          <div class="event-log-title">Validation Events</div>
+          <div id="validation-log"></div>
+        </div>
+      </div>
+
+      <!-- Example 5: Persistence & Local Storage -->
+      <div class="example-card">
+        <h3 class="example-title">Example 5: Persistence</h3>
+        <p class="example-description">
+          Settings automatically save to localStorage and restore on page reload.
+          Try changing values and refreshing the page!
+        </p>
+        
+        <div class="panel-demo" id="persist-panel"></div>
+
+        <div class="controls">
+          <button class="btn secondary" id="clear-storage">🗑️ Clear Saved Data</button>
+          <button class="btn secondary" id="reload-page">🔄 Reload Page</button>
+        </div>
+
+        <div class="current-values" id="persist-values">
+          <div class="current-values-title">Persisted Values:</div>
+          <div id="persist-status">Not saved yet</div>
+        </div>
+      </div>
+
+      <!-- Example 6: Collapsible Panel -->
+      <div class="example-card">
+        <h3 class="example-title">Example 6: Collapsible</h3>
+        <p class="example-description">
+          Space-saving collapsible panel. Great for advanced settings sections.
+          Click the header to expand/collapse.
+        </p>
+        
+        <div class="panel-demo" id="collapsible-panel"></div>
+
+        <div class="event-log">
+          <div class="event-log-title">Panel Events</div>
+          <div id="collapsible-log"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { ParameterPanel } from '../../src/index.js';
+
+    // Example 1: LLM Configuration
+    const llmPanel = new ParameterPanel({
+      title: 'LLM Configuration',
+      parameters: [
+        {
+          id: 'temperature',
+          label: 'Temperature',
+          min: 0,
+          max: 2,
+          value: 0.7,
+          step: 0.1,
+          description: 'Controls randomness in responses',
+          unit: '',
+        },
+        {
+          id: 'topP',
+          label: 'Top-P',
+          min: 0,
+          max: 1,
+          value: 0.9,
+          step: 0.05,
+          description: 'Nucleus sampling threshold',
+        },
+        {
+          id: 'maxTokens',
+          label: 'Max Tokens',
+          min: 100,
+          max: 4000,
+          value: 2000,
+          step: 100,
+          description: 'Maximum response length',
+        },
+        {
+          id: 'frequencyPenalty',
+          label: 'Frequency Penalty',
+          min: -2,
+          max: 2,
+          value: 0,
+          step: 0.1,
+          description: 'Reduces repetition',
+        },
+      ],
+      presets: {
+        chatgpt: {
+          name: 'ChatGPT',
+          description: 'Balanced for conversation',
+          values: { temperature: 0.7, topP: 0.9, maxTokens: 2000, frequencyPenalty: 0 },
+        },
+        code: {
+          name: 'Code Generation',
+          description: 'More focused for code',
+          values: { temperature: 0.2, topP: 0.8, maxTokens: 1500, frequencyPenalty: 0.3 },
+        },
+        creative: {
+          name: 'Creative Writing',
+          description: 'More random for creativity',
+          values: { temperature: 1.2, topP: 0.95, maxTokens: 3000, frequencyPenalty: -0.2 },
+        },
+      },
+      layout: 'grid',
+      columns: 2,
+    });
+
+    document.getElementById('llm-panel').appendChild(llmPanel);
+
+    llmPanel.addEventListener('panelchange', (e) => {
+      const values = e.detail.allValues;
+      document.getElementById('llm-temp').textContent = values.temperature.toFixed(2);
+      document.getElementById('llm-topp').textContent = values.topP.toFixed(2);
+      document.getElementById('llm-tokens').textContent = values.maxTokens;
+      document.getElementById('llm-freq').textContent = values.frequencyPenalty.toFixed(2);
+    });
+
+    // Example 2: Image Generation
+    const imagePanel = new ParameterPanel({
+      title: 'Image Generation Settings',
+      parameters: [
+        {
+          id: 'steps',
+          label: 'Steps',
+          min: 10,
+          max: 150,
+          value: 30,
+          step: 5,
+          description: 'Number of diffusion steps',
+        },
+        {
+          id: 'guidanceScale',
+          label: 'Guidance Scale',
+          min: 1,
+          max: 20,
+          value: 7.5,
+          step: 0.5,
+          description: 'How closely to follow prompt',
+        },
+        {
+          id: 'seed',
+          label: 'Seed',
+          min: -1,
+          max: 999999,
+          value: 42,
+          step: 1,
+          description: 'Random seed (-1 for random)',
+        },
+        {
+          id: 'strength',
+          label: 'Strength',
+          min: 0,
+          max: 1,
+          value: 0.75,
+          step: 0.05,
+          description: 'Image-to-image strength',
+        },
+      ],
+      presets: {
+        fast: {
+          name: '⚡ Fast',
+          description: 'Quick generation',
+          values: { steps: 20, guidanceScale: 7, seed: -1, strength: 0.7 },
+        },
+        quality: {
+          name: '🎨 Quality',
+          description: 'Best quality',
+          values: { steps: 50, guidanceScale: 9, seed: 42, strength: 0.8 },
+        },
+        experimental: {
+          name: '🔬 Experimental',
+          description: 'High guidance',
+          values: { steps: 100, guidanceScale: 15, seed: 12345, strength: 0.9 },
+        },
+      },
+      layout: 'grid',
+      columns: 2,
+    });
+
+    document.getElementById('image-panel').appendChild(imagePanel);
+
+    imagePanel.addEventListener('panelchange', (e) => {
+      const values = e.detail.allValues;
+      document.getElementById('image-steps').textContent = values.steps;
+      document.getElementById('image-guidance').textContent = values.guidanceScale.toFixed(1);
+      document.getElementById('image-seed').textContent = values.seed;
+      document.getElementById('image-strength').textContent = values.strength.toFixed(2);
+    });
+
+    // Example 3: Export/Import
+    const exportPanel = new ParameterPanel({
+      title: 'Audio Transcription',
+      parameters: [
+        {
+          id: 'temperature',
+          label: 'Temperature',
+          min: 0,
+          max: 1,
+          value: 0,
+          step: 0.1,
+        },
+        {
+          id: 'language',
+          label: 'Language Confidence',
+          min: 0,
+          max: 1,
+          value: 0.8,
+          step: 0.05,
+        },
+      ],
+      layout: 'vertical',
+    });
+
+    document.getElementById('export-panel').appendChild(exportPanel);
+
+    const exportLog = document.getElementById('export-log');
+    function logExport(message) {
+      const item = document.createElement('div');
+      item.className = 'event-item';
+      item.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+      exportLog.prepend(item);
+    }
+
+    document.getElementById('export-json').addEventListener('click', () => {
+      const config = exportPanel.exportConfig();
+      const json = JSON.stringify(config, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'config.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      logExport('Configuration exported to config.json');
+    });
+
+    document.getElementById('copy-json').addEventListener('click', () => {
+      const config = exportPanel.exportConfig();
+      const json = JSON.stringify(config, null, 2);
+      navigator.clipboard.writeText(json).then(() => {
+        logExport('Configuration copied to clipboard');
+      });
+    });
+
+    exportPanel.addEventListener('configexport', () => {
+      logExport('Config export triggered');
+    });
+
+    exportPanel.addEventListener('configimport', () => {
+      logExport('Config import triggered');
+    });
+
+    // Example 4: Validation
+    const validationPanel = new ParameterPanel({
+      title: 'Batch Processing',
+      parameters: [
+        {
+          id: 'batchSize',
+          label: 'Batch Size',
+          min: 1,
+          max: 100,
+          value: 10,
+          step: 1,
+          validate: (value, allValues) => {
+            if (value > 50) {
+              return 'Batch size should not exceed 50 for optimal performance';
+            }
+            if (allValues.concurrency && value < allValues.concurrency) {
+              return 'Batch size must be >= concurrency level';
+            }
+            return true;
+          },
+        },
+        {
+          id: 'concurrency',
+          label: 'Concurrency',
+          min: 1,
+          max: 20,
+          value: 5,
+          step: 1,
+          validate: (value, allValues) => {
+            if (allValues.batchSize && value > allValues.batchSize) {
+              return 'Concurrency cannot exceed batch size';
+            }
+            return true;
+          },
+        },
+        {
+          id: 'timeout',
+          label: 'Timeout (seconds)',
+          min: 5,
+          max: 300,
+          value: 30,
+          step: 5,
+        },
+      ],
+      layout: 'vertical',
+      validateOnChange: true,
+    });
+
+    document.getElementById('validation-panel').appendChild(validationPanel);
+
+    const validationLog = document.getElementById('validation-log');
+    validationPanel.addEventListener('validationerror', (e) => {
+      const item = document.createElement('div');
+      item.className = 'event-item';
+      item.style.color = '#dc2626';
+      item.textContent = `${e.detail.parameterId}: ${e.detail.message}`;
+      validationLog.prepend(item);
+    });
+
+    validationPanel.addEventListener('panelchange', (e) => {
+      const item = document.createElement('div');
+      item.className = 'event-item';
+      item.textContent = `${e.detail.parameterId} = ${e.detail.value}`;
+      validationLog.prepend(item);
+    });
+
+    // Example 5: Persistence
+    const persistPanel = new ParameterPanel({
+      title: 'Persistent Settings',
+      parameters: [
+        {
+          id: 'volume',
+          label: 'Volume',
+          min: 0,
+          max: 100,
+          value: 50,
+          step: 5,
+        },
+        {
+          id: 'speed',
+          label: 'Playback Speed',
+          min: 0.5,
+          max: 2,
+          value: 1,
+          step: 0.1,
+        },
+        {
+          id: 'quality',
+          label: 'Quality',
+          min: 1,
+          max: 10,
+          value: 5,
+          step: 1,
+        },
+      ],
+      persistValues: true,
+      storageKey: 'example-persist-panel',
+      layout: 'vertical',
+    });
+
+    document.getElementById('persist-panel').appendChild(persistPanel);
+
+    function updatePersistStatus() {
+      const stored = localStorage.getItem('example-persist-panel');
+      if (stored) {
+        const data = JSON.parse(stored);
+        const statusEl = document.getElementById('persist-status');
+        statusEl.innerHTML = Object.entries(data.values)
+          .map(([key, value]) => `<div class="value-item"><span>${key}:</span> <span>${value}</span></div>`)
+          .join('');
+      }
+    }
+
+    persistPanel.addEventListener('panelchange', () => {
+      setTimeout(updatePersistStatus, 100);
+    });
+
+    document.getElementById('clear-storage').addEventListener('click', () => {
+      localStorage.removeItem('example-persist-panel');
+      document.getElementById('persist-status').textContent = 'Storage cleared';
+    });
+
+    document.getElementById('reload-page').addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    updatePersistStatus();
+
+    // Example 6: Collapsible
+    const collapsiblePanel = new ParameterPanel({
+      title: 'Advanced Settings',
+      parameters: [
+        {
+          id: 'param1',
+          label: 'Parameter 1',
+          min: 0,
+          max: 100,
+          value: 50,
+        },
+        {
+          id: 'param2',
+          label: 'Parameter 2',
+          min: 0,
+          max: 100,
+          value: 75,
+        },
+      ],
+      collapsible: true,
+      startCollapsed: true,
+      layout: 'vertical',
+    });
+
+    document.getElementById('collapsible-panel').appendChild(collapsiblePanel);
+
+    const collapsibleLog = document.getElementById('collapsible-log');
+    collapsiblePanel.addEventListener('panelchange', (e) => {
+      const item = document.createElement('div');
+      item.className = 'event-item';
+      item.textContent = `${e.detail.parameterId}: ${e.detail.value}`;
+      collapsibleLog.prepend(item);
+    });
+
+  </script>
+</body>
+</html>

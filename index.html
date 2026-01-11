@@ -424,7 +424,7 @@
       <h1>AI Progress Controls</h1>
       
       <p class="subtitle">
-        Beautiful, accessible UI components designed specifically for AI/ML workflows.
+        7 beautiful, accessible UI components designed specifically for AI/ML workflows.
         Framework-agnostic and developer-friendly.
       </p>
 
@@ -625,6 +625,36 @@
           View 4 Examples →
         </a>
       </div>
+
+      <!-- ParameterPanel Card -->
+      <div class="component-card">
+        <div class="component-header">
+          <div class="component-icon">🎛️</div>
+          <div class="component-info">
+            <h3>ParameterPanel</h3>
+            <span class="component-badge">🆕 New</span>
+          </div>
+        </div>
+        
+        <p class="component-description">
+          Multi-parameter configuration panel with presets, validation, and export/import.
+          Perfect for managing LLM settings, image generation parameters, and batch processing configs.
+        </p>
+        
+        <div class="demo-area">
+          <div id="panel-demo"></div>
+        </div>
+        
+        <div class="demo-controls">
+          <button class="demo-btn" id="load-chatgpt">ChatGPT Preset</button>
+          <button class="demo-btn" id="load-creative">Creative Preset</button>
+          <button class="demo-btn secondary" id="reset-panel">Reset All</button>
+        </div>
+        
+        <a href="/examples/vanilla/parameter-panel.html" class="view-examples-link">
+          View 6 Examples →
+        </a>
+      </div>
     </div>
   </div>
 
@@ -699,7 +729,7 @@
   </div>
 
   <script type="module">
-    import { StreamProgress, ModelLoader, ParameterSlider, QueueProgress, RetryProgress } from './src/index.ts';
+    import { StreamProgress, ModelLoader, ParameterSlider, QueueProgress, RetryProgress, BatchProgress, ParameterPanel } from './src/index.ts';
 
     // ===== StreamProgress Demo =====
     const streamProgress = new StreamProgress({
@@ -1037,6 +1067,79 @@
 
     batchProgress.addEventListener('itemfailed', (e) => {
       console.log('Item failed:', e.detail);
+    });
+
+    // ===== ParameterPanel Demo =====
+    const parameterPanel = new ParameterPanel({
+      title: 'LLM Configuration',
+      parameters: [
+        {
+          id: 'temperature',
+          label: 'Temperature',
+          min: 0,
+          max: 2,
+          value: 0.7,
+          step: 0.1,
+          description: 'Controls randomness',
+        },
+        {
+          id: 'topP',
+          label: 'Top-P',
+          min: 0,
+          max: 1,
+          value: 0.9,
+          step: 0.05,
+          description: 'Nucleus sampling threshold',
+        },
+        {
+          id: 'maxTokens',
+          label: 'Max Tokens',
+          min: 100,
+          max: 4000,
+          value: 2000,
+          step: 100,
+          description: 'Maximum response length',
+        }
+      ],
+      presets: {
+        chatgpt: {
+          name: 'ChatGPT',
+          description: 'Balanced configuration',
+          values: { temperature: 0.7, topP: 0.9, maxTokens: 2000 }
+        },
+        creative: {
+          name: 'Creative',
+          description: 'More creative outputs',
+          values: { temperature: 1.2, topP: 0.95, maxTokens: 3000 }
+        }
+      },
+      layout: 'grid',
+      columns: 3,
+      showPresets: true,
+      showResetAll: true,
+      showExportImport: false
+    });
+
+    document.getElementById('panel-demo').appendChild(parameterPanel);
+
+    document.getElementById('load-chatgpt').addEventListener('click', () => {
+      parameterPanel.loadPreset('chatgpt');
+    });
+
+    document.getElementById('load-creative').addEventListener('click', () => {
+      parameterPanel.loadPreset('creative');
+    });
+
+    document.getElementById('reset-panel').addEventListener('click', () => {
+      parameterPanel.resetAll();
+    });
+
+    parameterPanel.addEventListener('panelchange', (e) => {
+      console.log('Parameter changed:', e.detail.parameterId, '=', e.detail.value);
+    });
+
+    parameterPanel.addEventListener('presetload', (e) => {
+      console.log('Preset loaded:', e.detail.presetId);
     });
   </script>
 </body>
