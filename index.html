@@ -560,6 +560,36 @@
           View 4 Examples →
         </a>
       </div>
+
+      <!-- RetryProgress Card -->
+      <div class="component-card">
+        <div class="component-header">
+          <div class="component-icon">🔄</div>
+          <div class="component-info">
+            <h3>RetryProgress</h3>
+            <span class="component-badge">Production Ready</span>
+          </div>
+        </div>
+        
+        <p class="component-description">
+          Exponential backoff retry mechanism with multiple strategies. Perfect for handling API failures,
+          network timeouts, and rate limiting with automatic or manual retry controls.
+        </p>
+        
+        <div class="demo-area">
+          <div id="retry-demo"></div>
+        </div>
+        
+        <div class="demo-controls">
+          <button class="demo-btn" id="start-retry">▶ Start Operation</button>
+          <button class="demo-btn secondary" id="fail-retry">Simulate Failure</button>
+          <button class="demo-btn secondary" id="reset-retry">Reset</button>
+        </div>
+        
+        <a href="/examples/vanilla/retry-progress.html" class="view-examples-link">
+          View 4 Examples →
+        </a>
+      </div>
     </div>
   </div>
 
@@ -634,7 +664,7 @@
   </div>
 
   <script type="module">
-    import { StreamProgress, ModelLoader, ParameterSlider, QueueProgress } from './src/index.ts';
+    import { StreamProgress, ModelLoader, ParameterSlider, QueueProgress, RetryProgress } from './src/index.ts';
 
     // ===== StreamProgress Demo =====
     const streamProgress = new StreamProgress({
@@ -824,6 +854,70 @@
 
     queueProgress.addEventListener('queuecomplete', (e) => {
       console.log('Queue processing started!', e.detail);
+    });
+
+    // ===== RetryProgress Demo =====
+    const retryProgress = new RetryProgress({
+      maxAttempts: 5,
+      initialDelay: 1000,
+      backoffMultiplier: 2,
+      strategy: 'exponential',
+      allowManualRetry: false,
+      showProgressBar: true
+    });
+
+    document.getElementById('retry-demo').appendChild(retryProgress);
+
+    let retryAttempt = 0;
+    let retryCheckInterval;
+
+    document.getElementById('start-retry').addEventListener('click', () => {
+      retryAttempt = 0;
+      retryProgress.reset();
+      retryProgress.attempt('Calling API endpoint...');
+      
+      // Simulate success after 3 attempts
+      retryCheckInterval = setInterval(() => {
+        if (retryProgress.getStatus() === 'attempting') {
+          retryAttempt++;
+          if (retryAttempt >= 3) {
+            clearInterval(retryCheckInterval);
+            setTimeout(() => retryProgress.success('API call successful!'), 600);
+          } else {
+            setTimeout(() => {
+              retryProgress.waitForRetry({
+                error: new Error('Connection timeout'),
+                message: 'Retrying with exponential backoff...'
+              });
+            }, 600);
+          }
+        }
+      }, 100);
+    });
+
+    document.getElementById('fail-retry').addEventListener('click', () => {
+      if (retryProgress.getStatus() === 'attempting') {
+        retryProgress.waitForRetry({
+          error: new Error('Simulated failure'),
+          message: 'Retrying after backoff...'
+        });
+      }
+    });
+
+    document.getElementById('reset-retry').addEventListener('click', () => {
+      if (retryCheckInterval) {
+        clearInterval(retryCheckInterval);
+      }
+      retryProgress.reset();
+      retryAttempt = 0;
+    });
+
+    retryProgress.addEventListener('retrysuccess', (e) => {
+      console.log('Retry succeeded!', e.detail);
+    });
+
+    retryProgress.addEventListener('retryfailure', (e) => {
+      console.log('Retry failed!', e.detail);
     });
   </script>
 </body>

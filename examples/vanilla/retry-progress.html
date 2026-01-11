@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RetryProgress Examples - Progressbar Slider Utilities</title>
+  <style>
+    :root {
+      --primary-color: #f59e0b;
+      --bg-dark: #0f172a;
+      --bg-secondary: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border-color: #334155;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark) 0%, #1e293b 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary-color), #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-btn {
+      padding: 0.6rem 1.2rem;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-btn:hover {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .nav-btn.active {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .nav-btn-icon {
+      font-size: 1.1rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .example-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .example-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .example-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+
+    .example-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary-color), #fb923c);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .event-log {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .event-log-item {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .event-log-item:last-child {
+      border-bottom: none;
+    }
+
+    .event-time {
+      color: var(--text-secondary);
+      margin-right: 0.5rem;
+    }
+
+    .event-type {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .controls {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>🔄 RetryProgress Examples</h1>
+      <p>Exponential backoff and retry mechanisms with visual feedback</p>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+      <a href="../../index.html" class="nav-btn">
+        <span class="nav-btn-icon">🏠</span>
+        Home
+      </a>
+      <a href="../index.html" class="nav-btn">
+        <span class="nav-btn-icon">📚</span>
+        All Examples
+      </a>
+      <a href="stream-progress.html" class="nav-btn">
+        <span class="nav-btn-icon">⚡</span>
+        StreamProgress
+      </a>
+      <a href="model-loader.html" class="nav-btn">
+        <span class="nav-btn-icon">🤖</span>
+        ModelLoader
+      </a>
+      <a href="parameter-slider.html" class="nav-btn">
+        <span class="nav-btn-icon">🎚️</span>
+        ParameterSlider
+      </a>
+      <a href="queue-progress.html" class="nav-btn">
+        <span class="nav-btn-icon">📊</span>
+        QueueProgress
+      </a>
+      <a href="retry-progress.html" class="nav-btn active">
+        <span class="nav-btn-icon">🔄</span>
+        RetryProgress
+      </a>
+    </nav>
+
+    <div class="examples-grid">
+      <!-- Example 1: Exponential Backoff -->
+      <div class="example-card">
+        <h2 class="example-title">1. Exponential Backoff API Call</h2>
+        <p class="example-description">
+          Simulates API calls with exponential backoff (1s → 2s → 4s). Demonstrates automatic retry with increasing delays.
+        </p>
+        <retry-progress id="example1"></retry-progress>
+        <div class="controls">
+          <button class="btn" id="btn1-start">Start Operation</button>
+          <button class="btn btn-danger" id="btn1-fail">Simulate Failure</button>
+          <button class="btn btn-secondary" id="btn1-reset">Reset</button>
+        </div>
+        <div class="event-log" id="log1"></div>
+      </div>
+
+      <!-- Example 2: Linear Retry Strategy -->
+      <div class="example-card">
+        <h2 class="example-title">2. Linear Retry with Timeout</h2>
+        <p class="example-description">
+          Uses linear backoff (2s → 4s → 6s). Each attempt adds a fixed delay. Perfect for timeout scenarios.
+        </p>
+        <retry-progress id="example2"></retry-progress>
+        <div class="controls">
+          <button class="btn" id="btn2-start">Start Operation</button>
+          <button class="btn btn-danger" id="btn2-fail">Timeout Error</button>
+          <button class="btn btn-secondary" id="btn2-reset">Reset</button>
+        </div>
+        <div class="event-log" id="log2"></div>
+      </div>
+
+      <!-- Example 3: Fibonacci Strategy -->
+      <div class="example-card">
+        <h2 class="example-title">3. Fibonacci Backoff Pattern</h2>
+        <p class="example-description">
+          Advanced fibonacci sequence delays (1s → 1s → 2s → 3s → 5s). Gradual increase ideal for rate-limited APIs.
+        </p>
+        <retry-progress id="example3"></retry-progress>
+        <div class="controls">
+          <button class="btn" id="btn3-start">Start Operation</button>
+          <button class="btn btn-danger" id="btn3-fail">Rate Limit Error</button>
+          <button class="btn btn-secondary" id="btn3-reset">Reset</button>
+        </div>
+        <div class="event-log" id="log3"></div>
+      </div>
+
+      <!-- Example 4: Manual Retry Control -->
+      <div class="example-card">
+        <h2 class="example-title">4. Manual Retry with Cancel</h2>
+        <p class="example-description">
+          Fixed 3s delay with manual retry and cancel controls. User can manually trigger retry or cancel operation.
+        </p>
+        <retry-progress id="example4"></retry-progress>
+        <div class="controls">
+          <button class="btn" id="btn4-start">Start Operation</button>
+          <button class="btn btn-danger" id="btn4-fail">Network Error</button>
+          <button class="btn btn-secondary" id="btn4-cancel">Cancel</button>
+          <button class="btn btn-secondary" id="btn4-reset">Reset</button>
+        </div>
+        <div class="event-log" id="log4"></div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>
+        <strong>RetryProgress Component</strong> - Part of 
+        <a href="../../index.html">Progressbar Slider Utilities</a>
+      </p>
+      <p style="margin-top: 0.5rem;">
+        Built with TypeScript • Web Components • MIT License
+      </p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { RetryProgress } from '../../src/index.ts';
+
+    // Utility function to add event log
+    function addLog(logId, type, message, details = {}) {
+      const log = document.getElementById(logId);
+      const time = new Date().toLocaleTimeString();
+      const item = document.createElement('div');
+      item.className = 'event-log-item';
+      
+      const detailsStr = Object.keys(details).length > 0 
+        ? ` | ${JSON.stringify(details)}` 
+        : '';
+      
+      item.innerHTML = `
+        <span class="event-time">[${time}]</span>
+        <span class="event-type">${type}</span>
+        <span>${message}${detailsStr}</span>
+      `;
+      
+      log.appendChild(item);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    // Example 1: Exponential Backoff
+    const retry1 = document.getElementById('example1');
+    retry1.setAttribute('max-attempts', '5');
+    retry1.setAttribute('initial-delay', '1000');
+    retry1.setAttribute('backoff-multiplier', '2');
+    retry1.setAttribute('strategy', 'exponential');
+
+    let attempt1 = 0;
+
+    retry1.addEventListener('retryattempt', (e) => {
+      addLog('log1', 'ATTEMPT', `Attempt ${e.detail.attempt}/${e.detail.maxAttempts}`, {
+        message: e.detail.message
+      });
+    });
+
+    retry1.addEventListener('retrywaiting', (e) => {
+      addLog('log1', 'WAITING', `Waiting ${e.detail.delay}ms before retry`, {
+        nextAttempt: e.detail.attempt,
+        strategy: e.detail.strategy
+      });
+    });
+
+    retry1.addEventListener('retrysuccess', (e) => {
+      addLog('log1', 'SUCCESS', `Operation succeeded!`, {
+        totalAttempts: e.detail.totalAttempts,
+        elapsedTime: `${e.detail.elapsedTime}ms`
+      });
+    });
+
+    retry1.addEventListener('retryfailure', (e) => {
+      addLog('log1', 'FAILED', `Max attempts reached`, {
+        totalAttempts: e.detail.totalAttempts
+      });
+    });
+
+    document.getElementById('btn1-start').addEventListener('click', () => {
+      attempt1 = 0;
+      retry1.reset();
+      retry1.attempt('Calling API endpoint...');
+      
+      // Simulate success after 3 attempts
+      const checkSuccess = setInterval(() => {
+        if (retry1.getStatus() === 'attempting') {
+          attempt1++;
+          if (attempt1 >= 3) {
+            clearInterval(checkSuccess);
+            setTimeout(() => retry1.success('API call successful!'), 500);
+          } else {
+            setTimeout(() => {
+              retry1.waitForRetry({
+                error: new Error('Connection timeout'),
+                message: 'Retrying after exponential backoff...'
+              });
+            }, 500);
+          }
+        }
+      }, 100);
+    });
+
+    document.getElementById('btn1-fail').addEventListener('click', () => {
+      if (retry1.getStatus() === 'attempting') {
+        retry1.waitForRetry({
+          error: new Error('Simulated failure'),
+          message: 'Retrying with backoff...'
+        });
+      }
+    });
+
+    document.getElementById('btn1-reset').addEventListener('click', () => {
+      retry1.reset();
+      attempt1 = 0;
+      document.getElementById('log1').innerHTML = '';
+    });
+
+    // Example 2: Linear Strategy
+    const retry2 = document.getElementById('example2');
+    retry2.setAttribute('max-attempts', '4');
+    retry2.setAttribute('initial-delay', '2000');
+    retry2.setAttribute('strategy', 'linear');
+
+    let attempt2 = 0;
+
+    retry2.addEventListener('retryattempt', (e) => {
+      addLog('log2', 'ATTEMPT', `Attempt ${e.detail.attempt}/${e.detail.maxAttempts}`);
+    });
+
+    retry2.addEventListener('retrywaiting', (e) => {
+      addLog('log2', 'WAITING', `Linear backoff: ${e.detail.delay}ms delay`, {
+        nextAttempt: e.detail.attempt
+      });
+    });
+
+    retry2.addEventListener('retrysuccess', (e) => {
+      addLog('log2', 'SUCCESS', `Connection established`, {
+        attempts: e.detail.totalAttempts
+      });
+    });
+
+    retry2.addEventListener('retryfailure', (e) => {
+      addLog('log2', 'FAILED', `Connection failed after all retries`);
+    });
+
+    document.getElementById('btn2-start').addEventListener('click', () => {
+      attempt2 = 0;
+      retry2.reset();
+      retry2.attempt('Connecting to server...');
+      
+      const checkSuccess = setInterval(() => {
+        if (retry2.getStatus() === 'attempting') {
+          attempt2++;
+          if (attempt2 >= 3) {
+            clearInterval(checkSuccess);
+            setTimeout(() => retry2.success('Connected successfully!'), 800);
+          } else {
+            setTimeout(() => {
+              retry2.waitForRetry({
+                error: new Error('Connection timeout'),
+                message: 'Retrying with linear backoff...'
+              });
+            }, 800);
+          }
+        }
+      }, 100);
+    });
+
+    document.getElementById('btn2-fail').addEventListener('click', () => {
+      if (retry2.getStatus() === 'attempting') {
+        retry2.waitForRetry({
+          error: new Error('Request timeout'),
+          message: 'Timeout - retrying...'
+        });
+      }
+    });
+
+    document.getElementById('btn2-reset').addEventListener('click', () => {
+      retry2.reset();
+      attempt2 = 0;
+      document.getElementById('log2').innerHTML = '';
+    });
+
+    // Example 3: Fibonacci Strategy
+    const retry3 = document.getElementById('example3');
+    retry3.setAttribute('max-attempts', '6');
+    retry3.setAttribute('initial-delay', '1000');
+    retry3.setAttribute('strategy', 'fibonacci');
+
+    let attempt3 = 0;
+
+    retry3.addEventListener('retryattempt', (e) => {
+      addLog('log3', 'ATTEMPT', `Attempt ${e.detail.attempt}`);
+    });
+
+    retry3.addEventListener('retrywaiting', (e) => {
+      addLog('log3', 'WAITING', `Fibonacci backoff: ${e.detail.delay}ms`, {
+        pattern: 'Growing gradually'
+      });
+    });
+
+    retry3.addEventListener('retrysuccess', (e) => {
+      addLog('log3', 'SUCCESS', `Request succeeded`, {
+        attempts: e.detail.totalAttempts,
+        time: `${(e.detail.elapsedTime / 1000).toFixed(1)}s`
+      });
+    });
+
+    retry3.addEventListener('retryfailure', (e) => {
+      addLog('log3', 'FAILED', `Rate limit exceeded`);
+    });
+
+    document.getElementById('btn3-start').addEventListener('click', () => {
+      attempt3 = 0;
+      retry3.reset();
+      retry3.attempt('Making API request...');
+      
+      const checkSuccess = setInterval(() => {
+        if (retry3.getStatus() === 'attempting') {
+          attempt3++;
+          if (attempt3 >= 4) {
+            clearInterval(checkSuccess);
+            setTimeout(() => retry3.success('API request successful!'), 600);
+          } else {
+            setTimeout(() => {
+              retry3.waitForRetry({
+                error: new Error('Rate limited'),
+                message: 'Rate limited - backing off...'
+              });
+            }, 600);
+          }
+        }
+      }, 100);
+    });
+
+    document.getElementById('btn3-fail').addEventListener('click', () => {
+      if (retry3.getStatus() === 'attempting') {
+        retry3.waitForRetry({
+          error: new Error('429 Too Many Requests'),
+          message: 'Rate limited...'
+        });
+      }
+    });
+
+    document.getElementById('btn3-reset').addEventListener('click', () => {
+      retry3.reset();
+      attempt3 = 0;
+      document.getElementById('log3').innerHTML = '';
+    });
+
+    // Example 4: Manual Retry with Cancel
+    const retry4 = document.getElementById('example4');
+    retry4.setAttribute('max-attempts', '10');
+    retry4.setAttribute('initial-delay', '3000');
+    retry4.setAttribute('strategy', 'fixed');
+    retry4.setAttribute('allow-manual-retry', 'true');
+    retry4.setAttribute('allow-cancel', 'true');
+
+    let attempt4 = 0;
+
+    retry4.addEventListener('retryattempt', (e) => {
+      addLog('log4', 'ATTEMPT', `Attempt ${e.detail.attempt}`);
+    });
+
+    retry4.addEventListener('retrywaiting', (e) => {
+      addLog('log4', 'WAITING', `Fixed 3s delay before retry`);
+    });
+
+    retry4.addEventListener('retrysuccess', (e) => {
+      addLog('log4', 'SUCCESS', `Operation completed`, {
+        attempts: e.detail.totalAttempts
+      });
+    });
+
+    retry4.addEventListener('retryfailure', (e) => {
+      addLog('log4', 'FAILED', `Operation failed`);
+    });
+
+    retry4.addEventListener('retrycancel', (e) => {
+      addLog('log4', 'CANCELLED', `User cancelled operation`, {
+        reason: e.detail.reason
+      });
+    });
+
+    retry4.addEventListener('manualretry', (e) => {
+      addLog('log4', 'MANUAL', `User triggered manual retry`);
+    });
+
+    document.getElementById('btn4-start').addEventListener('click', () => {
+      attempt4 = 0;
+      retry4.reset();
+      retry4.attempt('Downloading file...');
+      
+      const checkSuccess = setInterval(() => {
+        if (retry4.getStatus() === 'attempting') {
+          attempt4++;
+          if (attempt4 >= 2) {
+            clearInterval(checkSuccess);
+            setTimeout(() => retry4.success('Download complete!'), 700);
+          } else {
+            setTimeout(() => {
+              retry4.waitForRetry({
+                error: new Error('Network interrupted'),
+                message: 'Connection lost - waiting to retry...'
+              });
+            }, 700);
+          }
+        }
+      }, 100);
+    });
+
+    document.getElementById('btn4-fail').addEventListener('click', () => {
+      if (retry4.getStatus() === 'attempting') {
+        retry4.waitForRetry({
+          error: new Error('Network error'),
+          message: 'Network failure - will retry...'
+        });
+      }
+    });
+
+    document.getElementById('btn4-cancel').addEventListener('click', () => {
+      retry4.cancel('User cancelled download');
+    });
+
+    document.getElementById('btn4-reset').addEventListener('click', () => {
+      retry4.reset();
+      attempt4 = 0;
+      document.getElementById('log4').innerHTML = '';
+    });
+  </script>
+</body>
+</html>
