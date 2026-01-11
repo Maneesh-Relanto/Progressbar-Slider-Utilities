@@ -13,7 +13,7 @@ beforeAll(() => {
       define: vi.fn(),
       get: vi.fn(),
       upgrade: vi.fn(),
-      whenDefined: vi.fn(() => Promise.resolve(class {} as CustomElementConstructor)),
+      whenDefined: vi.fn(() => Promise.resolve(class MockElement {} as CustomElementConstructor)),
     };
   }
 });

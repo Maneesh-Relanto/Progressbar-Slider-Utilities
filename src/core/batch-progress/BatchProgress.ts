@@ -65,7 +65,7 @@ import { styles } from './styles';
  */
 export class BatchProgress extends AIControl {
   protected override config: Required<BatchProgressConfig>;
-  private state: BatchProgressState;
+  private readonly state: BatchProgressState;
   private updateThrottleTimer: number | null = null;
 
   static get observedAttributes() {
@@ -124,7 +124,7 @@ export class BatchProgress extends AIControl {
 
     switch (name) {
       case 'total-items':
-        this.state.totalItems = parseInt(newValue || '0');
+        this.state.totalItems = Number.parseInt(newValue || '0', 10);
         this.render();
         break;
       case 'disabled':
@@ -423,7 +423,7 @@ export class BatchProgress extends AIControl {
   private throttledRender(): void {
     if (this.updateThrottleTimer) return;
 
-    this.updateThrottleTimer = window.setTimeout(() => {
+    this.updateThrottleTimer = globalThis.setTimeout(() => {
       this.render();
       this.updateThrottleTimer = null;
     }, 100);
@@ -439,23 +439,27 @@ export class BatchProgress extends AIControl {
     const rate = this.getRate();
     const stats = this.getStats();
 
-    const statusBadgeClass =
-      this.state.status === 'processing'
-        ? 'processing'
-        : this.state.status === 'completed'
-        ? 'completed'
-        : this.state.status === 'cancelled'
-        ? 'cancelled'
-        : '';
+    const getStatusBadgeClass = (status: string) => {
+      switch (status) {
+        case 'processing': return 'processing';
+        case 'completed': return 'completed';
+        case 'cancelled': return 'cancelled';
+        default: return '';
+      }
+    };
 
-    const statusText =
-      this.state.status === 'idle'
-        ? 'Ready'
-        : this.state.status === 'processing'
-        ? 'Processing'
-        : this.state.status === 'completed'
-        ? 'Completed'
-        : 'Cancelled';
+    const getStatusText = (status: string) => {
+      switch (status) {
+        case 'idle': return 'Ready';
+        case 'processing': return 'Processing';
+        case 'completed': return 'Completed';
+        case 'cancelled': return 'Cancelled';
+        default: return '';
+      }
+    };
+
+    const statusBadgeClass = getStatusBadgeClass(this.state.status);
+    const statusText = getStatusText(this.state.status);
 
     const statsHtml = this.config.showStats
       ? `

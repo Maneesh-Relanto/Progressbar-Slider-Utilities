@@ -12,7 +12,7 @@ describe('ModelLoader Component', () => {
 
   afterEach(() => {
     if (loader.parentNode) {
-      loader.parentNode.removeChild(loader);
+      loader.remove();
     }
   });
 

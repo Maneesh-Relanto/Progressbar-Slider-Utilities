@@ -12,7 +12,7 @@ describe('ParameterSlider Component', () => {
 
   afterEach(() => {
     if (slider.parentNode) {
-      slider.parentNode.removeChild(slider);
+      slider.remove();
     }
   });
 

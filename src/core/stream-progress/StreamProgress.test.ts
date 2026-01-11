@@ -12,7 +12,7 @@ describe('StreamProgress Component', () => {
 
   afterEach(() => {
     if (progress.parentNode) {
-      progress.parentNode.removeChild(progress);
+      progress.remove();
     }
   });
 

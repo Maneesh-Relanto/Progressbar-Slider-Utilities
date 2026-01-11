@@ -68,11 +68,11 @@ import { styles } from './styles';
  * @fires validationerror - Fired when validation fails
  */
 export class ParameterPanel extends AIControl {
-  private state: ParameterPanelState;
-  private parameters: Map<string, ParameterSlider> = new Map();
-  private parameterDefinitions: Map<string, ParameterDefinition> = new Map();
-  private presets: Map<string, { name: string; description?: string; values: Record<string, number>; isBuiltIn: boolean }>;
-  private panelConfig: ParameterPanelConfig;
+  private readonly state: ParameterPanelState;
+  private readonly parameters: Map<string, ParameterSlider> = new Map();
+  private readonly parameterDefinitions: Map<string, ParameterDefinition> = new Map();
+  private readonly presets: Map<string, { name: string; description?: string; values: Record<string, number>; isBuiltIn: boolean }>;
+  private readonly panelConfig: ParameterPanelConfig;
 
   constructor(config: ParameterPanelConfig) {
     super({ debug: config.debug, disabled: config.disabled });
@@ -105,7 +105,7 @@ export class ParameterPanel extends AIControl {
     this.state = {
       values: initialValues,
       activePreset: null,
-      isCollapsed: this.panelConfig.collapsible && this.panelConfig.startCollapsed ? true : false,
+      isCollapsed: Boolean(this.panelConfig.collapsible && this.panelConfig.startCollapsed),
       errors: {},
       isDirty: false,
     };
@@ -558,6 +558,7 @@ export class ParameterPanel extends AIControl {
   }
 
   private renderHeader(): string {
+    const collapsedClass = this.state.isCollapsed ? 'collapsed' : '';
     return `
       <div class="header ${this.panelConfig.collapsible ? 'collapsible' : ''}" id="header">
         <div class="title-section">
@@ -565,7 +566,7 @@ export class ParameterPanel extends AIControl {
           <span class="dirty-indicator ${this.state.isDirty ? 'show' : ''}"></span>
         </div>
         ${this.panelConfig.collapsible ? `
-          <span class="collapse-icon ${this.state.isCollapsed ? 'collapsed' : ''}">▼</span>
+          <span class="collapse-icon ${collapsedClass}">▼</span>
         ` : ''}
       </div>
     `;
@@ -782,16 +783,16 @@ export class ParameterPanel extends AIControl {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
+      file.text().then((text) => {
         try {
-          const config = JSON.parse(event.target?.result as string);
+          const config = JSON.parse(text);
           this.importConfig(config);
         } catch (error) {
           this.log('Failed to parse config file', 'error', error);
         }
-      };
-      reader.readAsText(file);
+      }).catch((error) => {
+        this.log('Failed to read config file', 'error', error);
+      });
     };
     input.click();
   }
