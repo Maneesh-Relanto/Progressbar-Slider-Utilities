@@ -134,7 +134,8 @@ export class ModelLoader extends AIControl {
         this.render();
         break;
       case 'disabled':
-        this.disabled = newValue !== null;
+        this._disabled = newValue !== null;
+        this.render();
         break;
     }
   }

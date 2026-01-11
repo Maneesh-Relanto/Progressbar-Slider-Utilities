@@ -128,7 +128,7 @@ export class BatchProgress extends AIControl {
         this.render();
         break;
       case 'disabled':
-        this.config.disabled = newValue !== null;
+        this._disabled = newValue !== null;
         this.render();
         break;
     }

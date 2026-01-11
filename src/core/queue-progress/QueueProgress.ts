@@ -137,7 +137,8 @@ export class QueueProgress extends AIControl {
         this.update({ queueSize: Number.parseInt(newValue, 10) || 0 });
         break;
       case 'disabled':
-        this.disabled = newValue !== null;
+        this._disabled = newValue !== null;
+        this.render();
         break;
     }
   }

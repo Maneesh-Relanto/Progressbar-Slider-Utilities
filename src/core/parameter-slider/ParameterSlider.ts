@@ -133,7 +133,7 @@ export class ParameterSlider extends AIControl {
         this.setValue(Number.parseFloat(newValue) || 0.5);
         break;
       case 'disabled':
-        this.disabled = newValue !== null;
+        this._disabled = newValue !== null;
         this.render();
         break;
     }

@@ -717,7 +717,7 @@ export class RetryProgress extends AIControl {
         this.config.showProgressBar = newValue === 'true';
         break;
       case 'disabled':
-        this.config.disabled = newValue !== null;
+        this._disabled = newValue !== null;
         break;
     }
     this.render();
