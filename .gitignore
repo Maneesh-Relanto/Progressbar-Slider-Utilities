@@ -72,6 +72,10 @@ confidential/
 *.rej
 .scratch/
 
+# Lighthouse reports
+lighthouse-reports/
+.lighthouseci/
+
 # Test and debug files
 test.html
 debug.html
