@@ -590,6 +590,35 @@
           View 4 Examples →
         </a>
       </div>
+
+      <!-- BatchProgress Card -->
+      <div class="component-card">
+        <div class="component-header">
+          <div class="component-icon">📦</div>
+          <div class="component-info">
+            <h3>BatchProgress</h3>
+            <span class="component-badge">Production Ready</span>
+          </div>
+        </div>
+        
+        <p class="component-description">
+          Track progress for processing multiple items in parallel with individual item status, 
+          concurrency control, and error handling. Perfect for bulk operations and batch processing.
+        </p>
+        
+        <div class="demo-area">
+          <div id="batch-demo"></div>
+        </div>
+        
+        <div class="demo-controls">
+          <button class="demo-btn" id="start-batch">▶ Start Batch</button>
+          <button class="demo-btn secondary" id="reset-batch">Reset</button>
+        </div>
+        
+        <a href="/examples/vanilla/batch-progress.html" class="view-examples-link">
+          View 4 Examples →
+        </a>
+      </div>
     </div>
   </div>
 
@@ -918,6 +947,90 @@
 
     retryProgress.addEventListener('retryfailure', (e) => {
       console.log('Retry failed!', e.detail);
+    });
+
+    // ===== BatchProgress Demo =====
+    const batchProgress = new BatchProgress({
+      totalItems: 10,
+      concurrency: 3,
+      showItems: true,
+      maxDisplayItems: 5,
+      showProgressBar: true,
+      showStats: true,
+      showTime: true,
+      showRate: true,
+      allowCancel: false,
+      collapseCompleted: true
+    });
+
+    document.getElementById('batch-demo').appendChild(batchProgress);
+
+    let batchProcessing = false;
+
+    document.getElementById('start-batch').addEventListener('click', async () => {
+      if (batchProcessing) return;
+      
+      batchProcessing = true;
+      batchProgress.reset();
+      batchProgress.start('Processing batch of documents...');
+
+      // Simulate processing 10 items
+      const items = [
+        'Document_001.pdf', 'Document_002.pdf', 'Document_003.pdf',
+        'Document_004.pdf', 'Document_005.pdf', 'Document_006.pdf',
+        'Document_007.pdf', 'Document_008.pdf', 'Document_009.pdf',
+        'Document_010.pdf'
+      ];
+
+      for (const item of items) {
+        const itemId = `doc-${items.indexOf(item) + 1}`;
+        batchProgress.addItem(itemId, item);
+        
+        // Start processing
+        batchProgress.updateItem({
+          itemId,
+          status: 'processing',
+          progress: 0
+        });
+
+        // Simulate progress
+        const processingTime = 1000 + Math.random() * 1500;
+        const steps = 5;
+        for (let i = 1; i <= steps; i++) {
+          await new Promise(resolve => setTimeout(resolve, processingTime / steps));
+          batchProgress.updateItem({
+            itemId,
+            progress: (i / steps) * 100
+          });
+        }
+
+        // Random success/failure
+        if (Math.random() > 0.15) {
+          batchProgress.completeItem(itemId, { processed: true });
+        } else {
+          batchProgress.failItem(itemId, 'Processing failed');
+        }
+      }
+
+      batchProgress.complete();
+      batchProcessing = false;
+    });
+
+    document.getElementById('reset-batch').addEventListener('click', () => {
+      batchProgress.reset();
+      batchProcessing = false;
+    });
+
+    batchProgress.addEventListener('batchcomplete', (e) => {
+      console.log('Batch complete!', e.detail);
+    });
+
+    batchProgress.addEventListener('itemcomplete', (e) => {
+      console.log('Item complete:', e.detail);
+    });
+
+    batchProgress.addEventListener('itemfailed', (e) => {
+      console.log('Item failed:', e.detail);
     });
   </script>
 </body>

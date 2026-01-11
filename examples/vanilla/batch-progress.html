@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BatchProgress Examples - AI Progress Controls</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 40px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: #f9fafb;
+      border-color: #667eea;
+    }
+
+    .example-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .example-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .example-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    button.secondary {
+      background: #6b7280;
+    }
+
+    button.secondary:hover {
+      background: #4b5563;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .progress-container {
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📦 BatchProgress Examples</h1>
+    <p class="subtitle">Progress tracking for processing multiple items in parallel</p>
+
+    <div class="nav-buttons">
+      <a href="../../index.html" class="nav-btn">← Home</a>
+    </div>
+
+    <!-- Example 1: Document Processing -->
+    <div class="example-section">
+      <h2 class="example-title">1. Document Processing <span class="badge">Common</span></h2>
+      <p class="example-description">
+        Process 20 documents with AI analysis. Simulates realistic processing times with some failures.
+      </p>
+      
+      <div class="progress-container" id="example1"></div>
+      
+      <div class="controls">
+        <button id="btn-start-1">Process Documents</button>
+        <button id="btn-reset-1" class="secondary">Reset</button>
+      </div>
+    </div>
+
+    <!-- Example 2: Image Generation -->
+    <div class="example-section">
+      <h2 class="example-title">2. Bulk Image Generation <span class="badge">Concurrent</span></h2>
+      <p class="example-description">
+        Generate 15 images using AI with concurrency limit of 3. Shows real-time progress for each image.
+      </p>
+      
+      <div class="progress-container" id="example2"></div>
+      
+      <div class="controls">
+        <button id="btn-start-2">Generate Images</button>
+        <button id="btn-reset-2" class="secondary">Reset</button>
+      </div>
+    </div>
+
+    <!-- Example 3: API Requests -->
+    <div class="example-section">
+      <h2 class="example-title">3. Batch API Requests <span class="badge">Real-world</span></h2>
+      <p class="example-description">
+        Process 30 API requests with rate limiting. Handles failures and retries automatically.
+      </p>
+      
+      <div class="progress-container" id="example3"></div>
+      
+      <div class="controls">
+        <button id="btn-start-3">Send Requests</button>
+        <button id="btn-cancel-3" class="secondary">Cancel</button>
+        <button id="btn-reset-3" class="secondary">Reset</button>
+      </div>
+    </div>
+
+    <!-- Example 4: Video Transcription -->
+    <div class="example-section">
+      <h2 class="example-title">4. Video Transcription Batch <span class="badge">Advanced</span></h2>
+      <p class="example-description">
+        Transcribe 10 videos with progress tracking. Shows individual progress and collapsed completed items.
+      </p>
+      
+      <div class="progress-container" id="example4"></div>
+      
+      <div class="controls">
+        <button id="btn-start-4">Start Transcription</button>
+        <button id="btn-reset-4" class="secondary">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { BatchProgress } from '../../src/index.ts';
+
+    // ===== Example 1: Document Processing =====
+    const batch1 = new BatchProgress({
+      showItems: true,
+      showStats: true,
+      showRate: true,
+      message: 'Processing documents...'
+    });
+    document.getElementById('example1').appendChild(batch1);
+
+    document.getElementById('btn-start-1').addEventListener('click', async () => {
+      batch1.reset();
+      
+      // Add 20 documents
+      for (let i = 0; i < 20; i++) {
+        batch1.addItem(`doc-${i}`, `Document ${i + 1}.pdf`);
+      }
+      
+      batch1.start('Analyzing documents with AI...');
+      
+      // Process documents with random delays
+      const items = Array.from({ length: 20 }, (_, i) => `doc-${i}`);
+      
+      for (const itemId of items) {
+        // Random processing time (1-3 seconds)
+        const processingTime = 1000 + Math.random() * 2000;
+        
+        // Update to processing
+        batch1.updateItem({ itemId, status: 'processing', progress: 0 });
+        
+        // Simulate progress updates
+        const steps = 5;
+        for (let step = 0; step < steps; step++) {
+          await new Promise(resolve => setTimeout(resolve, processingTime / steps));
+          batch1.updateItem({ 
+            itemId, 
+            status: 'processing', 
+            progress: ((step + 1) / steps) * 100 
+          });
+        }
+        
+        // 10% chance of failure
+        if (Math.random() < 0.1) {
+          batch1.failItem(itemId, 'Failed to parse document');
+        } else {
+          batch1.completeItem(itemId, { tokens: Math.floor(Math.random() * 1000) });
+        }
+      }
+    });
+
+    document.getElementById('btn-reset-1').addEventListener('click', () => {
+      batch1.reset();
+    });
+
+    // ===== Example 2: Image Generation =====
+    const batch2 = new BatchProgress({
+      concurrency: 3,
+      showItems: true,
+      showStats: true,
+      collapseCompleted: false,
+      message: 'Generating images...'
+    });
+    document.getElementById('example2').appendChild(batch2);
+
+    document.getElementById('btn-start-2').addEventListener('click', async () => {
+      batch2.reset();
+      
+      // Add 15 images
+      const prompts = [
+        'Sunset over mountains',
+        'Cat wearing sunglasses',
+        'Futuristic city',
+        'Abstract art',
+        'Coffee shop interior',
+        'Ocean waves',
+        'Space station',
+        'Forest path',
+        'Cyberpunk street',
+        'Vintage car',
+        'Robot portrait',
+        'Desert landscape',
+        'Neon lights',
+        'Waterfall',
+        'Urban skyline'
+      ];
+      
+      prompts.forEach((prompt, i) => {
+        batch2.addItem(`img-${i}`, prompt);
+      });
+      
+      batch2.start('Generating images with AI...');
+      
+      // Process with concurrency
+      const processImage = async (itemId) => {
+        batch2.updateItem({ itemId, status: 'processing', progress: 0 });
+        
+        // Simulate generation (3-5 seconds with progress)
+        const totalTime = 3000 + Math.random() * 2000;
+        const steps = 10;
+        
+        for (let step = 0; step < steps; step++) {
+          await new Promise(resolve => setTimeout(resolve, totalTime / steps));
+          batch2.updateItem({ 
+            itemId, 
+            status: 'processing', 
+            progress: ((step + 1) / steps) * 100 
+          });
+        }
+        
+        batch2.completeItem(itemId, { url: `image-${itemId}.png` });
+      };
+      
+      // Process with concurrency of 3
+      const queue = prompts.map((_, i) => `img-${i}`);
+      const processing = new Set();
+      
+      while (queue.length > 0 || processing.size > 0) {
+        while (processing.size < 3 && queue.length > 0) {
+          const itemId = queue.shift();
+          const promise = processImage(itemId).finally(() => {
+            processing.delete(promise);
+          });
+          processing.add(promise);
+        }
+        
+        if (processing.size > 0) {
+          await Promise.race(processing);
+        }
+      }
+    });
+
+    document.getElementById('btn-reset-2').addEventListener('click', () => {
+      batch2.reset();
+    });
+
+    // ===== Example 3: API Requests =====
+    const batch3 = new BatchProgress({
+      showItems: true,
+      showStats: true,
+      showRate: true,
+      allowCancel: true,
+      message: 'Sending API requests...'
+    });
+    document.getElementById('example3').appendChild(batch3);
+
+    let cancelled3 = false;
+
+    document.getElementById('btn-start-3').addEventListener('click', async () => {
+      batch3.reset();
+      cancelled3 = false;
+      
+      // Add 30 API requests
+      for (let i = 0; i < 30; i++) {
+        batch3.addItem(`req-${i}`, `API Request ${i + 1}`);
+      }
+      
+      batch3.start('Processing API requests...');
+      
+      // Listen for cancel
+      batch3.addEventListener('batchcancel', () => {
+        cancelled3 = true;
+      });
+      
+      // Process requests
+      const items = Array.from({ length: 30 }, (_, i) => `req-${i}`);
+      
+      for (const itemId of items) {
+        if (cancelled3) break;
+        
+        batch3.updateItem({ itemId, status: 'processing' });
+        
+        // Random delay (500-1500ms)
+        await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
+        
+        if (cancelled3) {
+          batch3.updateItem({ itemId, status: 'cancelled' });
+          continue;
+        }
+        
+        // 15% chance of failure
+        if (Math.random() < 0.15) {
+          batch3.failItem(itemId, 'Network timeout');
+        } else {
+          batch3.completeItem(itemId, { status: 200 });
+        }
+      }
+    });
+
+    document.getElementById('btn-cancel-3').addEventListener('click', () => {
+      cancelled3 = true;
+      batch3.cancel('User cancelled');
+    });
+
+    document.getElementById('btn-reset-3').addEventListener('click', () => {
+      batch3.reset();
+      cancelled3 = false;
+    });
+
+    // ===== Example 4: Video Transcription =====
+    const batch4 = new BatchProgress({
+      showItems: true,
+      showStats: true,
+      collapseCompleted: true,
+      message: 'Transcribing videos...'
+    });
+    document.getElementById('example4').appendChild(batch4);
+
+    document.getElementById('btn-start-4').addEventListener('click', async () => {
+      batch4.reset();
+      
+      // Add 10 videos
+      for (let i = 0; i < 10; i++) {
+        batch4.addItem(`video-${i}`, `Video ${i + 1}.mp4 (${Math.floor(Math.random() * 20) + 5} min)`);
+      }
+      
+      batch4.start('Transcribing videos...');
+      
+      // Process videos
+      const items = Array.from({ length: 10 }, (_, i) => `video-${i}`);
+      
+      for (const itemId of items) {
+        batch4.updateItem({ itemId, status: 'processing', progress: 0 });
+        
+        // Longer processing time (4-8 seconds)
+        const totalTime = 4000 + Math.random() * 4000;
+        const steps = 20;
+        
+        for (let step = 0; step < steps; step++) {
+          await new Promise(resolve => setTimeout(resolve, totalTime / steps));
+          batch4.updateItem({ 
+            itemId, 
+            status: 'processing', 
+            progress: ((step + 1) / steps) * 100 
+          });
+        }
+        
+        batch4.completeItem(itemId, { 
+          transcript: 'Transcription complete',
+          wordCount: Math.floor(Math.random() * 5000) + 1000
+        });
+      }
+    });
+
+    document.getElementById('btn-reset-4').addEventListener('click', () => {
+      batch4.reset();
+    });
+
+    // Listen to all batch complete events
+    [batch1, batch2, batch3, batch4].forEach(batch => {
+      batch.addEventListener('batchcomplete', (e) => {
+        console.log('Batch complete:', e.detail);
+      });
+    });
+  </script>
+</body>
+</html>

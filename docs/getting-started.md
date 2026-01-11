@@ -4,13 +4,14 @@ Welcome! This guide will help you get up and running with AI Progress Controls i
 
 ## 🎯 What You'll Build
 
-AI Progress Controls provides **5 production-ready components** for AI/ML workflows:
+AI Progress Controls provides **6 production-ready components** for AI/ML workflows:
 
 1. **StreamProgress** - Token streaming visualization with cost tracking
 2. **ModelLoader** - Multi-stage model loading with memory usage
 3. **ParameterSlider** - LLM parameter controls (temperature, top-p, etc.)
 4. **QueueProgress** - Queue position tracking with live ETA
 5. **RetryProgress** - Exponential backoff retry with multiple strategies
+6. **BatchProgress** - Batch processing with concurrency and item tracking
 
 All components work with **ANY** framework in just 3 lines of code!
 
@@ -772,11 +773,26 @@ retry.start();
 
 **[📖 API Docs](./api/retry-progress.md)** | **[🎮 Examples](../examples/vanilla/retry-progress.html)**
 
+### 6. BatchProgress
+Process multiple items in parallel with individual progress tracking and concurrency control.
+
+```javascript
+import { BatchProgress } from 'ai-progress-controls';
+const batch = new BatchProgress({ totalItems: 50, concurrency: 5 });
+document.body.appendChild(batch);
+batch.start();
+batch.addItem('item-1', 'Document_001.pdf');
+batch.updateItem({ itemId: 'item-1', status: 'processing', progress: 50 });
+batch.completeItem('item-1');
+```
+
+**[📖 API Docs](./api/batch-progress.md)** | **[🎮 Examples](../examples/vanilla/batch-progress.html)**
+
 ## Next Steps
 
 - 🎮 **[View Live Demos](../index.html)** - See all components in action
-- 📚 **[Browse Examples Gallery](../examples/index.html)** - 20 interactive examples
-- 📖 **[Read API Documentation](./api/)** - Complete reference for all 5 components
+- 📚 **[Browse Examples Gallery](../examples/index.html)** - 24 interactive examples
+- 📖 **[Read API Documentation](./api/)** - Complete reference for all 6 components
 - 💡 **[See Real-World Patterns](#)** - OpenAI integration, retry logic, rate limiting
 
 ## Need Help?

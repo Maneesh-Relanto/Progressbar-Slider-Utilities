@@ -47,7 +47,7 @@ Open http://localhost:5173 to see:
 
 ## 📦 What's Included
 
-### 5 Production-Ready Components
+### 6 Production-Ready Components
 
 | Component | Purpose | Key Features |
 |-----------|---------|--------------|
@@ -56,8 +56,9 @@ Open http://localhost:5173 to see:
 | **ParameterSlider** | LLM parameter controls | Presets, manual input, temperature/top-p/etc. |
 | **QueueProgress** | Queue position tracking | Live position updates, ETA, processing rate |
 | **RetryProgress** | Exponential backoff retry | 4 strategies, automatic retry, error handling |
+| **BatchProgress** | Batch processing progress | Multiple items, concurrency, individual tracking |
 
-### 20 Interactive Examples
+### 24 Interactive Examples
 
 Each component has 4 real-world examples:
 - Basic usage
@@ -98,14 +99,14 @@ Current solutions require developers to either:
 3. **ParameterSlider** - Intuitive controls for temperature, top-p, max tokens, and other LLM parameters
 4. **QueueProgress** - Show user's position in processing queue with live updates and ETA
 5. **RetryProgress** - Exponential backoff retry mechanism with multiple strategies for handling API failures
+6. **BatchProgress** - Process multiple items in parallel with individual progress tracking and concurrency control
 
-**🎉 20 Interactive Examples** - 4 examples per component showing real-world usage
+**🎉 24 Interactive Examples** - 4 examples per component showing real-world usage
 
-**📚 Complete Documentation** - Full API docs for all 5 components with TypeScript support
+**📚 Complete Documentation** - Full API docs for all 6 components with TypeScript support
 
 ### Planned Components (Roadmap)
-
-6. **WorkflowProgress** - Multi-step AI pipeline visualization
+7. **WorkflowProgress** - Multi-step AI pipeline visualization
 7. **BatchProgress** - Handle multiple concurrent AI operations
 8. **ConfidenceThreshold** - Adjustable sliders with live result previews
 
@@ -153,13 +154,15 @@ Current solutions require developers to either:
 🚀 **v0.1.0 - Production Ready** - 5 core components complete with full documentation
 
 **Available Now:**
-- ✅ **5 Production-Ready Components**
+- ✅ **6 Production-Ready Components**
   - StreamProgress - Token streaming with cost tracking
   - ModelLoader - Multi-stage model loading
   - ParameterSlider - AI parameter controls (temperature, top-p, etc.)
   - QueueProgress - Queue position tracking with ETA
   - RetryProgress - Exponential backoff retry mechanism
-- ✅ **20 Interactive Examples** - 4 examples per component
+  - BatchProgress - Batch processing with concurrency control
+- ✅ **24 Interactive Examples** - 4 examples per component
+- ✅ **Complete API Documentation** - Full docs for all 6nt
 - ✅ **Complete API Documentation** - Full docs for all 5 components
 - ✅ **TypeScript Support** - Full type definitions included
 - ✅ **Framework Agnostic** - Works with React, Vue, Angular, Svelte, and any framework
