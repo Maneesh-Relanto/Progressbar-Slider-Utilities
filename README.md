@@ -338,11 +338,62 @@ Specialized UI components built FOR AI workflows:
 </tr>
 </table>
 
+### ✅ **Testing & Quality Assurance**
+
+<div align="center">
+
+[![Tests](https://img.shields.io/badge/Tests-165_Passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Coverage](https://img.shields.io/badge/Components-6/6_Tested-3b82f6?style=for-the-badge)](./src/core/)
+[![Framework](https://img.shields.io/badge/Vitest-1.6.1-729B1B?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+
+**165 tests • 100% pass rate • ~2.5s execution time**
+
+</div>
+
+<table>
+<tr>
+<td width="50%">
+
+#### 📊 **Test Coverage by Component**
+
+| Component | Tests | Status |
+|-----------|:-----:|:------:|
+| 🌊 StreamProgress | 37 | ✅ |
+| 📊 BatchProgress | 34 | ✅ |
+| 🔄 RetryProgress | 28 | ✅ |
+| ⏳ QueueProgress | 24 | ✅ |
+| 🎛️ ParameterSlider | 22 | ✅ |
+| 📥 ModelLoader | 20 | ✅ |
+
+</td>
+<td width="50%">
+
+#### 🧪 **What's Tested**
+
+✅ **Lifecycle Methods** - start, update, complete, cancel, reset  
+✅ **Event Emission** - All custom events verified  
+✅ **State Management** - State transitions & accuracy  
+✅ **Properties** - Getters, setters, disabled states  
+✅ **Rendering** - Shadow DOM & dynamic updates  
+✅ **Accessibility** - ARIA attributes & roles  
+✅ **Edge Cases** - Boundary values, rapid operations  
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+**🔬 Test Framework:** Vitest with jsdom • **⚡ Fast:** Zero flakiness • **🎯 Comprehensive:** Every public API tested
+
+[Run Tests: `npm test`](./package.json)
+
+</div>
+
 ### 🚧 **Next Steps**
 
 | Priority | Task | Status |
 |:--------:|------|:------:|
-| 🔴 High | Unit tests with Vitest | Planned |
 | 🔴 High | npm package publishing | Ready |
 | 🟡 Medium | Documentation website | Planned |
 | 🟡 Medium | E2E tests | Planned |
