@@ -105,22 +105,22 @@ export class RetryProgress extends AIControl {
     // Read configuration from attributes
     if (this.hasAttribute('max-attempts')) {
       const val = Number.parseInt(this.getAttribute('max-attempts') || '', 10);
-      if (!isNaN(val)) {
+      if (Number.isNaN(val) === false) {
         this.config.maxAttempts = val;
         this.state.maxAttempts = val;
       }
     }
     if (this.hasAttribute('initial-delay')) {
       const val = Number.parseInt(this.getAttribute('initial-delay') || '', 10);
-      if (!isNaN(val)) this.config.initialDelay = val;
+      if (Number.isNaN(val) === false) this.config.initialDelay = val;
     }
     if (this.hasAttribute('max-delay')) {
       const val = Number.parseInt(this.getAttribute('max-delay') || '', 10);
-      if (!isNaN(val)) this.config.maxDelay = val;
+      if (Number.isNaN(val) === false) this.config.maxDelay = val;
     }
     if (this.hasAttribute('backoff-multiplier')) {
       const val = Number.parseFloat(this.getAttribute('backoff-multiplier') || '');
-      if (!isNaN(val)) this.config.backoffMultiplier = val;
+      if (Number.isNaN(val) === false) this.config.backoffMultiplier = val;
     }
     if (this.hasAttribute('strategy')) {
       const strategy = this.getAttribute('strategy') as RetryStatus;
@@ -503,6 +503,59 @@ export class RetryProgress extends AIControl {
   }
 
   /**
+   * Render success message
+   */
+  private renderSuccessMessage(status: RetryStatus, attempt: number): string {
+    if (status !== 'success') return '';
+    
+    const attemptText = attempt > 1 ? 's' : '';
+    return `
+      <div class="success-message">
+        <div class="success-icon">🎉</div>
+        <div class="success-text">Success!</div>
+        <div class="success-details">Completed in ${attempt} attempt${attemptText}</div>
+      </div>
+    `;
+  }
+
+  /**
+   * Render action buttons
+   */
+  private renderActions(status: RetryStatus, allowManualRetry: boolean, allowCancel: boolean, disabled: boolean): string {
+    if (status === 'success' || (!allowManualRetry && !allowCancel)) return '';
+    
+    const showRetryButton = allowManualRetry && (status === 'waiting' || status === 'failed');
+    const showCancelButton = allowCancel && status !== 'cancelled' && status !== 'failed';
+    
+    if (!showRetryButton && !showCancelButton) return '';
+    
+    const retryButtonText = status === 'failed' ? 'Try Again' : 'Retry Now';
+    const disabledAttr = disabled ? 'disabled' : '';
+    
+    let buttonsHtml = '';
+    if (showRetryButton) {
+      buttonsHtml += `
+        <button class="retry-button" id="manual-retry" ${disabledAttr}>
+          ${retryButtonText}
+        </button>
+      `;
+    }
+    if (showCancelButton) {
+      buttonsHtml += `
+        <button class="cancel-button" id="cancel-btn" ${disabledAttr}>
+          Cancel
+        </button>
+      `;
+    }
+    
+    return `
+      <div class="actions">
+        ${buttonsHtml}
+      </div>
+    `;
+  }
+
+  /**
    * Render component
    */
   protected override render(): void {
@@ -568,28 +621,9 @@ export class RetryProgress extends AIControl {
           </div>
         ` : ''}
 
-        ${status === 'success' ? `
-          <div class="success-message">
-            <div class="success-icon">🎉</div>
-            <div class="success-text">Success!</div>
-            <div class="success-details">Completed in ${attempt} attempt${attempt > 1 ? 's' : ''}</div>
-          </div>
-        ` : ''}
+        ${this.renderSuccessMessage(status, attempt)}
 
-        ${(allowManualRetry || allowCancel) && status !== 'success' ? `
-          <div class="actions">
-            ${allowManualRetry && (status === 'waiting' || status === 'failed') ? `
-              <button class="retry-button" id="manual-retry" ${disabled ? 'disabled' : ''}>
-                ${status === 'failed' ? 'Try Again' : 'Retry Now'}
-              </button>
-            ` : ''}
-            ${allowCancel && status !== 'cancelled' && status !== 'failed' ? `
-              <button class="cancel-button" id="cancel-btn" ${disabled ? 'disabled' : ''}>
-                Cancel
-              </button>
-            ` : ''}
-          </div>
-        ` : ''}
+        ${this.renderActions(status, allowManualRetry, allowCancel, disabled)}
       </div>
     `;
 
@@ -637,37 +671,45 @@ export class RetryProgress extends AIControl {
    */
   protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
     switch (name) {
-      case 'attempt':
+      case 'attempt': {
         this.state.attempt = Number.parseInt(newValue, 10) || 1;
         break;
-      case 'max-attempts':
+      }
+      case 'max-attempts': {
         const maxAttempts = Number.parseInt(newValue, 10) || 3;
         this.state.maxAttempts = maxAttempts;
         this.config.maxAttempts = maxAttempts;
         break;
-      case 'initial-delay':
+      }
+      case 'initial-delay': {
         const initialDelay = Number.parseInt(newValue, 10);
-        if (!isNaN(initialDelay)) this.config.initialDelay = initialDelay;
+        if (Number.isNaN(initialDelay) === false) this.config.initialDelay = initialDelay;
         break;
-      case 'max-delay':
+      }
+      case 'max-delay': {
         const maxDelay = Number.parseInt(newValue, 10);
-        if (!isNaN(maxDelay)) this.config.maxDelay = maxDelay;
+        if (Number.isNaN(maxDelay) === false) this.config.maxDelay = maxDelay;
         break;
-      case 'backoff-multiplier':
+      }
+      case 'backoff-multiplier': {
         const multiplier = Number.parseFloat(newValue);
-        if (!isNaN(multiplier)) this.config.backoffMultiplier = multiplier;
+        if (Number.isNaN(multiplier) === false) this.config.backoffMultiplier = multiplier;
         break;
-      case 'strategy':
+      }
+      case 'strategy': {
         if (['exponential', 'linear', 'fixed', 'fibonacci'].includes(newValue)) {
           this.config.strategy = newValue as any;
         }
         break;
-      case 'allow-manual-retry':
+      }
+      case 'allow-manual-retry': {
         this.config.allowManualRetry = newValue === 'true';
         break;
-      case 'allow-cancel':
+      }
+      case 'allow-cancel': {
         this.config.allowCancel = newValue === 'true';
         break;
+      }
       case 'show-attempt-count':
         this.config.showAttemptCount = newValue === 'true';
         break;

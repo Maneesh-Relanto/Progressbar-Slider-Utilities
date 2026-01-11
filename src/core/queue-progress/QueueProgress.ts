@@ -340,6 +340,48 @@ export class QueueProgress extends AIControl {
   }
 
   /**
+   * Render metrics section
+   */
+  private renderMetrics(): string {
+    if (this.state.status !== 'waiting') return '';
+    
+    let metricsHtml = '';
+    
+    if (this.config.showQueueSize) {
+      metricsHtml += `
+        <div class="metric">
+          <div class="metric-value">${this.state.queueSize}</div>
+          <div class="metric-label">Queue Size</div>
+        </div>
+      `;
+    }
+    
+    if (this.config.showWaitTime) {
+      metricsHtml += `
+        <div class="metric">
+          <div class="metric-value">${formatTime(Math.round(this.state.estimatedWait))}</div>
+          <div class="metric-label">Est. Wait</div>
+        </div>
+      `;
+    }
+    
+    if (this.config.showRate) {
+      metricsHtml += `
+        <div class="metric">
+          <div class="metric-value">${this.state.processingRate.toFixed(1)}/s</div>
+          <div class="metric-label">Processing Rate</div>
+        </div>
+      `;
+    }
+    
+    return metricsHtml ? `
+      <div class="queue-metrics">
+        ${metricsHtml}
+      </div>
+    ` : '';
+  }
+
+  /**
    * Render component
    */
   protected override render(): void {
@@ -368,30 +410,7 @@ export class QueueProgress extends AIControl {
           </div>
         ` : ''}
 
-        ${this.state.status === 'waiting' ? `
-          <div class="queue-metrics">
-            ${this.config.showQueueSize ? `
-              <div class="metric">
-                <div class="metric-value">${this.state.queueSize}</div>
-                <div class="metric-label">Queue Size</div>
-              </div>
-            ` : ''}
-            
-            ${this.config.showWaitTime ? `
-              <div class="metric">
-                <div class="metric-value">${formatTime(Math.round(this.state.estimatedWait))}</div>
-                <div class="metric-label">Est. Wait</div>
-              </div>
-            ` : ''}
-            
-            ${this.config.showRate ? `
-              <div class="metric">
-                <div class="metric-value">${this.state.processingRate.toFixed(1)}/s</div>
-                <div class="metric-label">Processing Rate</div>
-              </div>
-            ` : ''}
-          </div>
-        ` : ''}
+        ${this.renderMetrics()}
 
         ${this.config.showProgressBar && this.state.status === 'waiting' && this.initialPosition > 0 ? `
           <div class="progress-container">

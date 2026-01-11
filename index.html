@@ -87,7 +87,7 @@
       align-items: center;
       gap: 8px;
       padding: 10px 20px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
       color: #ffffff;
       border-radius: 30px;
       font-size: 14px;
@@ -95,6 +95,7 @@
       margin-bottom: 32px;
       border: none;
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .status::before {
@@ -134,8 +135,9 @@
     }
 
     .btn-white {
-      background: linear-gradient(135deg, #ff4d6d 0%, #ff6b6b 100%);
+      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
       color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .btn-white:hover {
@@ -144,15 +146,16 @@
     }
 
     .btn-outline {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #4f46e5 0%, #6b21a8 100%);
       color: #ffffff;
       border: none;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .btn-outline:hover {
-      background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+      background: linear-gradient(135deg, #4338ca 0%, #581c87 100%);
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
     }
 
     /* Main Content */
@@ -240,12 +243,13 @@
     .component-badge {
       display: inline-block;
       padding: 4px 12px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
       color: #ffffff;
       border-radius: 12px;
       font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .component-description {
@@ -271,7 +275,7 @@
 
     .demo-btn {
       padding: 10px 24px;
-      background: linear-gradient(135deg, #ff4d6d 0%, #ff6b6b 100%);
+      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
       color: #ffffff;
       border: none;
       border-radius: 8px;
@@ -279,7 +283,8 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(255, 77, 109, 0.3);
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .demo-btn:hover {
@@ -288,14 +293,15 @@
     }
 
     .demo-btn.secondary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #4f46e5 0%, #6b21a8 100%);
       color: #ffffff;
       border: none;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .demo-btn.secondary:hover {
-      background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      background: linear-gradient(135deg, #4338ca 0%, #581c87 100%);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
     }
 
     .view-examples-link {
@@ -863,7 +869,7 @@
         }
         
         const wait = Math.max(15, position * 3);
-        const rate = 3.0 + (Math.random() * 1.5);
+        const rate = 3 + (Math.random() * 1.5);
         
         queueProgress.update({
           position,

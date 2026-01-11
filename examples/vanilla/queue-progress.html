@@ -105,7 +105,7 @@
 
     .controls button {
       padding: 10px 20px;
-      background: #667eea;
+      background: #4f46e5;
       color: white;
       border: none;
       border-radius: 8px;
@@ -113,10 +113,11 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .controls button:hover {
-      background: #5568d3;
+      background: #4338ca;
       transform: translateY(-1px);
     }
 
@@ -447,7 +448,7 @@
       position: 125,
       queueSize: 200,
       estimatedWait: 375,
-      processingRate: 3.0,
+      processingRate: 3,
       message: 'Standard processing queue'
     });
 
@@ -476,7 +477,7 @@
         }
         
         const wait = Math.max(10, position * (isPriority ? 1 : 3));
-        const rate = isPriority ? 12.0 : 3.0;
+        const rate = isPriority ? 12 : 3;
         queue4.update({
           position,
           estimatedWait: wait,
@@ -512,7 +513,7 @@
           queue4.update({
             position,
             estimatedWait: wait,
-            processingRate: 12.0,
+            processingRate: 12,
             message: '⚡ Priority processing active'
           });
 
@@ -532,7 +533,6 @@
 
     // Event listeners for all queues
     [queue1, queue2, queue3, queue4].forEach((queue, index) => {
-      const logId = `log-content-${index + 1}`;
       
       queue.addEventListener('positionchange', (e) => {
         console.log(`Queue ${index + 1} position changed:`, e.detail);

@@ -51,7 +51,7 @@ import { styles } from './styles';
  */
 export class ParameterSlider extends AIControl {
   protected override config: Required<ParameterSliderConfig>;
-  private state: ParameterSliderState;
+  private readonly state: ParameterSliderState;
   private sliderTrack: HTMLElement | null = null;
   private sliderThumb: HTMLElement | null = null;
 
@@ -280,7 +280,7 @@ export class ParameterSlider extends AIControl {
   /**
    * Handle thumb mouse move
    */
-  private handleThumbMouseMove = (e: MouseEvent): void => {
+  private readonly handleThumbMouseMove = (e: MouseEvent): void => {
     if (!this.state.isDragging || !this.sliderTrack) return;
 
     const rect = this.sliderTrack.getBoundingClientRect();
@@ -293,7 +293,7 @@ export class ParameterSlider extends AIControl {
   /**
    * Handle thumb mouse up
    */
-  private handleThumbMouseUp = (): void => {
+  private readonly handleThumbMouseUp = (): void => {
     this.state.isDragging = false;
     this.sliderThumb?.classList.remove('dragging');
 
@@ -318,7 +318,7 @@ export class ParameterSlider extends AIControl {
   /**
    * Handle thumb touch move
    */
-  private handleThumbTouchMove = (e: TouchEvent): void => {
+  private readonly handleThumbTouchMove = (e: TouchEvent): void => {
     if (!this.state.isDragging || !this.sliderTrack) return;
 
     e.preventDefault();
@@ -335,7 +335,7 @@ export class ParameterSlider extends AIControl {
   /**
    * Handle thumb touch end
    */
-  private handleThumbTouchEnd = (): void => {
+  private readonly handleThumbTouchEnd = (): void => {
     this.state.isDragging = false;
     this.sliderThumb?.classList.remove('dragging');
 
@@ -451,6 +451,45 @@ export class ParameterSlider extends AIControl {
   }
 
   /**
+   * Render input controls section
+   */
+  private renderInputControls(): string {
+    if (!this.config.showInput && !this.config.showReset) return '';
+    
+    const disabledAttr = this.config.disabled ? 'disabled' : '';
+    let controlsHtml = '';
+    
+    if (this.config.showInput) {
+      controlsHtml += `
+        <span class="input-label">Value:</span>
+        <input 
+          type="number" 
+          class="value-input"
+          value="${this.state.currentValue.toFixed(this.config.decimals)}"
+          min="${this.config.min}"
+          max="${this.config.max}"
+          step="${this.config.step}"
+          ${disabledAttr}
+        />
+      `;
+    }
+    
+    if (this.config.showReset) {
+      controlsHtml += `
+        <button class="reset-button" type="button" ${disabledAttr}>
+          Reset
+        </button>
+      `;
+    }
+    
+    return `
+      <div class="input-container">
+        ${controlsHtml}
+      </div>
+    `;
+  }
+
+  /**
    * Render the component
    */
   protected render(): void {
@@ -511,27 +550,7 @@ export class ParameterSlider extends AIControl {
     ` : '';
 
     // Input and reset
-    const inputHtml = this.config.showInput || this.config.showReset ? `
-      <div class="input-container">
-        ${this.config.showInput ? `
-          <span class="input-label">Value:</span>
-          <input 
-            type="number" 
-            class="value-input"
-            value="${this.state.currentValue.toFixed(this.config.decimals)}"
-            min="${this.config.min}"
-            max="${this.config.max}"
-            step="${this.config.step}"
-            ${this.config.disabled ? 'disabled' : ''}
-          />
-        ` : ''}
-        ${this.config.showReset ? `
-          <button class="reset-button" type="button" ${this.config.disabled ? 'disabled' : ''}>
-            Reset
-          </button>
-        ` : ''}
-      </div>
-    ` : '';
+    const inputHtml = this.renderInputControls();
 
     this.shadowRoot.innerHTML = `
       ${styles}
