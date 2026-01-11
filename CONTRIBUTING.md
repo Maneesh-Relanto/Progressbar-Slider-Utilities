@@ -61,13 +61,24 @@ npm run format
 src/
 ├── core/              # Core Web Components
 │   ├── base/          # Base classes and utilities
-│   └── [component]/   # Individual components
-├── adapters/          # Framework adapters
-├── themes/            # CSS themes
+│   ├── stream-progress/    # StreamProgress component
+│   ├── model-loader/       # ModelLoader component
+│   ├── parameter-slider/   # ParameterSlider component
+│   ├── queue-progress/     # QueueProgress component
+│   ├── retry-progress/     # RetryProgress component
+│   └── index.ts            # Exports
+├── themes/            # CSS themes (if applicable)
 └── index.ts           # Main entry point
 
 examples/              # Example applications
+├── vanilla/           # Vanilla JS examples (5 components × 4 examples = 20)
+└── index.html         # Examples gallery
+
 docs/                  # Documentation
+├── api/               # API documentation (5 component docs)
+└── GETTING_STARTED.md # Getting started guide
+
+tests/                 # Unit tests (to be added)
 ```
 
 ## How to Contribute

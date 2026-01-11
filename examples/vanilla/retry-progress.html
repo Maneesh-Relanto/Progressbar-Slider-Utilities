@@ -5,15 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RetryProgress Examples - Progressbar Slider Utilities</title>
   <style>
-    :root {
-      --primary-color: #f59e0b;
-      --bg-dark: #0f172a;
-      --bg-secondary: #1e293b;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --border-color: #334155;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -21,266 +12,168 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, var(--bg-dark) 0%, #1e293b 100%);
-      color: var(--text-primary);
-      min-height: 100vh;
-      padding: 2rem;
-      line-height: 1.6;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 2px solid var(--border-color);
-    }
-
-    .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--primary-color), #fb923c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .header p {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-    }
-
-    /* Navigation Bar */
-    .nav-bar {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .nav-btn {
-      padding: 0.6rem 1.2rem;
-      background: var(--bg-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-primary);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .nav-btn:hover {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-    }
-
-    .nav-btn.active {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-
-    .nav-btn-icon {
-      font-size: 1.1rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      padding: 40px 20px;
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
-    .examples-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #111827;
     }
 
-    .example-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 2rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 40px;
     }
 
-    .example-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1f2937;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: #f9fafb;
+      border-color: #667eea;
+    }
+
+    .example-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .example-title {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--primary-color);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #111827;
     }
 
     .example-description {
-      color: var(--text-secondary);
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
     }
 
     .controls {
       display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      gap: 12px;
       flex-wrap: wrap;
+      margin-top: 16px;
     }
 
-    .btn {
-      padding: 0.75rem 1.5rem;
-      background: linear-gradient(135deg, var(--primary-color), #fb923c);
-      border: none;
-      border-radius: 8px;
+    button {
+      padding: 10px 20px;
+      background: #3b82f6;
       color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.95rem;
+      transition: background 0.2s;
     }
 
-    .btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    button:hover {
+      background: #2563eb;
     }
 
-    .btn:disabled {
+    button.secondary {
+      background: #6b7280;
+    }
+
+    button.secondary:hover {
+      background: #4b5563;
+    }
+
+    button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    .btn-secondary {
-      background: var(--bg-dark);
-      border: 1px solid var(--border-color);
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-    }
-
     .event-log {
-      background: var(--bg-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1rem;
+      background: #111827;
+      color: #10b981;
+      padding: 16px;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 12px;
       max-height: 200px;
       overflow-y: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 0.85rem;
-      margin-top: 1rem;
+      margin-top: 16px;
     }
 
-    .event-log-item {
-      padding: 0.25rem 0;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .event-log-item:last-child {
-      border-bottom: none;
+    .event-log p {
+      margin: 4px 0;
     }
 
     .event-time {
-      color: var(--text-secondary);
-      margin-right: 0.5rem;
-    }
-
-    .event-type {
-      color: var(--primary-color);
-      font-weight: 600;
-      margin-right: 0.5rem;
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 2px solid var(--border-color);
-      color: var(--text-secondary);
-    }
-
-    .footer a {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
+      color: #6b7280;
+      margin-right: 8px;
     }
 
     @media (max-width: 768px) {
-      .examples-grid {
-        grid-template-columns: 1fr;
+      .container {
+        padding: 20px 10px;
       }
 
-      .header h1 {
-        font-size: 2rem;
-      }
-
-      .controls {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
+      h1 {
+        font-size: 24px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header class="header">
-      <h1>🔄 RetryProgress Examples</h1>
-      <p>Exponential backoff and retry mechanisms with visual feedback</p>
-    </header>
+    <h1>⚡ RetryProgress Examples</h1>
+    <p class="subtitle">Exponential backoff retry mechanism with multiple strategies</p>
 
-    <!-- Navigation Bar -->
-    <nav class="nav-bar">
-      <a href="../../index.html" class="nav-btn">
-        <span class="nav-btn-icon">🏠</span>
-        Home
-      </a>
-      <a href="../index.html" class="nav-btn">
-        <span class="nav-btn-icon">📚</span>
-        All Examples
-      </a>
-      <a href="stream-progress.html" class="nav-btn">
-        <span class="nav-btn-icon">⚡</span>
-        StreamProgress
-      </a>
-      <a href="model-loader.html" class="nav-btn">
-        <span class="nav-btn-icon">🤖</span>
-        ModelLoader
-      </a>
-      <a href="parameter-slider.html" class="nav-btn">
-        <span class="nav-btn-icon">🎚️</span>
-        ParameterSlider
-      </a>
-      <a href="queue-progress.html" class="nav-btn">
-        <span class="nav-btn-icon">📊</span>
-        QueueProgress
-      </a>
-      <a href="retry-progress.html" class="nav-btn active">
-        <span class="nav-btn-icon">🔄</span>
+    <div class="nav-buttons">
+      <a href="../../index.html" class="nav-btn">← Home</a>
+    </div>
         RetryProgress
       </a>
     </nav>
 
-    <div class="examples-grid">
+    <div class="examples">
       <!-- Example 1: Exponential Backoff -->
-      <div class="example-card">
+      <div class="example-section">
         <h2 class="example-title">1. Exponential Backoff API Call</h2>
         <p class="example-description">
           Simulates API calls with exponential backoff (1s → 2s → 4s). Demonstrates automatic retry with increasing delays.
@@ -288,14 +181,14 @@
         <retry-progress id="example1"></retry-progress>
         <div class="controls">
           <button class="btn" id="btn1-start">Start Operation</button>
-          <button class="btn btn-danger" id="btn1-fail">Simulate Failure</button>
-          <button class="btn btn-secondary" id="btn1-reset">Reset</button>
+          <button class="btn secondary" id="btn1-fail">Simulate Failure</button>
+          <button class="btn secondary" id="btn1-reset">Reset</button>
         </div>
         <div class="event-log" id="log1"></div>
       </div>
 
       <!-- Example 2: Linear Retry Strategy -->
-      <div class="example-card">
+      <div class="example-section">
         <h2 class="example-title">2. Linear Retry with Timeout</h2>
         <p class="example-description">
           Uses linear backoff (2s → 4s → 6s). Each attempt adds a fixed delay. Perfect for timeout scenarios.
@@ -303,14 +196,14 @@
         <retry-progress id="example2"></retry-progress>
         <div class="controls">
           <button class="btn" id="btn2-start">Start Operation</button>
-          <button class="btn btn-danger" id="btn2-fail">Timeout Error</button>
-          <button class="btn btn-secondary" id="btn2-reset">Reset</button>
+          <button class="btn secondary" id="btn2-fail">Timeout Error</button>
+          <button class="btn secondary" id="btn2-reset">Reset</button>
         </div>
         <div class="event-log" id="log2"></div>
       </div>
 
       <!-- Example 3: Fibonacci Strategy -->
-      <div class="example-card">
+      <div class="example-section">
         <h2 class="example-title">3. Fibonacci Backoff Pattern</h2>
         <p class="example-description">
           Advanced fibonacci sequence delays (1s → 1s → 2s → 3s → 5s). Gradual increase ideal for rate-limited APIs.
@@ -318,14 +211,14 @@
         <retry-progress id="example3"></retry-progress>
         <div class="controls">
           <button class="btn" id="btn3-start">Start Operation</button>
-          <button class="btn btn-danger" id="btn3-fail">Rate Limit Error</button>
-          <button class="btn btn-secondary" id="btn3-reset">Reset</button>
+          <button class="btn secondary" id="btn3-fail">Rate Limit Error</button>
+          <button class="btn secondary" id="btn3-reset">Reset</button>
         </div>
         <div class="event-log" id="log3"></div>
       </div>
 
       <!-- Example 4: Manual Retry Control -->
-      <div class="example-card">
+      <div class="example-section">
         <h2 class="example-title">4. Manual Retry with Cancel</h2>
         <p class="example-description">
           Fixed 3s delay with manual retry and cancel controls. User can manually trigger retry or cancel operation.
@@ -333,9 +226,9 @@
         <retry-progress id="example4"></retry-progress>
         <div class="controls">
           <button class="btn" id="btn4-start">Start Operation</button>
-          <button class="btn btn-danger" id="btn4-fail">Network Error</button>
-          <button class="btn btn-secondary" id="btn4-cancel">Cancel</button>
-          <button class="btn btn-secondary" id="btn4-reset">Reset</button>
+          <button class="btn secondary" id="btn4-fail">Network Error</button>
+          <button class="btn secondary" id="btn4-cancel">Cancel</button>
+          <button class="btn secondary" id="btn4-reset">Reset</button>
         </div>
         <div class="event-log" id="log4"></div>
       </div>
@@ -665,3 +558,4 @@
   </script>
 </body>
 </html>
+

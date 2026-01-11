@@ -2,6 +2,18 @@
 
 Welcome! This guide will help you get up and running with AI Progress Controls in just a few minutes.
 
+## 🎯 What You'll Build
+
+AI Progress Controls provides **5 production-ready components** for AI/ML workflows:
+
+1. **StreamProgress** - Token streaming visualization with cost tracking
+2. **ModelLoader** - Multi-stage model loading with memory usage
+3. **ParameterSlider** - LLM parameter controls (temperature, top-p, etc.)
+4. **QueueProgress** - Queue position tracking with live ETA
+5. **RetryProgress** - Exponential backoff retry with multiple strategies
+
+All components work with **ANY** framework in just 3 lines of code!
+
 ## Installation
 
 **⚠️ Development Preview:** Package not yet published to npm. For now, clone and build locally.
@@ -699,12 +711,73 @@ All components are built with accessibility in mind:
 
 **Note:** Web Components require modern browsers. For older browsers, consider using polyfills.
 
+## 📦 Available Components
+
+### 1. StreamProgress
+Real-time token streaming visualization with rate tracking and cost estimation.
+
+```javascript
+import { StreamProgress } from 'ai-progress-controls';
+const progress = new StreamProgress({ maxTokens: 2000, costPerToken: 0.00003 });
+document.body.appendChild(progress);
+progress.start();
+```
+
+**[📖 API Docs](./api/stream-progress.md)** | **[🎮 Examples](../examples/vanilla/stream-progress.html)**
+
+### 2. ModelLoader
+Multi-stage progress for model download, loading, and initialization.
+
+```javascript
+import { ModelLoader } from 'ai-progress-controls';
+const loader = new ModelLoader({ modelName: 'llama-3-8b', totalSize: 8000 });
+document.body.appendChild(loader);
+loader.start();
+```
+
+**[📖 API Docs](./api/model-loader.md)** | **[🎮 Examples](../examples/vanilla/model-loader.html)**
+
+### 3. ParameterSlider
+Intuitive controls for temperature, top-p, max tokens, and other LLM parameters.
+
+```javascript
+import { ParameterSlider } from 'ai-progress-controls';
+const slider = new ParameterSlider({ parameter: 'temperature', min: 0, max: 2, value: 0.7 });
+document.body.appendChild(slider);
+```
+
+**[📖 API Docs](./api/parameter-slider.md)** | **[🎮 Examples](../examples/vanilla/parameter-slider.html)**
+
+### 4. QueueProgress
+Show user's position in processing queue with live updates and ETA.
+
+```javascript
+import { QueueProgress } from 'ai-progress-controls';
+const queue = new QueueProgress({ totalInQueue: 50, currentPosition: 25 });
+document.body.appendChild(queue);
+queue.start();
+```
+
+**[📖 API Docs](./api/queue-progress.md)** | **[🎮 Examples](../examples/vanilla/queue-progress.html)**
+
+### 5. RetryProgress
+Exponential backoff retry mechanism with multiple strategies for handling API failures.
+
+```javascript
+import { RetryProgress } from 'ai-progress-controls';
+const retry = new RetryProgress({ maxAttempts: 5, strategy: 'exponential' });
+document.body.appendChild(retry);
+retry.start();
+```
+
+**[📖 API Docs](./api/retry-progress.md)** | **[🎮 Examples](../examples/vanilla/retry-progress.html)**
+
 ## Next Steps
 
-- Explore [Examples](../examples/)
-- Read [API Documentation](./api/)
-- Check out [Integration Guides](./guides/)
-- See [Best Practices](./best-practices.md)
+- 🎮 **[View Live Demos](../index.html)** - See all components in action
+- 📚 **[Browse Examples Gallery](../examples/index.html)** - 20 interactive examples
+- 📖 **[Read API Documentation](./api/)** - Complete reference for all 5 components
+- 💡 **[See Real-World Patterns](#)** - OpenAI integration, retry logic, rate limiting
 
 ## Need Help?
 
