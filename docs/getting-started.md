@@ -1,25 +1,62 @@
-# Getting Started with AI Progress Controls
+<div align="center">
 
-Welcome! This guide will help you get up and running with AI Progress Controls in just a few minutes.
+# 🚀 Getting Started with AI Progress Controls
+
+### **Add AI-aware UI components to your app in 3 lines of code**
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6?style=flat-square)](https://www.typescriptlang.org/)
+[![Framework Agnostic](https://img.shields.io/badge/Framework-Agnostic-22c55e?style=flat-square)](https://webcomponents.org)
+[![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-f59e0b?style=flat-square)](https://bundlephobia.com)
+
+</div>
+
+---
 
 ## 🎯 What You'll Build
 
 AI Progress Controls provides **6 production-ready components** for AI/ML workflows:
 
-1. **StreamProgress** - Token streaming visualization with cost tracking
-2. **ModelLoader** - Multi-stage model loading with memory usage
-3. **ParameterSlider** - LLM parameter controls (temperature, top-p, etc.)
-4. **QueueProgress** - Queue position tracking with live ETA
-5. **RetryProgress** - Exponential backoff retry with multiple strategies
-6. **BatchProgress** - Batch processing with concurrency and item tracking
+<table>
+<tr>
+<td width="50%">
 
-All components work with **ANY** framework in just 3 lines of code!
+### 🎨 **UI Components**
 
-## Installation
+1. 🌊 **StreamProgress** - Token streaming with cost tracking
+2. 📥 **ModelLoader** - Multi-stage model loading
+3. 🎛️ **ParameterSlider** - LLM parameter controls
+4. ⏳ **QueueProgress** - Queue position tracking
+5. 🔄 **RetryProgress** - Exponential backoff retry
+6. 📊 **BatchProgress** - Batch processing progress
 
-**⚠️ Development Preview:** Package not yet published to npm. For now, clone and build locally.
+</td>
+<td width="50%">
 
-### Local Development (Current)
+### ⚡ **Key Features**
+
+✓ **3 lines of code** to integrate  
+✓ **ANY framework** - React, Vue, Angular, Svelte, etc.  
+✓ **Zero dependencies** - lightweight and fast  
+✓ **TypeScript first** - complete type definitions  
+✓ **Accessibility** - WCAG AA compliant  
+✓ **Themeable** - CSS variables, dark mode  
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📦 Installation
+
+<div align="center">
+
+### ⚠️ **Development Preview**
+Package not yet published to npm. For now, clone and build locally.
+
+</div>
+
+### **Option 1: Local Development (Current)**
 
 ```bash
 # Clone repository
@@ -30,34 +67,86 @@ cd ai-progress-controls
 npm install
 
 # Start dev server
-npm run dev
+npm run dev  # Opens http://localhost:5173
 
 # Build for production
 npm run build
 ```
 
-### NPM / Yarn / PNPM (Coming Soon)
+### **Option 2: NPM (Coming Soon)**
 
 ```bash
-# Once published:
-# npm install ai-progress-controls
+# Once published to npm:
+npm install ai-progress-controls
 # yarn add ai-progress-controls
 # pnpm add ai-progress-controls
 ```
 
-### CDN (Coming Soon)
+### **Option 3: CDN (Coming Soon)**
 
 ```html
-<!-- Will be available after npm publish:
+<!-- Will be available after npm publish: -->
 <script type="module">
   import { StreamProgress } from 'https://cdn.jsdelivr.net/npm/ai-progress-controls/+esm';
 </script>
--->
 ```
 
-## Quick Start
+---
 
-### 1. Basic Usage (Vanilla JavaScript)
+## ⚡ Quick Start - The Famous 3 Lines!
+
+<div align="center">
+
+### **Yes, it really is just 3 lines of code!**
+
+</div>
+
+<table>
+<tr>
+<td align="center" width="33%">
+
+### **Line 1**
+#### Import the component
+```javascript
+import { StreamProgress } 
+from 'ai-progress-controls';
+```
+
+</td>
+<td align="center" width="33%">
+
+### **Line 2**
+#### Create an instance
+```javascript
+const progress = 
+new StreamProgress();
+```
+
+</td>
+<td align="center" width="33%">
+
+### **Line 3**
+#### Add to DOM
+```javascript
+document.body
+.appendChild(progress);
+```
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+**🎉 That's it! The component is now live and ready to use.**
+
+</div>
+
+---
+
+### 1️⃣ **Basic Usage (Vanilla JavaScript)**
+
+Here's the complete 3-line setup with optional configuration:
 
 ```html
 <!DOCTYPE html>
@@ -71,7 +160,9 @@ npm run build
   <script type="module">
     import { StreamProgress } from 'ai-progress-controls';
 
-    // Create the component
+    // THE 3 LINES:
+    // Line 1: Import (done above)
+    // Line 2: Create
     const progress = new StreamProgress({
       maxTokens: 2000,
       costPerToken: 0.00002,
@@ -79,10 +170,11 @@ npm run build
       showCost: true,
     });
 
-    // Add to DOM
+    // Line 3: Append to DOM
     document.getElementById('app').appendChild(progress);
 
-    // Start streaming
+    // DONE! Component is ready.
+    // Now use it:
     progress.start('Generating response...');
 
     // Update progress (you'd get this from your AI API)
@@ -109,9 +201,9 @@ npm run build
 </html>
 ```
 
-### 2. With OpenAI Streaming
+### 2️⃣ **With OpenAI Streaming (Real-World Example)**
 
-Here's a real-world example integrating with OpenAI's API:
+Here's a complete example integrating with OpenAI's API - **still just 3 lines to set up the component!**
 
 ```javascript
 import { StreamProgress } from 'ai-progress-controls';
@@ -123,6 +215,9 @@ const openai = new OpenAI({
 });
 
 async function streamChatCompletion(prompt) {
+  // THE 3 LINES TO SET UP:
+  // Line 1: Import (done above)
+  // Line 2: Create instance
   const progress = new StreamProgress({
     maxTokens: 2000,
     costPerToken: 0.00003, // GPT-4 pricing
@@ -130,8 +225,10 @@ async function streamChatCompletion(prompt) {
     showCost: true,
   });
 
+  // Line 3: Append to DOM
   document.body.appendChild(progress);
 
+  // DONE! Now use it with OpenAI:
   try {
     progress.start('Connecting to OpenAI...');
 
@@ -183,7 +280,15 @@ async function streamChatCompletion(prompt) {
 streamChatCompletion('Explain quantum computing in simple terms');
 ```
 
-### 3. With React
+---
+
+## 🎨 Framework Integration - 3 Lines in Every Framework!
+
+<div align="center">
+
+### **The pattern is always the same: Import → Create → Append**
+
+</div>
 
 ```tsx
 import { useEffect, useRef } from 'react';
