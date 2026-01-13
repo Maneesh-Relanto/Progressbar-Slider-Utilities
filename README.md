@@ -8,10 +8,10 @@ let us <div align="center">
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![MIT License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
 [![Web Components](https://img.shields.io/badge/Web_Components-Native-f97316?style=for-the-badge&logo=webcomponents.org&logoColor=white)](https://www.webcomponents.org/)
-[![Bundle Size](https://img.shields.io/badge/Size-~8KB_gzipped-8b5cf6?style=for-the-badge)](https://bundlephobia.com)
+[![Bundle Size](https://img.shields.io/badge/Size-~27KB_gzipped-8b5cf6?style=for-the-badge)](https://bundlephobia.com)
 
 <p align="center">
-  <strong>🎯 7 Components • 📦 30 Examples • 📖 Complete Docs • ✅ WCAG AA Compliant</strong>
+  <strong>🎯 7 Components • 📦 28+ Examples • 📖 Complete Docs • ✅ WCAG AA Compliant</strong>
 </p>
 
 </div>
@@ -30,7 +30,7 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 🎯 **3 Lines of Code** - Import, create, append  
 🔌 **Works Everywhere** - React, Vue, Angular, Svelte, Next.js, plain HTML  
-📦 **Zero Dependencies** - Lightweight and fast (~8KB gzipped)  
+📦 **Zero Dependencies** - Lightweight and fast (~27KB gzipped)  
 🎨 **Fully Themeable** - CSS variables, dark mode ready  
 📘 **TypeScript First** - Complete type definitions included  
 
@@ -118,7 +118,7 @@ npm run dev
 
 | 🏠 Homepage | 📚 Examples Gallery | 📖 Documentation |
 |:-----------:|:-------------------:|:----------------:|
-| [Interactive demos of all 6 components](./index.html) | [24 copy-paste examples](./examples/index.html) | [Complete API reference](./docs/api/) |
+| [Interactive demos of all 7 components](./index.html) | [28+ copy-paste examples](./examples/index.html) | [Complete API reference](./docs/api/) |
 
 </div>
 
@@ -130,7 +130,7 @@ npm run dev
 
 <div align="center">
 
-### 🎯 **6 Production-Ready Components**
+### 🎯 **7 Production-Ready Components**
 
 </div>
 
@@ -235,7 +235,7 @@ Batch processing progress
 
 ### 📚 **Complete Documentation**
 
-| 📖 Getting Started | 🎮 30 Examples | 📘 API Reference | 🎨 Theming Guide |
+| 📖 Getting Started | 🎮 28+ Examples | 📘 API Reference | 🎨 Theming Guide |
 |:-----------------:|:--------------:|:----------------:|:---------------:|
 | [Quick setup guide](./docs/getting-started.md) | [4-6 per component](./examples/index.html) | [1,100+ lines each](./docs/api/) | CSS variables |
 
@@ -335,7 +335,7 @@ Specialized UI components built FOR AI workflows:
 <tr>
 <td width="50%">
 
-#### 🎯 **Components (6/6)**
+#### 🎯 **Components (7/7)**
 - ✅ StreamProgress - Token streaming
 - ✅ ModelLoader - Multi-stage loading
 - ✅ ParameterSlider - LLM controls
@@ -347,7 +347,7 @@ Specialized UI components built FOR AI workflows:
 <td width="50%">
 
 #### 📚 **Documentation**
-- ✅ 24 interactive examples (4 per component)
+- ✅ 28+ interactive examples (4+ per component)
 - ✅ Complete API docs (1,100+ lines each)
 - ✅ Getting started guide
 - ✅ Framework integration examples
@@ -361,11 +361,11 @@ Specialized UI components built FOR AI workflows:
 
 <div align="center">
 
-[![Tests](https://img.shields.io/badge/Tests-165_Passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
-[![Coverage](https://img.shields.io/badge/Components-6/6_Tested-3b82f6?style=for-the-badge)](./src/core/)
+[![Tests](https://img.shields.io/badge/Tests-220_Passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Coverage](https://img.shields.io/badge/Components-7/7_Tested-3b82f6?style=for-the-badge)](./src/core/)
 [![Framework](https://img.shields.io/badge/Vitest-1.6.1-729B1B?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 
-**165 tests • 100% pass rate • ~2.5s execution time**
+**220 tests • 100% pass rate • ~2.5s execution time**
 
 </div>
 
@@ -519,7 +519,7 @@ document.body.appendChild(progress);
 ✅ Web Components (native browser standard)  
 ✅ Shadow DOM encapsulation  
 ✅ Zero dependencies  
-✅ ~8KB gzipped per component  
+✅ ~27KB gzipped (all 7 components)  
 ✅ TypeScript strict mode  
 
 ### 🎯 **AI-Specific**
