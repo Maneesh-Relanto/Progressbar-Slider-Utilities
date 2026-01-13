@@ -1,4 +1,4 @@
-let us <div align="center">
+<div align="center">
 
 # 🤖 AI Progress Controls
 
