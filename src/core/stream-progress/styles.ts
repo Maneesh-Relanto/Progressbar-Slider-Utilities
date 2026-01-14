@@ -16,6 +16,18 @@ export const styles = `
   font-size: var(--ai-font-size);
 }
 
+:host([style*="cursor: progress"]) .stream-progress {
+  cursor: progress;
+}
+
+:host([style*="cursor: not-allowed"]) .stream-progress {
+  cursor: not-allowed;
+}
+
+:host([style*="cursor: default"]) .stream-progress {
+  cursor: default;
+}
+
 .stream-progress {
   background: var(--ai-background-color);
   border: 1px solid var(--ai-border-color);

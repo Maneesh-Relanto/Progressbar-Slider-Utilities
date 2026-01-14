@@ -85,6 +85,7 @@ export class QueueProgress extends AIControl {
       message: config.message ?? 'You are in the queue',
       animate: config.animate ?? true,
       updateThrottle: config.updateThrottle ?? 100,
+      cursorFeedback: config.cursorFeedback ?? true,
       debug: config.debug ?? false,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Queue Progress',
@@ -159,6 +160,7 @@ export class QueueProgress extends AIControl {
     this.initialPosition = this.state.position;
     this.startTimer();
     this.render();
+    this.updateCursor();
     this.emit('queuestart', {
       position: this.state.position,
       queueSize: this.state.queueSize,
@@ -224,6 +226,7 @@ export class QueueProgress extends AIControl {
 
     this.stopTimer();
     this.render();
+    this.updateCursor();
 
     const totalWaitTime = this.state.startTime > 0 ? Date.now() - this.state.startTime : 0;
 
@@ -248,6 +251,7 @@ export class QueueProgress extends AIControl {
 
     this.stopTimer();
     this.render();
+    this.updateCursor();
     this.log('Queue cancelled', reason);
   }
 
@@ -263,6 +267,7 @@ export class QueueProgress extends AIControl {
 
     this.stopTimer();
     this.render();
+    this.updateCursor();
 
     this.emit('queueerror', {
       message: errorMessage,
@@ -339,6 +344,21 @@ export class QueueProgress extends AIControl {
     if (this.state.queueSize === 0 || this.initialPosition === 0) return 0;
     const processed = this.initialPosition - this.state.position;
     return Math.min(100, Math.max(0, (processed / this.initialPosition) * 100));
+  }
+
+  /**
+   * Update cursor based on queue state
+   */
+  private updateCursor(): void {
+    if (!this.config.cursorFeedback) return;
+
+    if (this.state.status === 'waiting') {
+      this.style.cursor = 'wait';
+    } else if (this.state.status === 'error' || this.state.status === 'cancelled') {
+      this.style.cursor = 'not-allowed';
+    } else {
+      this.style.cursor = 'default';
+    }
   }
 
   /**

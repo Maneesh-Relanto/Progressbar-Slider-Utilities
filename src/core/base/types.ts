@@ -10,6 +10,8 @@ export interface AIControlConfig {
   disabled?: boolean;
   /** ARIA label for accessibility */
   ariaLabel?: string;
+  /** Enable automatic cursor feedback based on state (default: true) */
+  cursorFeedback?: boolean;
 }
 
 /**

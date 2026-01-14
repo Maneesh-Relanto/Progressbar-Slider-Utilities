@@ -58,6 +58,9 @@ export interface RetryProgressConfig {
   /** Enable animations */
   animate?: boolean;
 
+  /** Enable automatic cursor state changes based on component state */
+  cursorFeedback?: boolean;
+
   /** Custom CSS class */
   className?: string;
 

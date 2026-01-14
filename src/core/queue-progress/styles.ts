@@ -7,6 +7,18 @@ export const styles = `
     --transition-speed: 0.3s;
   }
 
+  :host([style*="cursor: wait"]) .queue-container {
+    cursor: wait;
+  }
+
+  :host([style*="cursor: not-allowed"]) .queue-container {
+    cursor: not-allowed;
+  }
+
+  :host([style*="cursor: default"]) .queue-container {
+    cursor: default;
+  }
+
   .queue-container {
     background: var(--queue-background, #1a1a2e);
     border: 1px solid var(--queue-border, #27273a);

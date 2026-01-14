@@ -82,6 +82,7 @@ export class ParameterSlider extends AIControl {
       showReset: config.showReset ?? true,
       showRangeLabels: config.showRangeLabels ?? true,
       unit: config.unit ?? '',
+      cursorFeedback: config.cursorFeedback ?? true,
       disabled: config.disabled ?? false,
       debug: config.debug ?? false,
       className: config.className ?? '',
@@ -438,6 +439,22 @@ export class ParameterSlider extends AIControl {
 
     // Update active preset
     this.updateActivePreset();
+    this.updateCursor();
+  }
+
+  /**
+   * Update cursor based on slider state
+   */
+  private updateCursor(): void {
+    if (!this.config.cursorFeedback || !this.sliderThumb) return;
+
+    if (this.config.disabled) {
+      this.sliderThumb.style.cursor = 'not-allowed';
+    } else if (this.state.isDragging) {
+      this.sliderThumb.style.cursor = 'grabbing';
+    } else {
+      this.sliderThumb.style.cursor = 'grab';
+    }
   }
 
   /**

@@ -22,6 +22,8 @@ export interface StreamProgressConfig {
   updateThrottle?: number;
   /** Custom cancel button label */
   cancelLabel?: string;
+  /** Enable automatic cursor state changes based on component state */
+  cursorFeedback?: boolean;
   /** Debug mode */
   debug?: boolean;
   /** Custom CSS class */

@@ -18,6 +18,18 @@ export const styles = `
   font-size: var(--ai-font-size);
 }
 
+:host([style*="cursor: progress"]) .model-loader {
+  cursor: progress;
+}
+
+:host([style*="cursor: not-allowed"]) .model-loader {
+  cursor: not-allowed;
+}
+
+:host([style*="cursor: default"]) .model-loader {
+  cursor: default;
+}
+
 .model-loader {
   background: var(--ai-background-color);
   border: 1px solid var(--ai-border-color);

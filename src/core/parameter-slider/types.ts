@@ -53,6 +53,9 @@ export interface ParameterSliderConfig {
   /** Unit suffix (e.g., '%', 'tokens') */
   unit?: string;
 
+  /** Enable automatic cursor state changes based on component state */
+  cursorFeedback?: boolean;
+
   /** Disabled state */
   disabled?: boolean;
 

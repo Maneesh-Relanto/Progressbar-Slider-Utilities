@@ -78,6 +78,7 @@ export class RetryProgress extends AIControl {
       animate: config.animate ?? true,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Retry Progress',
+      cursorFeedback: config.cursorFeedback ?? true,
       debug: config.debug ?? false,
       disabled: config.disabled ?? false,
     };
@@ -466,6 +467,7 @@ export class RetryProgress extends AIControl {
   private setState(update: Partial<RetryProgressState>): void {
     Object.assign(this.state, update);
     this.render();
+    this.updateCursor();
 
     // Update ARIA attributes
     const progress = ((this.state.attempt / this.state.maxAttempts) * 100).toFixed(0);
@@ -475,6 +477,23 @@ export class RetryProgress extends AIControl {
       'aria-valuetext',
       `Attempt ${this.state.attempt} of ${this.state.maxAttempts}, ${progress}% complete`
     );
+  }
+
+  /**
+   * Update cursor based on retry state
+   */
+  private updateCursor(): void {
+    if (!this.config.cursorFeedback) return;
+
+    if (this.state.status === 'attempting') {
+      this.style.cursor = 'progress';
+    } else if (this.state.status === 'waiting') {
+      this.style.cursor = 'wait';
+    } else if (this.state.status === 'failed' || this.state.status === 'cancelled') {
+      this.style.cursor = 'not-allowed';
+    } else {
+      this.style.cursor = 'default';
+    }
   }
 
   /**

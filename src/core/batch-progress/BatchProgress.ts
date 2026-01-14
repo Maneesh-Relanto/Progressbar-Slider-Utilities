@@ -96,6 +96,7 @@ export class BatchProgress extends AIControl {
       debug: config.debug ?? false,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Batch Progress',
+      cursorFeedback: config.cursorFeedback ?? true,
     };
 
     this.state = {
@@ -139,6 +140,21 @@ export class BatchProgress extends AIControl {
   }
 
   /**
+   * Update cursor based on component state
+   */
+  private updateCursor(): void {
+    if (!this.config.cursorFeedback) return;
+
+    if (this.state.status === 'processing') {
+      this.style.cursor = 'progress';
+    } else if (this.state.status === 'cancelled') {
+      this.style.cursor = 'not-allowed';
+    } else {
+      this.style.cursor = 'default';
+    }
+  }
+
+  /**
    * Start batch processing
    */
   public start(message?: string): void {
@@ -152,6 +168,7 @@ export class BatchProgress extends AIControl {
     this.state.successCount = 0;
 
     this.render();
+    this.updateCursor();
 
     const event: BatchStartEvent = {
       totalItems: this.state.totalItems,
@@ -304,6 +321,7 @@ export class BatchProgress extends AIControl {
     this.state.endTime = Date.now();
 
     this.render();
+    this.updateCursor();
 
     const duration = this.state.endTime - (this.state.startTime || 0);
     const averageRate = this.state.totalItems / (duration / 1000);
@@ -346,6 +364,7 @@ export class BatchProgress extends AIControl {
     });
 
     this.render();
+    this.updateCursor();
 
     const event: BatchCancelEvent = {
       completedCount: this.state.completedCount,

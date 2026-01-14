@@ -14,6 +14,18 @@ export const styles = `
     --ai-spacing: 12px;
   }
 
+  :host([style*="cursor: progress"]) .container {
+    cursor: progress;
+  }
+
+  :host([style*="cursor: not-allowed"]) .container {
+    cursor: not-allowed;
+  }
+
+  :host([style*="cursor: default"]) .container {
+    cursor: default;
+  }
+
   .container {
     background: var(--ai-background-color);
     border: 1px solid var(--ai-border-color);

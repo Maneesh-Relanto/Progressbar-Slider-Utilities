@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursor States Demo - AI Control Components</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        padding: 3rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: white;
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .subtitle {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+      }
+
+      .section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .section h2 {
+        color: #667eea;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .section-description {
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .cursor-info {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: 4px;
+      }
+
+      .cursor-info code {
+        background: #e9ecef;
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+        color: #764ba2;
+      }
+
+      .demo-item {
+        margin-bottom: 2rem;
+      }
+
+      .demo-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .demo-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #667eea;
+        color: white;
+      }
+
+      button:hover {
+        background: #5568d3;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      button.secondary {
+        background: #6c757d;
+      }
+
+      button.secondary:hover {
+        background: #5a6268;
+      }
+
+      button.danger {
+        background: #dc3545;
+      }
+
+      button.danger:hover {
+        background: #c82333;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 1.5rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .section {
+          padding: 1.5rem;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🖱️ Cursor States Demo</h1>
+      <p class="subtitle">
+        Demonstrating automatic cursor feedback based on component state. Hover over each
+        component to see cursor changes.
+      </p>
+
+      <!-- StreamProgress -->
+      <div class="section">
+        <h2>📊 StreamProgress</h2>
+        <p class="section-description">
+          Token streaming progress with cursor feedback indicating streaming/paused/cancelled
+          states.
+        </p>
+        <div class="cursor-info">
+          <strong>Cursor States:</strong>
+          <code>progress</code> (streaming) · <code>not-allowed</code> (cancelled) ·
+          <code>default</code> (idle/complete)
+        </div>
+        <div class="demo-item">
+          <div class="demo-label">Stream Progress Component</div>
+          <stream-progress id="stream-demo"></stream-progress>
+          <div class="controls">
+            <button onclick="startStream()">Start Streaming</button>
+            <button onclick="pauseStream()" class="secondary">Pause</button>
+            <button onclick="resumeStream()" class="secondary">Resume</button>
+            <button onclick="cancelStream()" class="danger">Cancel</button>
+            <button onclick="completeStream()">Complete</button>
+            <button onclick="resetStream()" class="secondary">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BatchProgress -->
+      <div class="section">
+        <h2>📦 BatchProgress</h2>
+        <p class="section-description">
+          Batch operations progress with cursor showing processing/error states.
+        </p>
+        <div class="cursor-info">
+          <strong>Cursor States:</strong>
+          <code>progress</code> (processing) · <code>not-allowed</code> (error/cancelled) ·
+          <code>default</code> (idle/complete)
+        </div>
+        <div class="demo-item">
+          <div class="demo-label">Batch Progress Component</div>
+          <batch-progress id="batch-demo"></batch-progress>
+          <div class="controls">
+            <button onclick="startBatch()">Start Batch</button>
+            <button onclick="updateBatch()">Update Progress</button>
+            <button onclick="cancelBatch()" class="danger">Cancel</button>
+            <button onclick="completeBatch()">Complete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ModelLoader -->
+      <div class="section">
+        <h2>🤖 ModelLoader</h2>
+        <p class="section-description">
+          Multi-stage model loading with cursor indicating loading/error states.
+        </p>
+        <div class="cursor-info">
+          <strong>Cursor States:</strong>
+          <code>progress</code> (loading) · <code>not-allowed</code> (error) ·
+          <code>default</code> (idle/complete)
+        </div>
+        <div class="demo-item">
+          <div class="demo-label">Model Loader Component</div>
+          <model-loader id="loader-demo"></model-loader>
+          <div class="controls">
+            <button onclick="startLoader()">Start Loading</button>
+            <button onclick="advanceStage()">Next Stage</button>
+            <button onclick="errorLoader()" class="danger">Trigger Error</button>
+            <button onclick="completeLoader()">Complete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- QueueProgress -->
+      <div class="section">
+        <h2>⏳ QueueProgress</h2>
+        <p class="section-description">
+          Queue position tracking with wait cursor for queued state.
+        </p>
+        <div class="cursor-info">
+          <strong>Cursor States:</strong>
+          <code>wait</code> (waiting in queue) · <code>not-allowed</code> (error/cancelled) ·
+          <code>default</code> (idle/complete)
+        </div>
+        <div class="demo-item">
+          <div class="demo-label">Queue Progress Component</div>
+          <queue-progress id="queue-demo"></queue-progress>
+          <div class="controls">
+            <button onclick="startQueue()">Start Queue</button>
+            <button onclick="updateQueue()">Update Position</button>
+            <button onclick="cancelQueue()" class="danger">Cancel</button>
+            <button onclick="completeQueue()">Complete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RetryProgress -->
+      <div class="section">
+        <h2>🔄 RetryProgress</h2>
+        <p class="section-description">
+          Retry operations with cursor showing attempting/waiting/failed states.
+        </p>
+        <div class="cursor-info">
+          <strong>Cursor States:</strong>
+          <code>progress</code> (attempting) · <code>wait</code> (waiting for retry) ·
+          <code>not-allowed</code> (failed/cancelled) · <code>default</code> (idle/success)
+        </div>
+        <div class="demo-item">
+          <div class="demo-label">Retry Progress Component</div>
+          <retry-progress id="retry-demo"></retry-progress>
+          <div class="controls">
+            <button onclick="attemptRetry()">Attempt</button>
+            <button onclick="waitRetry()">Wait for Retry</button>
+            <button onclick="failRetry()" class="danger">Fail</button>
+            <button onclick="successRetry()">Success</button>
+            <button onclick="cancelRetry()" class="danger">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ParameterSlider -->
+      <div class="section">
+        <h2>🎚️ ParameterSlider</h2>
+        <p class="section-description">
+          Interactive parameter controls with grab/grabbing cursors for dragging.
+        </p>
+        <div class="cursor-info">
+          <strong>Cursor States:</strong>
+          <code>grab</code> (idle/hovering) · <code>grabbing</code> (dragging) ·
+          <code>not-allowed</code> (disabled)
+        </div>
+        <div class="grid">
+          <div class="demo-item">
+            <div class="demo-label">Temperature Slider (Enabled)</div>
+            <parameter-slider
+              id="slider-demo"
+              label="Temperature"
+              min="0"
+              max="2"
+              value="0.7"
+              step="0.1"
+            ></parameter-slider>
+          </div>
+          <div class="demo-item">
+            <div class="demo-label">Top-P Slider (Disabled)</div>
+            <parameter-slider
+              id="slider-disabled"
+              label="Top-P"
+              min="0"
+              max="1"
+              value="0.9"
+              step="0.05"
+              disabled
+            ></parameter-slider>
+            <div class="controls">
+              <button onclick="toggleSliderDisabled()">Toggle Disabled</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      // Import components from source for dev mode
+      import {
+        StreamProgress,
+        BatchProgress,
+        ModelLoader,
+        QueueProgress,
+        RetryProgress,
+        ParameterSlider,
+      } from '../../src/index.ts';
+
+      // Initialize components
+      const streamDemo = document.getElementById('stream-demo');
+      const batchDemo = document.getElementById('batch-demo');
+      const loaderDemo = document.getElementById('loader-demo');
+      const queueDemo = document.getElementById('queue-demo');
+      const retryDemo = document.getElementById('retry-demo');
+      const sliderDisabled = document.getElementById('slider-disabled');
+
+      // StreamProgress controls
+      window.startStream = () => streamDemo.start('Streaming tokens...');
+      window.pauseStream = () => streamDemo.pause();
+      window.resumeStream = () => streamDemo.resume();
+      window.cancelStream = () => streamDemo.cancel('User cancelled');
+      window.completeStream = () => streamDemo.complete();
+      window.resetStream = () => streamDemo.reset();
+
+      // BatchProgress controls
+      let batchItems = 0;
+      window.startBatch = () => {
+        batchDemo.start({
+          total: 10,
+          message: 'Processing batch...',
+        });
+        batchItems = 0;
+      };
+      window.updateBatch = () => {
+        if (batchItems < 10) {
+          batchItems++;
+          batchDemo.updateItem({
+            completed: batchItems,
+            message: `Processing item ${batchItems}/10`,
+          });
+        }
+      };
+      window.cancelBatch = () => batchDemo.cancel('Batch cancelled');
+      window.completeBatch = () => batchDemo.complete();
+
+      // ModelLoader controls
+      const loaderStages = ['download', 'parse', 'compile', 'ready'];
+      let currentStage = 0;
+      window.startLoader = () => {
+        currentStage = 0;
+        loaderDemo.start();
+      };
+      window.advanceStage = () => {
+        if (currentStage < loaderStages.length - 1) {
+          currentStage++;
+          loaderDemo.completeStage(`Stage ${currentStage + 1} complete`);
+        }
+      };
+      window.errorLoader = () => loaderDemo.error('Loading failed');
+      window.completeLoader = () => loaderDemo.complete();
+
+      // QueueProgress controls
+      let queuePosition = 50;
+      window.startQueue = () => {
+        queuePosition = 50;
+        queueDemo.start('Waiting in queue...');
+      };
+      window.updateQueue = () => {
+        if (queuePosition > 0) {
+          queuePosition -= 5;
+          queueDemo.update({ position: queuePosition });
+        }
+      };
+      window.cancelQueue = () => queueDemo.cancel('Queue cancelled');
+      window.completeQueue = () => queueDemo.complete();
+
+      // RetryProgress controls
+      window.attemptRetry = () => retryDemo.attempt('Attempting connection...');
+      window.waitRetry = () =>
+        retryDemo.waitForRetry({
+          attempt: 2,
+          error: new Error('Connection timeout'),
+        });
+      window.failRetry = () => retryDemo.failure(new Error('Max attempts reached'));
+      window.successRetry = () => retryDemo.success('Connected successfully!');
+      window.cancelRetry = () => retryDemo.cancel('Retry cancelled');
+
+      // ParameterSlider controls
+      window.toggleSliderDisabled = () => {
+        const isDisabled = sliderDisabled.hasAttribute('disabled');
+        if (isDisabled) {
+          sliderDisabled.removeAttribute('disabled');
+        } else {
+          sliderDisabled.setAttribute('disabled', '');
+        }
+      };
+
+      console.log('✅ Cursor states demo loaded. Hover over components to see cursor changes!');
+    </script>
+  </body>
+</html>

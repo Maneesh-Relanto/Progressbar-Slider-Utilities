@@ -39,6 +39,9 @@ export interface ModelLoaderConfig {
   /** Custom retry button label */
   retryLabel?: string;
 
+  /** Enable automatic cursor state changes based on component state */
+  cursorFeedback?: boolean;
+
   /** Debug mode */
   debug?: boolean;
 

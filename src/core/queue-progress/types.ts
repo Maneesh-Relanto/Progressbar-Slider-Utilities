@@ -43,6 +43,9 @@ export interface QueueProgressConfig {
   /** Update throttle in milliseconds */
   updateThrottle?: number;
 
+  /** Enable automatic cursor state changes based on component state */
+  cursorFeedback?: boolean;
+
   /** Debug mode */
   debug?: boolean;
 

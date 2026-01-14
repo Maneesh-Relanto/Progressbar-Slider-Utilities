@@ -15,6 +15,22 @@ export const styles = `
     --retry-border: #374151;
   }
 
+  :host([style*="cursor: progress"]) .retry-container {
+    cursor: progress;
+  }
+
+  :host([style*="cursor: wait"]) .retry-container {
+    cursor: wait;
+  }
+
+  :host([style*="cursor: not-allowed"]) .retry-container {
+    cursor: not-allowed;
+  }
+
+  :host([style*="cursor: default"]) .retry-container {
+    cursor: default;
+  }
+
   .retry-container {
     background: var(--retry-background);
     border-radius: 12px;

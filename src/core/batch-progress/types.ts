@@ -57,6 +57,9 @@ export interface BatchProgressConfig {
   /** Status message */
   message?: string;
 
+  /** Enable automatic cursor state changes based on component state */
+  cursorFeedback?: boolean;
+
   /** Disabled state */
   disabled?: boolean;
 

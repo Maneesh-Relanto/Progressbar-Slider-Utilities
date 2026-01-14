@@ -74,6 +74,7 @@ export class ModelLoader extends AIControl {
       debug: config.debug ?? false,
       className: config.className,
       ariaLabel: config.ariaLabel ?? 'Model Loading Progress',
+      cursorFeedback: config.cursorFeedback ?? true,
     });
 
     // Set default configuration
@@ -87,6 +88,7 @@ export class ModelLoader extends AIControl {
       smoothProgress: config.smoothProgress ?? true,
       updateThrottle: config.updateThrottle ?? 100,
       retryLabel: config.retryLabel ?? 'Retry',
+      cursorFeedback: config.cursorFeedback ?? true,
       debug: config.debug ?? false,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Model Loading Progress',
@@ -125,6 +127,21 @@ export class ModelLoader extends AIControl {
 
   protected override getDefaultRole(): string {
     return 'progressbar';
+  }
+
+  /**
+   * Update cursor based on component state
+   */
+  private updateCursor(): void {
+    if (!this.config.cursorFeedback) return;
+
+    if (this.state.isLoading) {
+      this.style.cursor = 'progress';
+    } else if (this.state.hasError) {
+      this.style.cursor = 'not-allowed';
+    } else {
+      this.style.cursor = 'default';
+    }
   }
 
   protected override handleAttributeChange(
@@ -180,6 +197,7 @@ export class ModelLoader extends AIControl {
 
     this.startTimer();
     this.render();
+    this.updateCursor();
     this.emit('loadstart', { stage: firstStage, timestamp: Date.now() });
     this.log('Loading started', this.state);
   }
@@ -336,6 +354,7 @@ export class ModelLoader extends AIControl {
     };
 
     this.render();
+    this.updateCursor();
     this.emit('loadcomplete', event);
     this.log('Loading completed', event);
   }
@@ -368,6 +387,7 @@ export class ModelLoader extends AIControl {
     };
 
     this.render();
+    this.updateCursor();
     this.emit('loaderror', event);
     this.logError('Loading error', new Error(message));
   }

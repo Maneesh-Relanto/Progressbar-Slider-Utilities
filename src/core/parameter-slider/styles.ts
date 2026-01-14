@@ -6,6 +6,14 @@ export const styles = `
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
+    :host([style*="cursor: grab"]) .slider-thumb {
+      cursor: grab;
+    }
+
+    :host([style*="cursor: grabbing"]) .slider-thumb {
+      cursor: grabbing;
+    }
+
     .parameter-slider {
       display: flex;
       flex-direction: column;

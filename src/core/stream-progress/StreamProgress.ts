@@ -84,6 +84,7 @@ export class StreamProgress extends AIControl {
       debug: config.debug ?? false,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'AI Stream Progress',
+      cursorFeedback: config.cursorFeedback ?? true,
     };
 
     // Initialize state
@@ -118,6 +119,21 @@ export class StreamProgress extends AIControl {
   protected override cleanup(): void {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
+    }
+  }
+
+  /**
+   * Update cursor based on component state
+   */
+  private updateCursor(): void {
+    if (!this.config.cursorFeedback) return;
+
+    if (this.state.isStreaming && !this.state.isPaused) {
+      this.style.cursor = 'progress';
+    } else if (this.state.isCancelled) {
+      this.style.cursor = 'not-allowed';
+    } else {
+      this.style.cursor = 'default';
     }
   }
 
@@ -171,6 +187,7 @@ export class StreamProgress extends AIControl {
     this.displayTokens = 0;
     this.startTimer();
     this.render();
+    this.updateCursor();
     this.emit('streamstart', { startTime: this.state.startTime, message });
     this.log('Stream started', this.state);
   }
@@ -274,6 +291,7 @@ export class StreamProgress extends AIControl {
     };
 
     this.render();
+    this.updateCursor();
     this.emit('streamcomplete', event);
     this.log('Stream completed', event);
   }
@@ -301,6 +319,7 @@ export class StreamProgress extends AIControl {
     };
 
     this.render();
+    this.updateCursor();
     this.emit('streamcancel', event);
     this.log('Stream cancelled', event);
   }
@@ -326,6 +345,7 @@ export class StreamProgress extends AIControl {
     }
 
     this.render();
+    this.updateCursor();
     this.log('Component reset');
   }
 
