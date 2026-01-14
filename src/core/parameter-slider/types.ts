@@ -59,6 +59,12 @@ export interface ParameterSliderConfig {
   /** Component size variant */
   size?: 'compact' | 'default' | 'large';
 
+  /** Visual style variant */
+  variant?: 'default' | 'minimal' | 'gradient' | 'glassmorphic';
+
+  /** Animation style */
+  animation?: 'none' | 'striped' | 'pulse' | 'glow';
+
   /** Disabled state */
   disabled?: boolean;
 

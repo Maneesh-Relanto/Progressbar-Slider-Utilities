@@ -66,7 +66,7 @@ export class ModelLoader extends AIControl {
   private readonly updateThrottled: (update: StageUpdate) => void;
 
   static get observedAttributes() {
-    return ['model-name', 'disabled', 'size'];
+    return ['model-name', 'disabled', 'size', 'variant', 'animation'];
   }
 
   constructor(config: ModelLoaderConfig = {}) {
@@ -93,6 +93,8 @@ export class ModelLoader extends AIControl {
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Model Loading Progress',
       size: config.size ?? 'default',
+      variant: config.variant ?? 'default',
+      animation: config.animation ?? 'none',
     };
 
     // Initialize state
@@ -161,6 +163,14 @@ export class ModelLoader extends AIControl {
         break;
       case 'size':
         this.config.size = newValue as any;
+        this.render();
+        break;
+      case 'variant':
+        this.config.variant = newValue as any;
+        this.render();
+        break;
+      case 'animation':
+        this.config.animation = newValue as any;
         this.render();
         break;
     }
@@ -580,6 +590,17 @@ export class ModelLoader extends AIControl {
    */
   protected render(): void {
     if (!this.shadowRoot) return;
+
+    // Sync attributes to host element for CSS selectors
+    if (this.config.size && this.getAttribute('size') !== this.config.size) {
+      this.setAttribute('size', this.config.size);
+    }
+    if (this.config.variant && this.getAttribute('variant') !== this.config.variant) {
+      this.setAttribute('variant', this.config.variant);
+    }
+    if (this.config.animation && this.getAttribute('animation') !== this.config.animation) {
+      this.setAttribute('animation', this.config.animation);
+    }
 
     const overallStatus = this.getOverallStatus();
     const statusBadgeText = this.getStatusBadgeText(overallStatus);

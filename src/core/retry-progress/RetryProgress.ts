@@ -82,6 +82,8 @@ export class RetryProgress extends AIControl {
       debug: config.debug ?? false,
       disabled: config.disabled ?? false,
       size: config.size ?? 'default',
+      variant: config.variant ?? 'default',
+      animation: config.animation ?? 'none',
     };
 
     this.state = {
@@ -611,6 +613,17 @@ export class RetryProgress extends AIControl {
   protected override render(): void {
     if (!this.shadowRoot) return;
 
+    // Sync attributes to host element for CSS selectors
+    if (this.config.size && this.getAttribute('size') !== this.config.size) {
+      this.setAttribute('size', this.config.size);
+    }
+    if (this.config.variant && this.getAttribute('variant') !== this.config.variant) {
+      this.setAttribute('variant', this.config.variant);
+    }
+    if (this.config.animation && this.getAttribute('animation') !== this.config.animation) {
+      this.setAttribute('animation', this.config.animation);
+    }
+
     const { status, attempt, maxAttempts, message, errorMessage, elapsedTime } = this.state;
     const {
       showAttemptCount,
@@ -742,6 +755,8 @@ export class RetryProgress extends AIControl {
       'show-progress-bar',
       'disabled',
       'size',
+      'variant',
+      'animation',
     ];
   }
 
@@ -798,6 +813,14 @@ export class RetryProgress extends AIControl {
         break;
       case 'show-progress-bar':
         this.config.showProgressBar = newValue === 'true';
+        break;
+      case 'variant':
+        this.config.variant = newValue as any;
+        this.render();
+        break;
+      case 'animation':
+        this.config.animation = newValue as any;
+        this.render();
         break;
       case 'disabled':
         this._disabled = newValue !== null;

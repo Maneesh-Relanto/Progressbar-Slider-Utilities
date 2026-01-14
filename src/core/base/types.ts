@@ -4,6 +4,16 @@
 export type SizeVariant = 'compact' | 'default' | 'large';
 
 /**
+ * Visual style variant for components
+ */
+export type VisualVariant = 'default' | 'minimal' | 'gradient' | 'glassmorphic';
+
+/**
+ * Animation effect for progress indicators
+ */
+export type AnimationEffect = 'none' | 'striped' | 'pulse' | 'glow';
+
+/**
  * Base configuration for all AI Progress Controls
  */
 export interface AIControlConfig {
@@ -19,6 +29,10 @@ export interface AIControlConfig {
   cursorFeedback?: boolean;
   /** Size variant: compact, default, or large */
   size?: SizeVariant;
+  /** Visual style variant: default, minimal, gradient, or glassmorphic */
+  variant?: VisualVariant;
+  /** Animation effect: none, striped, pulse, or glow */
+  animation?: AnimationEffect;
 }
 
 /**

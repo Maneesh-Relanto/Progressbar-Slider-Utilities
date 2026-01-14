@@ -260,4 +260,52 @@ describe('ModelLoader Component', () => {
       expect(loader.getAttribute('size')).toBe('compact');
     });
   });
+
+  describe('Visual Variants', () => {
+    it('should apply default variant by default', () => {
+      expect(loader['config'].variant).toBe('default');
+    });
+
+    it('should apply minimal variant', () => {
+      const minimal = new ModelLoader({ variant: 'minimal' });
+      expect(minimal['config'].variant).toBe('minimal');
+      minimal.remove();
+    });
+
+    it('should apply gradient variant', () => {
+      const gradient = new ModelLoader({ variant: 'gradient' });
+      expect(gradient['config'].variant).toBe('gradient');
+      gradient.remove();
+    });
+
+    it('should apply glassmorphic variant', () => {
+      const glassmorphic = new ModelLoader({ variant: 'glassmorphic' });
+      expect(glassmorphic['config'].variant).toBe('glassmorphic');
+      glassmorphic.remove();
+    });
+  });
+
+  describe('Animation Effects', () => {
+    it('should apply none animation by default', () => {
+      expect(loader['config'].animation).toBe('none');
+    });
+
+    it('should apply striped animation', () => {
+      const striped = new ModelLoader({ animation: 'striped' });
+      expect(striped['config'].animation).toBe('striped');
+      striped.remove();
+    });
+
+    it('should apply pulse animation', () => {
+      const pulse = new ModelLoader({ animation: 'pulse' });
+      expect(pulse['config'].animation).toBe('pulse');
+      pulse.remove();
+    });
+
+    it('should apply glow animation', () => {
+      const glow = new ModelLoader({ animation: 'glow' });
+      expect(glow['config'].animation).toBe('glow');
+      glow.remove();
+    });
+  });
 });

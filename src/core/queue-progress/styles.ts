@@ -187,25 +187,10 @@ export const styles = `
     100% { transform: translateX(100%); }
   }
 
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--queue-text-secondary, #a1a1aa);
-  }
-
-  .queue-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px;
-    background: var(--queue-info-bg, rgba(102, 126, 234, 0.05));
-    border: 1px solid var(--queue-primary, #667eea);
-    border-radius: 8px;
-    margin-top: 16px;
-  }
+/* Override default animation when animation attribute is set */
+:host([animation]) .progress-fill::after {
+  animation: none !important;
+}
 
   .info-icon {
     font-size: 18px;
@@ -286,6 +271,114 @@ export const styles = `
 
   .position-number.changing {
     animation: positionChange 0.5s ease;
+  }
+
+  /* Visual Variants */
+
+  /* Minimal variant - clean, no shadows */
+  :host([variant="minimal"]) .queue-container {
+    box-shadow: none;
+    border: 1px solid var(--queue-border, #27273a);
+  }
+
+  :host([variant="minimal"]) .progress-bar {
+    background: transparent;
+    border: 1px solid var(--queue-border, #27273a);
+  }
+
+  /* Gradient variant - colorful gradients */
+  :host([variant="gradient"]) .progress-fill {
+    background: linear-gradient(
+      90deg,
+      #667eea,
+      #764ba2,
+      #667eea
+    );
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease-in-out infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Override default animation when animation attribute is set */
+  :host([animation][variant="gradient"]) .progress-fill {
+    animation: none !important;
+  }
+
+  /* Glassmorphic variant - frosted glass effect */
+  :host([variant="glassmorphic"]) .queue-container {
+    background: rgba(26, 26, 46, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  :host([variant="glassmorphic"]) .progress-bar {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  :host([variant="glassmorphic"]) .progress-fill {
+    background: linear-gradient(
+      90deg,
+      rgba(102, 126, 234, 0.8),
+      rgba(118, 75, 162, 0.8)
+    );
+  }
+
+  /* Animation Effects */
+
+  /* Striped animation */
+  :host([animation="striped"]) .progress-fill {
+    background-image: 
+      linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+      ),
+      linear-gradient(to right, #667eea, #667eea) !important;
+    background-size: 2rem 2rem, 100% 100% !important;
+    animation: progress-stripes 3s linear infinite !important;
+  }
+
+  @keyframes progress-stripes {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 2rem 0, 0 0; }
+  }
+
+  /* Pulse animation */
+  :host([animation="pulse"]) .progress-fill {
+    animation: progress-pulse 4s ease-in-out infinite !important;
+  }
+
+  @keyframes progress-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Glow animation */
+  :host([animation="glow"]) .progress-fill {
+    animation: progress-glow 4s ease-in-out infinite !important;
+  }
+
+  @keyframes progress-glow {
+    0%, 100% { 
+      box-shadow: 0 0 5px #667eea,
+                  0 0 10px #667eea;
+    }
+    50% { 
+      box-shadow: 0 0 20px #667eea, 
+                  0 0 35px #667eea,
+                  0 0 50px #667eea;
+    }
   }
 
   /* Size variants */

@@ -407,4 +407,52 @@ describe('BatchProgress Component', () => {
       expect(progress.getAttribute('size')).toBe('compact');
     });
   });
+
+  describe('Visual Variants', () => {
+    it('should apply default variant by default', () => {
+      expect(progress['config'].variant).toBe('default');
+    });
+
+    it('should apply minimal variant', () => {
+      const minimal = new BatchProgress({ variant: 'minimal' });
+      expect(minimal['config'].variant).toBe('minimal');
+      minimal.remove();
+    });
+
+    it('should apply gradient variant', () => {
+      const gradient = new BatchProgress({ variant: 'gradient' });
+      expect(gradient['config'].variant).toBe('gradient');
+      gradient.remove();
+    });
+
+    it('should apply glassmorphic variant', () => {
+      const glassmorphic = new BatchProgress({ variant: 'glassmorphic' });
+      expect(glassmorphic['config'].variant).toBe('glassmorphic');
+      glassmorphic.remove();
+    });
+  });
+
+  describe('Animation Effects', () => {
+    it('should apply none animation by default', () => {
+      expect(progress['config'].animation).toBe('none');
+    });
+
+    it('should apply striped animation', () => {
+      const striped = new BatchProgress({ animation: 'striped' });
+      expect(striped['config'].animation).toBe('striped');
+      striped.remove();
+    });
+
+    it('should apply pulse animation', () => {
+      const pulse = new BatchProgress({ animation: 'pulse' });
+      expect(pulse['config'].animation).toBe('pulse');
+      pulse.remove();
+    });
+
+    it('should apply glow animation', () => {
+      const glow = new BatchProgress({ animation: 'glow' });
+      expect(glow['config'].animation).toBe('glow');
+      glow.remove();
+    });
+  });
 });

@@ -53,6 +53,14 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 🎯 **Batch Processing** - Concurrency control & item tracking  
 🎛️ **Parameter Controls** - Unified LLM configuration panels
 
+### 🎨 **Visual Customization**
+
+🎭 **4 Visual Variants** - default, minimal, gradient, glassmorphic  
+✨ **4 Animation Effects** - none, striped, pulse, glow  
+📏 **3 Size Variants** - compact, default, large  
+🌈 **5 Brand Themes** - OpenAI, Anthropic, Google AI, Cohere, Dark  
+🖱️ **Cursor Feedback** - Automatic state indication
+
 </td>
 </tr>
 </table>
@@ -61,7 +69,7 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 ### 🎯 **Production Stats**
 
-| **7** Components | **30** Examples  | **220** Tests | **91.34%** Coverage | **0** Errors |
+| **7** Components | **30** Examples  | **292** Tests | **91.34%** Coverage | **0** Errors |
 | :--------------: | :--------------: | :-----------: | :-----------------: | :----------: |
 | Fully documented | Copy-paste ready | 100% passing  | Exceeds 80% target  | ESLint clean |
 

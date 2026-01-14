@@ -480,4 +480,52 @@ describe('StreamProgress Component', () => {
       expect(progress.getAttribute('size')).toBe('compact');
     });
   });
+
+  describe('Visual Variants', () => {
+    it('should apply default variant by default', () => {
+      expect(progress['config'].variant).toBe('default');
+    });
+
+    it('should apply minimal variant', () => {
+      const minimal = new StreamProgress({ variant: 'minimal' });
+      expect(minimal['config'].variant).toBe('minimal');
+      minimal.remove();
+    });
+
+    it('should apply gradient variant', () => {
+      const gradient = new StreamProgress({ variant: 'gradient' });
+      expect(gradient['config'].variant).toBe('gradient');
+      gradient.remove();
+    });
+
+    it('should apply glassmorphic variant', () => {
+      const glassmorphic = new StreamProgress({ variant: 'glassmorphic' });
+      expect(glassmorphic['config'].variant).toBe('glassmorphic');
+      glassmorphic.remove();
+    });
+  });
+
+  describe('Animation Effects', () => {
+    it('should apply none animation by default', () => {
+      expect(progress['config'].animation).toBe('none');
+    });
+
+    it('should apply striped animation', () => {
+      const striped = new StreamProgress({ animation: 'striped' });
+      expect(striped['config'].animation).toBe('striped');
+      striped.remove();
+    });
+
+    it('should apply pulse animation', () => {
+      const pulse = new StreamProgress({ animation: 'pulse' });
+      expect(pulse['config'].animation).toBe('pulse');
+      pulse.remove();
+    });
+
+    it('should apply glow animation', () => {
+      const glow = new StreamProgress({ animation: 'glow' });
+      expect(glow['config'].animation).toBe('glow');
+      glow.remove();
+    });
+  });
 });

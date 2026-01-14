@@ -346,4 +346,52 @@ describe('RetryProgress Component', () => {
       expect(progress.getAttribute('size')).toBe('compact');
     });
   });
+
+  describe('Visual Variants', () => {
+    it('should apply default variant by default', () => {
+      expect(progress['config'].variant).toBe('default');
+    });
+
+    it('should apply minimal variant', () => {
+      const minimal = new RetryProgress({ variant: 'minimal' });
+      expect(minimal['config'].variant).toBe('minimal');
+      minimal.remove();
+    });
+
+    it('should apply gradient variant', () => {
+      const gradient = new RetryProgress({ variant: 'gradient' });
+      expect(gradient['config'].variant).toBe('gradient');
+      gradient.remove();
+    });
+
+    it('should apply glassmorphic variant', () => {
+      const glassmorphic = new RetryProgress({ variant: 'glassmorphic' });
+      expect(glassmorphic['config'].variant).toBe('glassmorphic');
+      glassmorphic.remove();
+    });
+  });
+
+  describe('Animation Effects', () => {
+    it('should apply none animation by default', () => {
+      expect(progress['config'].animation).toBe('none');
+    });
+
+    it('should apply striped animation', () => {
+      const striped = new RetryProgress({ animation: 'striped' });
+      expect(striped['config'].animation).toBe('striped');
+      striped.remove();
+    });
+
+    it('should apply pulse animation', () => {
+      const pulse = new RetryProgress({ animation: 'pulse' });
+      expect(pulse['config'].animation).toBe('pulse');
+      pulse.remove();
+    });
+
+    it('should apply glow animation', () => {
+      const glow = new RetryProgress({ animation: 'glow' });
+      expect(glow['config'].animation).toBe('glow');
+      glow.remove();
+    });
+  });
 });

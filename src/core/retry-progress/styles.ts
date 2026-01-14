@@ -246,25 +246,10 @@ export const styles = `
     100% { transform: translateX(100%); }
   }
 
-  /* Error Display */
-  .error-display {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid var(--retry-error);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 16px 0;
-  }
-
-  .error-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--retry-error);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .error-message {
+/* Override default animation when animation attribute is set */
+:host([animation]) .progress-fill::after {
+  animation: none !important;
+}
     font-size: 13px;
     color: #fca5a5;
     font-family: 'Monaco', 'Courier New', monospace;
@@ -344,6 +329,119 @@ export const styles = `
   .success-details {
     font-size: 13px;
     color: var(--retry-text-secondary);
+  }
+
+  /* Visual Variants */
+
+  /* Minimal variant - clean, no shadows */
+  :host([variant="minimal"]) .retry-container {
+    box-shadow: none;
+    border: 1px solid var(--retry-border);
+  }
+
+  :host([variant="minimal"]) .progress-bar {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Gradient variant - colorful gradients */
+  :host([variant="gradient"]) .progress-fill {
+    background: linear-gradient(
+      90deg,
+      var(--retry-primary),
+      #fbbf24,
+      var(--retry-primary)
+    );
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease-in-out infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Override gradient animation when custom animation is set */
+  :host([animation]:not([animation="none"])[variant="gradient"]) .progress-fill {
+    animation: none !important;
+  }
+
+  /* Override default animation when animation attribute is set */
+  :host([animation][variant="gradient"]) .progress-fill {
+    animation: none !important;
+  }
+
+  /* Glassmorphic variant - frosted glass effect */
+  :host([variant="glassmorphic"]) .retry-container {
+    background: rgba(var(--retry-background-rgb, 26, 26, 46), 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  :host([variant="glassmorphic"]) .progress-bar {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  :host([variant="glassmorphic"]) .progress-fill {
+    background: linear-gradient(
+      90deg,
+      rgba(245, 158, 11, 0.8),
+      rgba(251, 191, 36, 0.8)
+    );
+  }
+
+  /* Animation Effects */
+
+  /* Striped animation */
+  :host([animation="striped"]) .progress-fill {
+    background-image: 
+      linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.2) 75%,
+        transparent 75%,
+        transparent
+      ),
+      linear-gradient(to right, var(--retry-primary), var(--retry-primary)) !important;
+    background-size: 2rem 2rem, 100% 100% !important;
+    animation: progress-stripes 3s linear infinite !important;
+  }
+
+  @keyframes progress-stripes {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 2rem 0, 0 0; }
+  }
+
+  /* Pulse animation */
+  :host([animation="pulse"]) .progress-fill {
+    animation: progress-pulse 4s ease-in-out infinite !important;
+  }
+
+  @keyframes progress-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Glow animation */
+  :host([animation="glow"]) .progress-fill {
+    animation: progress-glow 4s ease-in-out infinite !important;
+  }
+
+  @keyframes progress-glow {
+    0%, 100% { 
+      box-shadow: 0 0 5px var(--retry-primary),
+                  0 0 10px var(--retry-primary);
+    }
+    50% { 
+      box-shadow: 0 0 20px var(--retry-primary), 
+                  0 0 35px var(--retry-primary),
+                  0 0 50px var(--retry-primary);
+    }
   }
 
   /* Size variants */

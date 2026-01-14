@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Variants & Animations Demo - AI Controls</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      color: #1f2937;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      font-size: 16px;
+    }
+
+    .controls {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .control-group {
+      margin-bottom: 20px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .control-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #1f2937;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .control-button {
+      padding: 10px 20px;
+      border: 2px solid #e5e7eb;
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      color: #1f2937;
+    }
+
+    .control-button:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    .control-button.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: white;
+    }
+
+    .components {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 30px;
+    }
+
+    .component-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .component-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .component-content {
+      min-height: 150px;
+    }
+
+    /* Component spacing */
+    stream-progress,
+    batch-progress,
+    model-loader,
+    queue-progress,
+    retry-progress,
+    parameter-slider {
+      margin-bottom: 15px;
+    }
+
+    parameter-slider:last-child,
+    stream-progress:last-child,
+    batch-progress:last-child,
+    model-loader:last-child,
+    queue-progress:last-child,
+    retry-progress:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .info-box p {
+      color: #1e40af;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .components {
+        grid-template-columns: 1fr;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .control-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎨 Visual Variants & Animations Demo</h1>
+      <p class="subtitle">Explore different visual styles and animation effects for AI Controls</p>
+    </header>
+
+    <div class="controls">
+      <div class="control-group">
+        <label class="control-label">Visual Variant</label>
+        <div class="button-group">
+          <button class="control-button active" data-variant="default">Default</button>
+          <button class="control-button" data-variant="minimal">Minimal</button>
+          <button class="control-button" data-variant="gradient">Gradient</button>
+          <button class="control-button" data-variant="glassmorphic">Glassmorphic</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Animation Effect</label>
+        <div class="button-group">
+          <button class="control-button active" data-animation="none">None</button>
+          <button class="control-button" data-animation="striped">Striped</button>
+          <button class="control-button" data-animation="pulse">Pulse</button>
+          <button class="control-button" data-animation="glow">Glow</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">Theme</label>
+        <div class="button-group">
+          <button class="control-button active" data-theme="openai">OpenAI</button>
+          <button class="control-button" data-theme="anthropic">Anthropic</button>
+          <button class="control-button" data-theme="google">Google AI</button>
+          <button class="control-button" data-theme="cohere">Cohere</button>
+          <button class="control-button" data-theme="dark">Dark Mode</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="components">
+      <!-- Stream Progress -->
+      <div class="component-card">
+        <h3 class="component-title">Stream Progress</h3>
+        <div class="component-content">
+          <stream-progress id="stream" max-tokens="1000"></stream-progress>
+        </div>
+      </div>
+
+      <!-- Batch Progress -->
+      <div class="component-card">
+        <h3 class="component-title">Batch Progress</h3>
+        <div class="component-content">
+          <batch-progress id="batch" total-batches="5"></batch-progress>
+        </div>
+      </div>
+
+      <!-- Model Loader -->
+      <div class="component-card">
+        <h3 class="component-title">Model Loader</h3>
+        <div class="component-content">
+          <model-loader id="loader" model-name="GPT-4" total-size="1500"></model-loader>
+        </div>
+      </div>
+
+      <!-- Queue Progress -->
+      <div class="component-card">
+        <h3 class="component-title">Queue Progress</h3>
+        <div class="component-content">
+          <queue-progress id="queue" total-items="10"></queue-progress>
+        </div>
+      </div>
+
+      <!-- Retry Progress -->
+      <div class="component-card">
+        <h3 class="component-title">Retry Progress</h3>
+        <div class="component-content">
+          <retry-progress id="retry" max-retries="3"></retry-progress>
+        </div>
+      </div>
+
+      <!-- Parameter Slider -->
+      <div class="component-card">
+        <h3 class="component-title">Parameter Slider</h3>
+        <div class="component-content">
+          <parameter-slider 
+            id="temperature" 
+            label="Temperature" 
+            min="0" 
+            max="2" 
+            value="0.7" 
+            step="0.1"
+          ></parameter-slider>
+          <parameter-slider 
+            id="top-p" 
+            label="Top P" 
+            min="0" 
+            max="1" 
+            value="0.9" 
+            step="0.05"
+          ></parameter-slider>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <p>
+        <strong>💡 Tip:</strong> Try combining different variants and animations to see how they work together!
+        The demos will automatically loop every 2 seconds to showcase the progress animations.
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import '../../src/index.ts';
+
+    // Wait for all custom elements to be defined
+    await Promise.all([
+      customElements.whenDefined('stream-progress'),
+      customElements.whenDefined('batch-progress'),
+      customElements.whenDefined('model-loader'),
+      customElements.whenDefined('queue-progress'),
+      customElements.whenDefined('retry-progress'),
+      customElements.whenDefined('parameter-slider')
+    ]);
+
+    // Theme configurations
+    const themes = {
+      openai: {
+        primary: '#10a37f',
+        secondary: '#1a7f64',
+        background: '#ffffff',
+        text: '#1f2937',
+        border: '#e5e7eb'
+      },
+      anthropic: {
+        primary: '#d97757',
+        secondary: '#c85a35',
+        background: '#ffffff',
+        text: '#1f2937',
+        border: '#e5e7eb'
+      },
+      google: {
+        primary: '#4285f4',
+        secondary: '#34a853',
+        background: '#ffffff',
+        text: '#1f2937',
+        border: '#e5e7eb'
+      },
+      cohere: {
+        primary: '#d18ee2',
+        secondary: '#9b59b6',
+        background: '#ffffff',
+        text: '#1f2937',
+        border: '#e5e7eb'
+      },
+      dark: {
+        primary: '#60a5fa',
+        secondary: '#34d399',
+        background: '#1f2937',
+        text: '#f9fafb',
+        border: '#374151'
+      }
+    };
+
+    // Get all components
+    const components = {
+      stream: document.getElementById('stream'),
+      batch: document.getElementById('batch'),
+      loader: document.getElementById('loader'),
+      queue: document.getElementById('queue'),
+      retry: document.getElementById('retry'),
+      temperature: document.getElementById('temperature'),
+      topP: document.getElementById('top-p')
+    };
+
+    // Current state
+    let currentVariant = 'default';
+    let currentAnimation = 'none';
+    let currentTheme = 'openai';
+
+    // Apply theme
+    function applyTheme(themeName) {
+      const theme = themes[themeName];
+      const root = document.documentElement;
+      
+      root.style.setProperty('--ai-primary-color', theme.primary);
+      root.style.setProperty('--ai-secondary-color', theme.secondary);
+      root.style.setProperty('--ai-background-color', theme.background);
+      root.style.setProperty('--ai-text-color', theme.text);
+      root.style.setProperty('--ai-border-color', theme.border);
+      
+      currentTheme = themeName;
+    }
+
+    // Apply variant to all components
+    function applyVariant(variant) {
+      console.log('Applying variant:', variant);
+      Object.values(components).forEach(component => {
+        if (component) {
+          console.log('Setting variant on', component.tagName, 'to', variant);
+          component.setAttribute('variant', variant);
+          console.log('Variant set, current value:', component.getAttribute('variant'));
+        }
+      });
+      currentVariant = variant;
+    }
+
+    // Apply animation to all components
+    function applyAnimation(animation) {
+      Object.values(components).forEach(component => {
+        if (component) {
+          component.setAttribute('animation', animation);
+        }
+      });
+      currentAnimation = animation;
+    }
+
+    // Handle variant button clicks
+    const variantButtons = document.querySelectorAll('[data-variant]');
+    console.log('Found variant buttons:', variantButtons.length);
+    variantButtons.forEach(button => {
+      console.log('Setting up variant button:', button.dataset.variant);
+      button.addEventListener('click', () => {
+        console.log('Variant button clicked:', button.dataset.variant);
+        // Update active state
+        document.querySelectorAll('[data-variant]').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        button.classList.add('active');
+        
+        // Apply variant
+        applyVariant(button.dataset.variant);
+      });
+    });
+
+    // Handle animation button clicks
+    const animationButtons = document.querySelectorAll('[data-animation]');
+    console.log('Found animation buttons:', animationButtons.length);
+    animationButtons.forEach(button => {
+      console.log('Setting up animation button:', button.dataset.animation);
+      button.addEventListener('click', () => {
+        console.log('Animation button clicked:', button.dataset.animation);
+        // Update active state
+        document.querySelectorAll('[data-animation]').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        button.classList.add('active');
+        
+        // Apply animation
+        applyAnimation(button.dataset.animation);
+      });
+    });
+
+    // Handle theme button clicks
+    document.querySelectorAll('[data-theme]').forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active state
+        document.querySelectorAll('[data-theme]').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        button.classList.add('active');
+        
+        // Apply theme
+        applyTheme(button.dataset.theme);
+      });
+    });
+
+    // Auto-looping demo functions
+    function runStreamProgressDemo() {
+      const stream = components.stream;
+      stream.reset();
+      stream.start('Generating AI response...');
+      
+      let tokens = 0;
+      const interval = setInterval(() => {
+        tokens += Math.floor(Math.random() * 30) + 10;
+        stream.update({
+          tokensGenerated: tokens,
+          tokensPerSecond: Math.floor(Math.random() * 20) + 20
+        });
+        
+        if (tokens >= 1000) {
+          stream.complete('Response complete!');
+          clearInterval(interval);
+          setTimeout(runStreamProgressDemo, 2000);
+        }
+      }, 100);
+    }
+
+    function runBatchProgressDemo() {
+      const batch = components.batch;
+      batch.reset();
+      batch.start();
+      
+      // Add items
+      for (let i = 0; i < 5; i++) {
+        batch.addItem(`item-${i}`, `Item ${i + 1}`);
+      }
+      
+      let completed = 0;
+      const interval = setInterval(() => {
+        batch.updateItem({
+          itemId: `item-${completed}`,
+          status: 'processing',
+          progress: 50
+        });
+        
+        setTimeout(() => {
+          batch.completeItem(`item-${completed}`);
+          completed++;
+          
+          if (completed >= 5) {
+            batch.complete();
+            clearInterval(interval);
+            setTimeout(runBatchProgressDemo, 2000);
+          }
+        }, 200);
+      }, 400);
+    }
+
+    function runModelLoaderDemo() {
+      const loader = components.loader;
+      loader.reset();
+      loader.start();
+      
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 10;
+        loader.updateStage('download', {
+          bytesLoaded: (progress * 1500) / 100,
+          totalBytes: 1500,
+          progress: progress
+        });
+        
+        if (progress >= 100) {
+          loader.complete();
+          clearInterval(interval);
+          setTimeout(runModelLoaderDemo, 2000);
+        }
+      }, 100);
+    }
+
+    function runQueueProgressDemo() {
+      const queue = components.queue;
+      queue.reset();
+      queue.start();
+      
+      let position = 10;
+      const interval = setInterval(() => {
+        position--;
+        queue.update({
+          position: position,
+          estimatedWait: position * 3
+        });
+        
+        if (position <= 0) {
+          queue.complete();
+          clearInterval(interval);
+          setTimeout(runQueueProgressDemo, 2000);
+        }
+      }, 300);
+    }
+
+    function runRetryProgressDemo() {
+      const retry = components.retry;
+      retry.reset();
+      retry.attempt('Starting operation...');
+      
+      let attempts = 0;
+      const interval = setInterval(() => {
+        attempts++;
+        if (attempts < 3) {
+          retry.waitForRetry({ 
+            message: `Retry attempt ${attempts + 1}`,
+            delay: 500
+          });
+        } else {
+          retry.success('Operation succeeded!');
+          clearInterval(interval);
+          setTimeout(runRetryProgressDemo, 2000);
+        }
+      }, 1000);
+    }
+
+    // Initialize
+    applyTheme('openai');
+    applyVariant('default');
+    applyAnimation('none');
+
+    // Start demos
+    setTimeout(() => {
+      runStreamProgressDemo();
+      runBatchProgressDemo();
+      runModelLoaderDemo();
+      runQueueProgressDemo();
+      runRetryProgressDemo();
+    }, 500);
+  </script>
+</body>
+</html>

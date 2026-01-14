@@ -26,6 +26,10 @@ export interface StreamProgressConfig {
   cursorFeedback?: boolean;
   /** Component size variant */
   size?: 'compact' | 'default' | 'large';
+  /** Visual style variant */
+  variant?: 'default' | 'minimal' | 'gradient' | 'glassmorphic';
+  /** Animation style */
+  animation?: 'none' | 'striped' | 'pulse' | 'glow';
   /** Debug mode */
   debug?: boolean;
   /** Custom CSS class */
