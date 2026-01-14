@@ -11,10 +11,10 @@ import { styles } from './styles';
 
 /**
  * ParameterSlider Component
- * 
+ *
  * Interactive slider for AI parameter configuration (temperature, top-p, penalties, etc.).
  * Supports presets, manual input, keyboard navigation, and accessibility.
- * 
+ *
  * @example
  * ```typescript
  * // Create temperature slider
@@ -31,21 +31,21 @@ import { styles } from './styles';
  *     { value: 1.5, label: 'Creative' }
  *   ]
  * });
- * 
+ *
  * document.body.appendChild(slider);
- * 
+ *
  * // Listen to value changes
  * slider.addEventListener('valuechange', (e) => {
  *   console.log('New value:', e.detail.value);
  * });
- * 
+ *
  * // Get current value
  * const value = slider.getValue();
- * 
+ *
  * // Set value programmatically
  * slider.setValue(1.2);
  * ```
- * 
+ *
  * @fires valuechange - Fired when value changes
  * @fires presetselect - Fired when preset is selected
  */
@@ -115,7 +115,11 @@ export class ParameterSlider extends AIControl {
     return 'slider';
   }
 
-  protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
+  protected override handleAttributeChange(
+    name: string,
+    _oldValue: string,
+    newValue: string
+  ): void {
     switch (name) {
       case 'label':
         this.config.label = newValue || 'Parameter';
@@ -152,7 +156,7 @@ export class ParameterSlider extends AIControl {
   public setValue(value: number, source: 'slider' | 'input' | 'preset' | 'reset' = 'slider'): void {
     const previousValue = this.state.currentValue;
     const clampedValue = clamp(value, this.config.min, this.config.max);
-    
+
     // Round to step
     const steppedValue = Math.round(clampedValue / this.config.step) * this.config.step;
     const finalValue = Number.parseFloat(steppedValue.toFixed(this.config.decimals));
@@ -213,7 +217,9 @@ export class ParameterSlider extends AIControl {
 
     if (this.sliderThumb) {
       this.sliderThumb.addEventListener('mousedown', this.handleThumbMouseDown.bind(this));
-      this.sliderThumb.addEventListener('touchstart', this.handleThumbTouchStart.bind(this), { passive: false });
+      this.sliderThumb.addEventListener('touchstart', this.handleThumbTouchStart.bind(this), {
+        passive: false,
+      });
       this.sliderThumb.addEventListener('keydown', this.handleThumbKeyDown.bind(this));
     }
 
@@ -259,7 +265,7 @@ export class ParameterSlider extends AIControl {
     const rect = this.sliderTrack.getBoundingClientRect();
     const percent = (e.clientX - rect.left) / rect.width;
     const value = this.config.min + percent * (this.config.max - this.config.min);
-    
+
     this.setValue(value, 'slider');
   }
 
@@ -268,7 +274,7 @@ export class ParameterSlider extends AIControl {
    */
   private handleThumbMouseDown(e: MouseEvent): void {
     if (this.config.disabled) return;
-    
+
     e.preventDefault();
     this.state.isDragging = true;
     this.sliderThumb?.classList.add('dragging');
@@ -286,7 +292,7 @@ export class ParameterSlider extends AIControl {
     const rect = this.sliderTrack.getBoundingClientRect();
     const percent = clamp((e.clientX - rect.left) / rect.width, 0, 1);
     const value = this.config.min + percent * (this.config.max - this.config.min);
-    
+
     this.setValue(value, 'slider');
   };
 
@@ -306,7 +312,7 @@ export class ParameterSlider extends AIControl {
    */
   private handleThumbTouchStart(e: TouchEvent): void {
     if (this.config.disabled) return;
-    
+
     e.preventDefault();
     this.state.isDragging = true;
     this.sliderThumb?.classList.add('dragging');
@@ -328,7 +334,7 @@ export class ParameterSlider extends AIControl {
     const rect = this.sliderTrack.getBoundingClientRect();
     const percent = clamp((touch.clientX - rect.left) / rect.width, 0, 1);
     const value = this.config.min + percent * (this.config.max - this.config.min);
-    
+
     this.setValue(value, 'slider');
   };
 
@@ -409,7 +415,8 @@ export class ParameterSlider extends AIControl {
   private updateSliderPosition(): void {
     if (!this.sliderThumb || !this.shadowRoot) return;
 
-    const percent = ((this.state.currentValue - this.config.min) / (this.config.max - this.config.min)) * 100;
+    const percent =
+      ((this.state.currentValue - this.config.min) / (this.config.max - this.config.min)) * 100;
     this.sliderThumb.style.left = `${percent}%`;
 
     const fill = this.shadowRoot.querySelector('.slider-fill') as HTMLElement;
@@ -455,10 +462,10 @@ export class ParameterSlider extends AIControl {
    */
   private renderInputControls(): string {
     if (!this.config.showInput && !this.config.showReset) return '';
-    
+
     const disabledAttr = this.config.disabled ? 'disabled' : '';
     let controlsHtml = '';
-    
+
     if (this.config.showInput) {
       controlsHtml += `
         <span class="input-label">Value:</span>
@@ -473,7 +480,7 @@ export class ParameterSlider extends AIControl {
         />
       `;
     }
-    
+
     if (this.config.showReset) {
       controlsHtml += `
         <button class="reset-button" type="button" ${disabledAttr}>
@@ -481,7 +488,7 @@ export class ParameterSlider extends AIControl {
         </button>
       `;
     }
-    
+
     return `
       <div class="input-container">
         ${controlsHtml}
@@ -512,7 +519,8 @@ export class ParameterSlider extends AIControl {
     `;
 
     // Slider
-    const percent = ((this.state.currentValue - this.config.min) / (this.config.max - this.config.min)) * 100;
+    const percent =
+      ((this.state.currentValue - this.config.min) / (this.config.max - this.config.min)) * 100;
     const sliderHtml = `
       <div class="slider-container">
         <div class="slider-track" role="presentation">
@@ -528,26 +536,37 @@ export class ParameterSlider extends AIControl {
             aria-label="${this.config.ariaLabel}"
           ></div>
         </div>
-        ${this.config.showRangeLabels ? `
+        ${
+          this.config.showRangeLabels
+            ? `
           <div class="range-labels">
             <span class="range-label">${this.config.min.toFixed(this.config.decimals)}</span>
             <span class="range-label">${this.config.max.toFixed(this.config.decimals)}</span>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
     `;
 
     // Presets
-    const presetsHtml = this.config.showPresets && this.config.presets.length > 0 ? `
+    const presetsHtml =
+      this.config.showPresets && this.config.presets.length > 0
+        ? `
       <div class="presets">
-        ${this.config.presets.map((preset) => `
+        ${this.config.presets
+          .map(
+            (preset) => `
           <button class="preset-button" type="button">
             <span class="preset-value">${preset.value}</span>
             <span class="preset-label">${preset.label}</span>
           </button>
-        `).join('')}
+        `
+          )
+          .join('')}
       </div>
-    ` : '';
+    `
+        : '';
 
     // Input and reset
     const inputHtml = this.renderInputControls();
@@ -565,7 +584,7 @@ export class ParameterSlider extends AIControl {
     // Store references after render
     this.sliderTrack = this.shadowRoot.querySelector('.slider-track');
     this.sliderThumb = this.shadowRoot.querySelector('.slider-thumb');
-    
+
     // Reattach event listeners
     this.attachEventListeners();
   }

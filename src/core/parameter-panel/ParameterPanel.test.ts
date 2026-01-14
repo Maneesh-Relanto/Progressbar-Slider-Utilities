@@ -47,7 +47,7 @@ describe('ParameterPanel Component', () => {
         parameters: [{ id: 'test', label: 'Test', min: 0, max: 1, value: 0.5 }],
       });
       document.body.appendChild(customPanel);
-      
+
       expect(customPanel.shadowRoot?.textContent).toContain('Custom Title');
       customPanel.remove();
     });
@@ -59,7 +59,7 @@ describe('ParameterPanel Component', () => {
         columns: 3,
       });
       document.body.appendChild(gridPanel);
-      
+
       expect(gridPanel.shadowRoot?.querySelector('.parameters-grid.layout-grid')).toBeTruthy();
       gridPanel.remove();
     });
@@ -74,10 +74,10 @@ describe('ParameterPanel Component', () => {
 
     it('should track isDirty state', async () => {
       await waitForElement(panel);
-      
+
       // Initially not dirty
       expect(panel.shadowRoot?.querySelector('.dirty-indicator.show')).toBeFalsy();
-      
+
       // Set value makes it dirty
       panel.setValue('temperature', 1.0);
       await waitForNextTick();
@@ -244,7 +244,7 @@ describe('ParameterPanel Component', () => {
 
       it('should set active preset', async () => {
         await waitForElement(panelWithPresets);
-        
+
         panelWithPresets.loadPreset('chatgpt');
         await waitForNextTick();
 
@@ -270,7 +270,7 @@ describe('ParameterPanel Component', () => {
       it('should ignore non-existent preset', () => {
         const values = panelWithPresets.getAllValues();
         panelWithPresets.loadPreset('nonexistent');
-        
+
         // Values should remain unchanged
         expect(panelWithPresets.getAllValues()).toEqual(values);
       });
@@ -289,7 +289,9 @@ describe('ParameterPanel Component', () => {
 
       it('should clear active preset', async () => {
         const panelWithPreset = new ParameterPanel({
-          ...defaultConfig,          showPresets: true,          presets: {
+          ...defaultConfig,
+          showPresets: true,
+          presets: {
             test: { name: 'Test', values: { temperature: 0.5, topP: 0.8 } },
           },
         });
@@ -315,12 +317,15 @@ describe('ParameterPanel Component', () => {
 
         expect(resetHandler).toHaveBeenCalled();
         expect(resetHandler.mock.calls[0][0].detail.previousValues).toBeDefined();
-        expect(resetHandler.mock.calls[0][0].detail.newValues).toEqual({ temperature: 0.7, topP: 0.9 });
+        expect(resetHandler.mock.calls[0][0].detail.newValues).toEqual({
+          temperature: 0.7,
+          topP: 0.9,
+        });
       });
 
       it('should clear isDirty flag', async () => {
         await waitForElement(panel);
-        
+
         panel.setValue('temperature', 1.0);
         await waitForNextTick();
         expect(panel.shadowRoot?.querySelector('.dirty-indicator.show')).toBeTruthy();
@@ -334,7 +339,7 @@ describe('ParameterPanel Component', () => {
     describe('exportConfig()', () => {
       it('should export configuration as JSON', () => {
         const config = panel.exportConfig();
-        
+
         expect(config.version).toBe('1.0');
         expect(config.parameters).toBeDefined();
         expect(config.parameters.temperature).toBe(0.7);
@@ -359,7 +364,7 @@ describe('ParameterPanel Component', () => {
 
       it('should include metadata', () => {
         const config = panel.exportConfig();
-        
+
         expect(config.metadata).toBeDefined();
         expect(config.metadata?.created).toBeDefined();
         expect(config.metadata?.name).toBe('Parameters');
@@ -442,7 +447,7 @@ describe('ParameterPanel Component', () => {
       it('should ignore invalid config', () => {
         const values = panel.getAllValues();
         panel.importConfig({} as ExportedConfig);
-        
+
         // Values should remain unchanged
         expect(panel.getAllValues()).toEqual(values);
       });
@@ -470,7 +475,7 @@ describe('ParameterPanel Component', () => {
       it('should not toggle if not collapsible', async () => {
         await waitForElement(panel);
         const content = panel.shadowRoot?.querySelector('.content');
-        
+
         panel.toggleCollapse();
         await waitForNextTick();
 
@@ -531,7 +536,9 @@ describe('ParameterPanel Component', () => {
         panelWithValidation.validateAll();
         await waitForNextTick();
 
-        expect(panelWithValidation.shadowRoot?.querySelector('.validation-errors.show')).toBeTruthy();
+        expect(
+          panelWithValidation.shadowRoot?.querySelector('.validation-errors.show')
+        ).toBeTruthy();
         expect(panelWithValidation.shadowRoot?.textContent).toContain('Must be positive');
 
         panelWithValidation.remove();
@@ -545,9 +552,10 @@ describe('ParameterPanel Component', () => {
         panel.addPreset('custom', 'Custom', { temperature: 1.0, topP: 0.7 });
         await waitForNextTick();
 
-        const presetBtn = Array.from(panel.shadowRoot?.querySelectorAll('.preset-btn') || [])
-          .find(btn => btn.textContent?.trim() === 'Custom');
-        
+        const presetBtn = Array.from(panel.shadowRoot?.querySelectorAll('.preset-btn') || []).find(
+          (btn) => btn.textContent?.trim() === 'Custom'
+        );
+
         expect(presetBtn).toBeTruthy();
       });
 
@@ -560,9 +568,10 @@ describe('ParameterPanel Component', () => {
         panel.removePreset('custom');
         await waitForNextTick();
 
-        const presetBtn = Array.from(panel.shadowRoot?.querySelectorAll('.preset-btn') || [])
-          .find(btn => btn.textContent?.trim() === 'Custom');
-        
+        const presetBtn = Array.from(panel.shadowRoot?.querySelectorAll('.preset-btn') || []).find(
+          (btn) => btn.textContent?.trim() === 'Custom'
+        );
+
         expect(presetBtn).toBeFalsy();
       });
 
@@ -580,9 +589,10 @@ describe('ParameterPanel Component', () => {
         panelWithBuiltIn.removePreset('builtin');
         await waitForNextTick();
 
-        const presetBtn = Array.from(panelWithBuiltIn.shadowRoot?.querySelectorAll('.preset-btn') || [])
-          .find(btn => btn.textContent?.trim() === 'Built-in');
-        
+        const presetBtn = Array.from(
+          panelWithBuiltIn.shadowRoot?.querySelectorAll('.preset-btn') || []
+        ).find((btn) => btn.textContent?.trim() === 'Built-in');
+
         expect(presetBtn).toBeTruthy();
         panelWithBuiltIn.remove();
       });
@@ -602,7 +612,7 @@ describe('ParameterPanel Component', () => {
 
       const stored = localStorage.getItem('test-panel');
       expect(stored).toBeTruthy();
-      
+
       const parsed = JSON.parse(stored!);
       expect(parsed.values.temperature).toBe(1.5);
 
@@ -610,9 +620,12 @@ describe('ParameterPanel Component', () => {
     });
 
     it('should load values from localStorage when enabled', () => {
-      localStorage.setItem('test-panel-load', JSON.stringify({
-        values: { temperature: 1.2, topP: 0.6 },
-      }));
+      localStorage.setItem(
+        'test-panel-load',
+        JSON.stringify({
+          values: { temperature: 1.2, topP: 0.6 },
+        })
+      );
 
       const persistPanel = new ParameterPanel({
         ...defaultConfig,
@@ -684,7 +697,7 @@ describe('ParameterPanel Component', () => {
   describe('Rendering', () => {
     it('should render all parameters', async () => {
       await waitForElement(panel);
-      
+
       const wrappers = panel.shadowRoot?.querySelectorAll('.parameter-wrapper');
       expect(wrappers?.length).toBe(2);
     });
@@ -731,7 +744,7 @@ describe('ParameterPanel Component', () => {
       });
       document.body.appendChild(actionPanel);
       await waitForElement(actionPanel);
-      
+
       expect(actionPanel.shadowRoot?.querySelector('#reset-btn')).toBeTruthy();
       expect(actionPanel.shadowRoot?.querySelector('#export-btn')).toBeTruthy();
       expect(actionPanel.shadowRoot?.querySelector('#import-btn')).toBeTruthy();
@@ -771,7 +784,7 @@ describe('ParameterPanel Component', () => {
   describe('Accessibility', () => {
     it('should be keyboard navigable', async () => {
       await waitForElement(panel);
-      
+
       const presetBtn = panel.shadowRoot?.querySelector('.preset-btn') as HTMLElement;
       expect(presetBtn?.tabIndex).not.toBe(-1);
     });
@@ -783,7 +796,7 @@ describe('ParameterPanel Component', () => {
       });
       document.body.appendChild(ariaPanel);
       await waitForElement(ariaPanel);
-      
+
       const resetBtn = ariaPanel.shadowRoot?.querySelector('#reset-btn');
       expect(resetBtn?.textContent).toContain('Reset');
       ariaPanel.remove();
@@ -802,7 +815,7 @@ describe('ParameterPanel Component', () => {
 
       const values = panelWithEmptyPreset.getAllValues();
       panelWithEmptyPreset.loadPreset('empty');
-      
+
       // Values should remain unchanged
       expect(panelWithEmptyPreset.getAllValues()).toEqual(values);
 
@@ -811,9 +824,7 @@ describe('ParameterPanel Component', () => {
 
     it('should handle parameter with no default value', () => {
       const panelNoDefault = new ParameterPanel({
-        parameters: [
-          { id: 'test', label: 'Test', min: 0, max: 10, value: 5 },
-        ],
+        parameters: [{ id: 'test', label: 'Test', min: 0, max: 10, value: 5 }],
       });
       document.body.appendChild(panelNoDefault);
 

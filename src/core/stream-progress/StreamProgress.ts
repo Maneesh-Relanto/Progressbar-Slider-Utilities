@@ -11,10 +11,10 @@ import { styles } from './styles';
 
 /**
  * StreamProgress Component
- * 
+ *
  * Displays real-time progress for streaming AI responses (e.g., LLM token generation).
  * Shows token count, generation rate, cost estimation, and provides cancel functionality.
- * 
+ *
  * @example
  * ```typescript
  * // Create the component
@@ -24,28 +24,28 @@ import { styles } from './styles';
  *   showRate: true,
  *   showCost: true,
  * });
- * 
+ *
  * document.body.appendChild(progress);
- * 
+ *
  * // Start streaming
  * progress.start();
- * 
+ *
  * // Update as tokens stream in
  * progress.update({
  *   tokensGenerated: 150,
  *   tokensPerSecond: 25,
  *   message: 'Generating response...'
  * });
- * 
+ *
  * // Complete the stream
  * progress.complete();
- * 
+ *
  * // Listen to events
  * progress.addEventListener('cancel', (e) => {
  *   console.log('Stream cancelled', e.detail);
  * });
  * ```
- * 
+ *
  * @fires streamstart - Fired when streaming starts
  * @fires streamupdate - Fired when progress is updated
  * @fires streamcomplete - Fired when streaming completes
@@ -99,10 +99,7 @@ export class StreamProgress extends AIControl {
     };
 
     // Create throttled update function
-    this.updateThrottled = throttle(
-      this._updateInternal.bind(this),
-      this.config.updateThrottle
-    );
+    this.updateThrottled = throttle(this._updateInternal.bind(this), this.config.updateThrottle);
 
     // Attach shadow DOM
     this.attachShadow({ mode: 'open' });
@@ -128,7 +125,11 @@ export class StreamProgress extends AIControl {
     return 'progressbar';
   }
 
-  protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
+  protected override handleAttributeChange(
+    name: string,
+    _oldValue: string,
+    newValue: string
+  ): void {
     switch (name) {
       case 'max-tokens':
         this.config.maxTokens = Number.parseInt(newValue, 10) || 4000;
@@ -334,10 +335,7 @@ export class StreamProgress extends AIControl {
   protected render(): void {
     if (!this.shadowRoot) return;
 
-    const percentage = this.calculatePercentage(
-      this.displayTokens,
-      this.config.maxTokens
-    );
+    const percentage = this.calculatePercentage(this.displayTokens, this.config.maxTokens);
 
     const tokensDisplay = Math.round(this.displayTokens);
     const rateDisplay = Math.round(this.state.tokensPerSecond);

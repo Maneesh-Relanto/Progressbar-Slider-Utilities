@@ -16,10 +16,10 @@ import { styles } from './styles';
 
 /**
  * BatchProgress Component
- * 
+ *
  * Displays progress for batch operations processing multiple items.
  * Perfect for processing multiple AI requests, documents, or images in parallel.
- * 
+ *
  * @example
  * ```typescript
  * // Create batch progress
@@ -29,33 +29,33 @@ import { styles } from './styles';
  *   showItems: true,
  *   showStats: true
  * });
- * 
+ *
  * document.body.appendChild(batch);
- * 
+ *
  * // Start batch
  * batch.start();
- * 
+ *
  * // Add items
  * for (let i = 0; i < 50; i++) {
  *   batch.addItem(`item-${i}`, `Process item ${i}`);
  * }
- * 
+ *
  * // Update item progress
  * batch.updateItem({
  *   itemId: 'item-0',
  *   status: 'processing',
  *   progress: 50
  * });
- * 
+ *
  * // Complete item
  * batch.completeItem('item-0', { result: 'success' });
- * 
+ *
  * // Listen to events
  * batch.addEventListener('batchcomplete', (e) => {
  *   console.log(`Completed ${e.detail.successCount}/${e.detail.totalItems}`);
  * });
  * ```
- * 
+ *
  * @fires batchstart - Fired when batch processing starts
  * @fires itemupdate - Fired when batch item is updated
  * @fires itemcomplete - Fired when batch item completes
@@ -66,7 +66,7 @@ import { styles } from './styles';
 export class BatchProgress extends AIControl {
   protected override config: Required<BatchProgressConfig>;
   private readonly state: BatchProgressState;
-  private updateThrottleTimer: number | null = null;
+  private updateThrottleTimer: ReturnType<typeof setTimeout> | null = null;
 
   static get observedAttributes() {
     return ['total-items', 'disabled'];
@@ -119,7 +119,11 @@ export class BatchProgress extends AIControl {
     this.render();
   }
 
-  override attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+  override attributeChangedCallback(
+    name: string,
+    oldValue: string | null,
+    newValue: string | null
+  ): void {
     if (oldValue === newValue) return;
 
     switch (name) {
@@ -412,8 +416,8 @@ export class BatchProgress extends AIControl {
       duration: this.state.endTime
         ? this.state.endTime - (this.state.startTime || 0)
         : this.state.startTime
-        ? Date.now() - this.state.startTime
-        : 0,
+          ? Date.now() - this.state.startTime
+          : 0,
     };
   }
 
@@ -441,20 +445,29 @@ export class BatchProgress extends AIControl {
 
     const getStatusBadgeClass = (status: string) => {
       switch (status) {
-        case 'processing': return 'processing';
-        case 'completed': return 'completed';
-        case 'cancelled': return 'cancelled';
-        default: return '';
+        case 'processing':
+          return 'processing';
+        case 'completed':
+          return 'completed';
+        case 'cancelled':
+          return 'cancelled';
+        default:
+          return '';
       }
     };
 
     const getStatusText = (status: string) => {
       switch (status) {
-        case 'idle': return 'Ready';
-        case 'processing': return 'Processing';
-        case 'completed': return 'Completed';
-        case 'cancelled': return 'Cancelled';
-        default: return '';
+        case 'idle':
+          return 'Ready';
+        case 'processing':
+          return 'Processing';
+        case 'completed':
+          return 'Completed';
+        case 'cancelled':
+          return 'Cancelled';
+        default:
+          return '';
       }
     };
 
@@ -504,9 +517,7 @@ export class BatchProgress extends AIControl {
       `
       : '';
 
-    const itemsHtml = this.config.showItems
-      ? this.renderItems()
-      : '';
+    const itemsHtml = this.config.showItems ? this.renderItems() : '';
 
     const controlsHtml =
       this.config.allowCancel && this.state.status === 'processing'
@@ -561,7 +572,8 @@ export class BatchProgress extends AIControl {
     const itemsHtml = displayItems
       .map((item) => {
         const statusIcon = this.getStatusIcon(item.status);
-        const collapsed = this.config.collapseCompleted && item.status === 'completed' ? 'collapsed' : '';
+        const collapsed =
+          this.config.collapseCompleted && item.status === 'completed' ? 'collapsed' : '';
 
         const progressBarHtml =
           item.status === 'processing' && item.progress !== undefined
@@ -572,14 +584,13 @@ export class BatchProgress extends AIControl {
           `
             : '';
 
-        const errorHtml =
-          item.error
-            ? `
+        const errorHtml = item.error
+          ? `
             <div class="item-error">
               ${item.error}
             </div>
           `
-            : '';
+          : '';
 
         return `
           <div class="batch-item ${item.status} ${collapsed}">

@@ -49,7 +49,7 @@ describe('BatchProgress Component', () => {
     it('should track batch items', () => {
       progress.start();
       progress.addItem('item1', 'Task 1');
-      
+
       expect(progress['state'].items.size).toBe(1);
     });
 
@@ -66,7 +66,7 @@ describe('BatchProgress Component', () => {
     describe('start()', () => {
       it('should start batch processing', () => {
         progress.start();
-        
+
         expect(progress['state'].status).toBe('processing');
         expect(progress['state'].totalItems).toBeGreaterThanOrEqual(0);
       });
@@ -89,7 +89,7 @@ describe('BatchProgress Component', () => {
 
       it('should add item to batch', () => {
         progress.addItem('item1', 'Task 1');
-        
+
         expect(progress['state'].items.size).toBe(1);
         expect(progress['state'].items.get('item1')?.id).toBe('item1');
       });
@@ -122,7 +122,7 @@ describe('BatchProgress Component', () => {
 
       it('should update item progress', () => {
         progress.updateItem({ itemId: 'item1', progress: 50 });
-        
+
         const item = progress['state'].items.get('item1');
         expect(item?.progress).toBe(50);
       });
@@ -146,7 +146,7 @@ describe('BatchProgress Component', () => {
 
       it('should mark item as complete', () => {
         progress.completeItem('item1');
-        
+
         const item = progress['state'].items.get('item1');
         expect(item?.status).toBe('completed');
         expect(progress['state'].completedCount).toBe(1);
@@ -171,7 +171,7 @@ describe('BatchProgress Component', () => {
 
       it('should mark item as failed', () => {
         progress.failItem('item1', 'Error occurred');
-        
+
         const item = progress['state'].items.get('item1');
         expect(item?.status).toBe('failed');
         expect(progress['state'].failedCount).toBe(1);

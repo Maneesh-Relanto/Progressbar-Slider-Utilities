@@ -61,7 +61,7 @@ describe('QueueProgress Component', () => {
         const customProgress = new QueueProgress({ position: 3, queueSize: 10 });
         document.body.appendChild(customProgress);
         customProgress.start('Waiting in queue...');
-        
+
         expect(customProgress.getStatus()).toBe('waiting');
         expect(customProgress.getPosition()).toBe(3);
         customProgress.remove();
@@ -104,7 +104,7 @@ describe('QueueProgress Component', () => {
         progress['config'].position = 3;
         progress['state'].position = 3;
         progress.start();
-        
+
         progress.update({ position: 1 });
         expect(progress.getPosition()).toBe(1);
       });
@@ -247,8 +247,8 @@ describe('QueueProgress Component', () => {
       }
 
       // Wait for throttled updates to complete (100ms throttle + buffer)
-      await new Promise(resolve => setTimeout(resolve, 250));
-      
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
       // Throttling means not all updates will be processed, but position should be lower
       expect(progress.getPosition()).toBeLessThanOrEqual(10);
       expect(progress.getPosition()).toBeGreaterThanOrEqual(0);

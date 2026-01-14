@@ -111,11 +111,7 @@ export function formatTime(seconds: number): string {
 /**
  * Calculate estimated time remaining
  */
-export function calculateETA(
-  current: number,
-  total: number,
-  startTime: number
-): number {
+export function calculateETA(current: number, total: number, startTime: number): number {
   if (current === 0) return 0;
 
   const elapsed = Date.now() - startTime;

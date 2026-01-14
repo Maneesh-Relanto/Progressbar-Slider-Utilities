@@ -13,55 +13,55 @@ export interface PresetValue {
 export interface ParameterSliderConfig {
   /** Parameter label */
   label?: string;
-  
+
   /** Minimum value */
   min?: number;
-  
+
   /** Maximum value */
   max?: number;
-  
+
   /** Current value */
   value?: number;
-  
+
   /** Default value to reset to */
   defaultValue?: number;
-  
+
   /** Step size for slider */
   step?: number;
-  
+
   /** Number of decimal places to display */
   decimals?: number;
-  
+
   /** Parameter description/help text */
   description?: string;
-  
+
   /** Show preset value buttons */
   showPresets?: boolean;
-  
+
   /** Preset values with labels */
   presets?: PresetValue[];
-  
+
   /** Show manual input field */
   showInput?: boolean;
-  
+
   /** Show reset button */
   showReset?: boolean;
-  
+
   /** Show range labels (min/max) */
   showRangeLabels?: boolean;
-  
+
   /** Unit suffix (e.g., '%', 'tokens') */
   unit?: string;
-  
+
   /** Disabled state */
   disabled?: boolean;
-  
+
   /** Enable debug logging */
   debug?: boolean;
-  
+
   /** Additional CSS class */
   className?: string;
-  
+
   /** ARIA label for accessibility */
   ariaLabel?: string;
 }

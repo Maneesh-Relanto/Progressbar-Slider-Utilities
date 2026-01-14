@@ -23,49 +23,49 @@ export interface BatchItem {
 export interface BatchProgressConfig {
   /** Total number of items in batch */
   totalItems?: number;
-  
+
   /** Maximum concurrent operations */
   concurrency?: number;
-  
+
   /** Show individual item progress */
   showItems?: boolean;
-  
+
   /** Maximum items to display */
   maxDisplayItems?: number;
-  
+
   /** Show overall progress bar */
   showProgressBar?: boolean;
-  
+
   /** Show statistics (success/fail counts) */
   showStats?: boolean;
-  
+
   /** Show elapsed time */
   showTime?: boolean;
-  
+
   /** Show processing rate (items/sec) */
   showRate?: boolean;
-  
+
   /** Allow cancellation */
   allowCancel?: boolean;
-  
+
   /** Cancel button label */
   cancelLabel?: string;
-  
+
   /** Automatically collapse completed items */
   collapseCompleted?: boolean;
-  
+
   /** Status message */
   message?: string;
-  
+
   /** Disabled state */
   disabled?: boolean;
-  
+
   /** Enable debug logging */
   debug?: boolean;
-  
+
   /** Additional CSS class */
   className?: string;
-  
+
   /** ARIA label for accessibility */
   ariaLabel?: string;
 }

@@ -54,7 +54,7 @@ describe('ParameterSlider Component', () => {
     it('should track value changes', () => {
       const initialValue = slider.getValue();
       slider.setValue(0.8);
-      
+
       expect(slider.getValue()).toBe(0.8);
       expect(slider.getValue()).not.toBe(initialValue);
     });
@@ -91,7 +91,7 @@ describe('ParameterSlider Component', () => {
 
       it('should clamp value to min/max', () => {
         const config = slider.getConfig();
-        
+
         slider.setValue(config.max + 1);
         expect(slider.getValue()).toBeLessThanOrEqual(config.max);
 
@@ -104,7 +104,7 @@ describe('ParameterSlider Component', () => {
       it('should reset to default value', () => {
         const config = slider.getConfig();
         const defaultValue = config.defaultValue;
-        
+
         slider.setValue(0.9);
         slider.reset();
 
@@ -173,7 +173,7 @@ describe('ParameterSlider Component', () => {
     it('should have proper ARIA attributes', async () => {
       await waitForElement(slider);
       const thumb = slider.shadowRoot?.querySelector('.slider-thumb');
-      
+
       expect(thumb?.getAttribute('role')).toBe('slider');
       expect(thumb?.hasAttribute('tabindex')).toBe(true);
     });
@@ -181,7 +181,7 @@ describe('ParameterSlider Component', () => {
     it('should be keyboard accessible', async () => {
       await waitForElement(slider);
       const thumb = slider.shadowRoot?.querySelector('.slider-thumb') as HTMLElement;
-      
+
       expect(thumb.tabIndex).toBeGreaterThanOrEqual(0);
     });
   });
@@ -200,7 +200,7 @@ describe('ParameterSlider Component', () => {
 
     it('should handle rapid value changes', async () => {
       const values = [0.1, 0.2, 0.3, 0.4, 0.5];
-      
+
       for (const val of values) {
         slider.setValue(val);
         await waitForNextTick();

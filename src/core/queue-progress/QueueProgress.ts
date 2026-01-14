@@ -14,10 +14,10 @@ import { styles } from './styles';
 
 /**
  * QueueProgress Component
- * 
+ *
  * Displays queue position and estimated wait time for rate-limited AI APIs.
  * Shows position updates, processing rate, and estimated wait time.
- * 
+ *
  * @example
  * ```typescript
  * // Create the component
@@ -27,27 +27,27 @@ import { styles } from './styles';
  *   estimatedWait: 180, // 3 minutes
  *   processingRate: 3, // 3 requests per second
  * });
- * 
+ *
  * document.body.appendChild(queue);
- * 
+ *
  * // Start tracking
  * queue.start();
- * 
+ *
  * // Update position
  * queue.update({
  *   position: 25,
  *   estimatedWait: 90
  * });
- * 
+ *
  * // Complete
  * queue.complete();
- * 
+ *
  * // Listen to events
  * queue.addEventListener('positionchange', (e) => {
  *   console.log('Position changed', e.detail);
  * });
  * ```
- * 
+ *
  * @fires queuestart - Fired when queue tracking starts
  * @fires positionchange - Fired when position updates
  * @fires queuecomplete - Fired when processing begins
@@ -105,10 +105,7 @@ export class QueueProgress extends AIControl {
     this.initialPosition = this.config.position;
 
     // Create throttled update function
-    this.updateThrottled = throttle(
-      this._updateInternal.bind(this),
-      this.config.updateThrottle
-    );
+    this.updateThrottled = throttle(this._updateInternal.bind(this), this.config.updateThrottle);
 
     // Attach shadow DOM
     this.attachShadow({ mode: 'open' });
@@ -128,7 +125,11 @@ export class QueueProgress extends AIControl {
     return 'status';
   }
 
-  protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
+  protected override handleAttributeChange(
+    name: string,
+    _oldValue: string,
+    newValue: string
+  ): void {
     switch (name) {
       case 'position':
         this.update({ position: Number.parseInt(newValue, 10) || 0 });
@@ -277,7 +278,7 @@ export class QueueProgress extends AIControl {
    */
   public reset(): void {
     this.stopTimer();
-    
+
     this.state = {
       status: 'waiting',
       position: this.config.position,
@@ -345,9 +346,9 @@ export class QueueProgress extends AIControl {
    */
   private renderMetrics(): string {
     if (this.state.status !== 'waiting') return '';
-    
+
     let metricsHtml = '';
-    
+
     if (this.config.showQueueSize) {
       metricsHtml += `
         <div class="metric">
@@ -356,7 +357,7 @@ export class QueueProgress extends AIControl {
         </div>
       `;
     }
-    
+
     if (this.config.showWaitTime) {
       metricsHtml += `
         <div class="metric">
@@ -365,7 +366,7 @@ export class QueueProgress extends AIControl {
         </div>
       `;
     }
-    
+
     if (this.config.showRate) {
       metricsHtml += `
         <div class="metric">
@@ -374,12 +375,14 @@ export class QueueProgress extends AIControl {
         </div>
       `;
     }
-    
-    return metricsHtml ? `
+
+    return metricsHtml
+      ? `
       <div class="queue-metrics">
         ${metricsHtml}
       </div>
-    ` : '';
+    `
+      : '';
   }
 
   /**
@@ -404,16 +407,22 @@ export class QueueProgress extends AIControl {
           <span class="queue-badge ${statusClass}">${this.state.status}</span>
         </div>
 
-        ${this.config.showPosition && this.state.status === 'waiting' ? `
+        ${
+          this.config.showPosition && this.state.status === 'waiting'
+            ? `
           <div class="queue-position">
             <div class="position-number">${this.state.position}</div>
             <div class="position-label">Position in Queue</div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
         ${this.renderMetrics()}
 
-        ${this.config.showProgressBar && this.state.status === 'waiting' && this.initialPosition > 0 ? `
+        ${
+          this.config.showProgressBar && this.state.status === 'waiting' && this.initialPosition > 0
+            ? `
           <div class="progress-container">
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${progress}%"></div>
@@ -423,28 +432,42 @@ export class QueueProgress extends AIControl {
               <span>${formatTime(Math.round(this.state.elapsedTime / 1000))} elapsed</span>
             </div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${this.state.status === 'waiting' && this.state.position <= 5 ? `
+        ${
+          this.state.status === 'waiting' && this.state.position <= 5
+            ? `
           <div class="queue-info">
             <span class="info-icon">🎯</span>
             <p class="info-text">You're almost there! Processing will begin shortly.</p>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${this.state.status === 'completed' ? `
+        ${
+          this.state.status === 'completed'
+            ? `
           <div class="queue-info">
             <span class="info-icon">✅</span>
             <p class="info-text">Your request is now being processed!</p>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${this.state.status === 'error' ? `
+        ${
+          this.state.status === 'error'
+            ? `
           <div class="error-message">
             <span class="error-icon">⚠️</span>
             <p class="error-text">${this.state.message}</p>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
     `;
 
@@ -455,23 +478,35 @@ export class QueueProgress extends AIControl {
 
   private getStatusIcon(): string {
     switch (this.state.status) {
-      case 'waiting': return '⏳';
-      case 'processing': return '⚙️';
-      case 'completed': return '✅';
-      case 'cancelled': return '🚫';
-      case 'error': return '❌';
-      default: return '⏳';
+      case 'waiting':
+        return '⏳';
+      case 'processing':
+        return '⚙️';
+      case 'completed':
+        return '✅';
+      case 'cancelled':
+        return '🚫';
+      case 'error':
+        return '❌';
+      default:
+        return '⏳';
     }
   }
 
   private getStatusText(): string {
     switch (this.state.status) {
-      case 'waiting': return 'Waiting in Queue';
-      case 'processing': return 'Processing Your Request';
-      case 'completed': return 'Processing Started';
-      case 'cancelled': return 'Queue Cancelled';
-      case 'error': return 'Queue Error';
-      default: return 'Queue Status';
+      case 'waiting':
+        return 'Waiting in Queue';
+      case 'processing':
+        return 'Processing Your Request';
+      case 'completed':
+        return 'Processing Started';
+      case 'cancelled':
+        return 'Queue Cancelled';
+      case 'error':
+        return 'Queue Error';
+      default:
+        return 'Queue Status';
     }
   }
 }

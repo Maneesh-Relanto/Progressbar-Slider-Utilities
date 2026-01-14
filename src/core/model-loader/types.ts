@@ -14,37 +14,37 @@ export type StageStatus = 'pending' | 'in-progress' | 'completed' | 'error';
 export interface ModelLoaderConfig {
   /** Stages to show (default: all) */
   stages?: ModelStage[];
-  
+
   /** Model name to display */
   modelName?: string;
-  
+
   /** Show bytes downloaded/total */
   showBytes?: boolean;
-  
+
   /** Show memory usage */
   showMemoryUsage?: boolean;
-  
+
   /** Show estimated time remaining */
   showETA?: boolean;
-  
+
   /** Show retry button on error */
   showRetryButton?: boolean;
-  
+
   /** Enable smooth progress animation */
   smoothProgress?: boolean;
-  
+
   /** Update throttle in milliseconds */
   updateThrottle?: number;
-  
+
   /** Custom retry button label */
   retryLabel?: string;
-  
+
   /** Debug mode */
   debug?: boolean;
-  
+
   /** Custom CSS class */
   className?: string;
-  
+
   /** Aria label */
   ariaLabel?: string;
 }

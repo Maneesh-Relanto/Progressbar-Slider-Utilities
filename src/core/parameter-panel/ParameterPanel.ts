@@ -16,10 +16,10 @@ import { styles } from './styles';
 
 /**
  * ParameterPanel Component
- * 
+ *
  * Manages multiple AI parameters as a coordinated group with presets, validation, and export/import.
  * Automatically creates and manages child ParameterSlider instances.
- * 
+ *
  * @example
  * ```typescript
  * // Create LLM configuration panel
@@ -43,23 +43,23 @@ import { styles } from './styles';
  *     }
  *   }
  * });
- * 
+ *
  * document.body.appendChild(panel);
- * 
+ *
  * // Get all values
  * const config = panel.getAllValues();
  * // { temperature: 0.7, topP: 0.9, maxTokens: 2000 }
- * 
+ *
  * // Load preset
  * panel.loadPreset('code');
- * 
+ *
  * // Listen to changes
  * panel.addEventListener('panelchange', (e) => {
  *   console.log('Changed parameter:', e.detail.parameterId);
  *   console.log('All values:', e.detail.allValues);
  * });
  * ```
- * 
+ *
  * @fires panelchange - Fired when any parameter changes
  * @fires presetload - Fired when preset is loaded
  * @fires configexport - Fired when configuration is exported
@@ -71,20 +71,23 @@ export class ParameterPanel extends AIControl {
   private readonly state: ParameterPanelState;
   private readonly parameters: Map<string, ParameterSlider> = new Map();
   private readonly parameterDefinitions: Map<string, ParameterDefinition> = new Map();
-  private readonly presets: Map<string, { name: string; description?: string; values: Record<string, number>; isBuiltIn: boolean }>;
+  private readonly presets: Map<
+    string,
+    { name: string; description?: string; values: Record<string, number>; isBuiltIn: boolean }
+  >;
   private readonly panelConfig: ParameterPanelConfig;
 
   constructor(config: ParameterPanelConfig) {
     super({ debug: config.debug, disabled: config.disabled });
-    
+
     this.panelConfig = config;
-    
+
     if (!config.parameters || config.parameters.length === 0) {
       throw new Error('ParameterPanel requires at least one parameter');
     }
 
     // Store parameter definitions
-    config.parameters.forEach(param => {
+    config.parameters.forEach((param) => {
       this.parameterDefinitions.set(param.id, param);
     });
 
@@ -98,7 +101,7 @@ export class ParameterPanel extends AIControl {
 
     // Initialize state
     const initialValues: Record<string, number> = {};
-    config.parameters.forEach(param => {
+    config.parameters.forEach((param) => {
       initialValues[param.id] = param.value;
     });
 
@@ -111,12 +114,12 @@ export class ParameterPanel extends AIControl {
     };
 
     this.attachShadow({ mode: 'open' });
-    
+
     // Load persisted values if enabled
     if (this.panelConfig.persistValues) {
       this.loadFromStorage();
     }
-    
+
     // Load persisted presets if enabled
     if (this.panelConfig.persistPresets) {
       this.loadPresetsFromStorage();
@@ -140,7 +143,11 @@ export class ParameterPanel extends AIControl {
   /**
    * Set specific parameter value
    */
-  setValue(parameterId: string, value: number, source: 'slider' | 'input' | 'preset' | 'reset' | 'import' = 'slider'): void {
+  setValue(
+    parameterId: string,
+    value: number,
+    source: 'slider' | 'input' | 'preset' | 'reset' | 'import' = 'slider'
+  ): void {
     const paramDef = this.parameterDefinitions.get(parameterId);
     if (!paramDef) {
       this.log(`Parameter ${parameterId} not found`, 'warn');
@@ -151,10 +158,16 @@ export class ParameterPanel extends AIControl {
     value = Math.max(paramDef.min, Math.min(paramDef.max, value));
 
     // Validate if enabled (but not during reset/import)
-    if (this.panelConfig.validateOnChange && paramDef.validate && source !== 'reset' && source !== 'import') {
+    if (
+      this.panelConfig.validateOnChange &&
+      paramDef.validate &&
+      source !== 'reset' &&
+      source !== 'import'
+    ) {
       const validationResult = paramDef.validate(value, this.state.values);
       if (validationResult !== true) {
-        this.state.errors[parameterId] = typeof validationResult === 'string' ? validationResult : 'Validation failed';
+        this.state.errors[parameterId] =
+          typeof validationResult === 'string' ? validationResult : 'Validation failed';
         this.dispatchValidationError(parameterId, this.state.errors[parameterId]);
         this.render();
         return;
@@ -167,7 +180,7 @@ export class ParameterPanel extends AIControl {
     // Update value
     const oldValue = this.state.values[parameterId];
     this.state.values[parameterId] = value;
-    
+
     // Only mark dirty and clear preset for non-reset/import sources
     if (source !== 'reset' && source !== 'import' && source !== 'preset') {
       this.state.isDirty = true;
@@ -309,7 +322,7 @@ export class ParameterPanel extends AIControl {
    */
   toggleCollapse(): void {
     if (!this.panelConfig.collapsible) return;
-    
+
     this.state.isCollapsed = !this.state.isCollapsed;
     this.render();
   }
@@ -327,7 +340,8 @@ export class ParameterPanel extends AIControl {
         const validationResult = paramDef.validate(value, this.state.values);
         if (validationResult !== true) {
           isValid = false;
-          this.state.errors[parameterId] = typeof validationResult === 'string' ? validationResult : 'Validation failed';
+          this.state.errors[parameterId] =
+            typeof validationResult === 'string' ? validationResult : 'Validation failed';
           this.dispatchValidationError(parameterId, this.state.errors[parameterId]);
         }
       }
@@ -345,7 +359,7 @@ export class ParameterPanel extends AIControl {
    */
   addPreset(id: string, name: string, values: Record<string, number>, description?: string): void {
     this.presets.set(id, { name, description, values, isBuiltIn: false });
-    
+
     if (this.panelConfig.persistPresets) {
       this.savePresetsToStorage();
     }
@@ -360,7 +374,7 @@ export class ParameterPanel extends AIControl {
     const preset = this.presets.get(id);
     if (preset && !preset.isBuiltIn) {
       this.presets.delete(id);
-      
+
       if (this.state.activePreset === id) {
         this.state.activePreset = null;
       }
@@ -374,7 +388,12 @@ export class ParameterPanel extends AIControl {
   }
 
   // Event dispatchers
-  private dispatchPanelChange(parameterId: string, value: number, oldValue: number, source: 'slider' | 'input' | 'preset' | 'reset' | 'import'): void {
+  private dispatchPanelChange(
+    parameterId: string,
+    value: number,
+    oldValue: number,
+    source: 'slider' | 'input' | 'preset' | 'reset' | 'import'
+  ): void {
     const event = new CustomEvent<PanelChangeEvent>('panelchange', {
       detail: {
         parameterId,
@@ -390,7 +409,11 @@ export class ParameterPanel extends AIControl {
     this.dispatchEvent(event);
   }
 
-  private dispatchPresetLoad(presetId: string, preset: { name: string; description?: string; values: Record<string, number> }, previousValues: Record<string, number>): void {
+  private dispatchPresetLoad(
+    presetId: string,
+    preset: { name: string; description?: string; values: Record<string, number> },
+    previousValues: Record<string, number>
+  ): void {
     const event = new CustomEvent<PresetLoadEvent>('presetload', {
       detail: {
         presetId,
@@ -441,7 +464,7 @@ export class ParameterPanel extends AIControl {
     this.parameterDefinitions.forEach((param, id) => {
       newValues[id] = param.value;
     });
-    
+
     const event = new CustomEvent<PanelResetEvent>('panelreset', {
       detail: {
         previousValues,
@@ -506,11 +529,14 @@ export class ParameterPanel extends AIControl {
     try {
       const customPresets = Array.from(this.presets.entries())
         .filter(([_, preset]) => !preset.isBuiltIn)
-        .reduce((acc, [id, preset]) => {
-          acc[id] = { name: preset.name, description: preset.description, values: preset.values };
-          return acc;
-        }, {} as Record<string, any>);
-      
+        .reduce(
+          (acc, [id, preset]) => {
+            acc[id] = { name: preset.name, description: preset.description, values: preset.values };
+            return acc;
+          },
+          {} as Record<string, any>
+        );
+
       localStorage.setItem(`${this.panelConfig.storageKey}-presets`, JSON.stringify(customPresets));
     } catch (error) {
       this.log('Failed to save presets', 'error', error);
@@ -565,9 +591,13 @@ export class ParameterPanel extends AIControl {
           <h3 class="title">${this.panelConfig.title}</h3>
           <span class="dirty-indicator ${this.state.isDirty ? 'show' : ''}"></span>
         </div>
-        ${this.panelConfig.collapsible ? `
+        ${
+          this.panelConfig.collapsible
+            ? `
           <span class="collapse-icon ${collapsedClass}">▼</span>
-        ` : ''}
+        `
+            : ''
+        }
       </div>
     `;
   }
@@ -578,12 +608,16 @@ export class ParameterPanel extends AIControl {
 
     return `
       <div class="validation-errors show">
-        ${errorEntries.map(([parameterId, message]) => `
+        ${errorEntries
+          .map(
+            ([parameterId, message]) => `
           <div class="error-item">
             <span class="error-icon">⚠</span>
             <span>${this.parameterDefinitions.get(parameterId)?.label || parameterId}: ${message}</span>
           </div>
-        `).join('')}
+        `
+          )
+          .join('')}
       </div>
     `;
   }
@@ -593,7 +627,9 @@ export class ParameterPanel extends AIControl {
       <div class="presets-section">
         <div class="presets-label">Presets</div>
         <div class="presets-buttons">
-          ${Array.from(this.presets.entries()).map(([id, preset]) => `
+          ${Array.from(this.presets.entries())
+            .map(
+              ([id, preset]) => `
             <button 
               class="preset-btn ${this.state.activePreset === id ? 'active' : ''}" 
               data-preset-id="${id}"
@@ -601,7 +637,9 @@ export class ParameterPanel extends AIControl {
             >
               ${preset.name}
             </button>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
       </div>
     `;
@@ -611,9 +649,13 @@ export class ParameterPanel extends AIControl {
     return `
       <div class="parameters-section">
         <div class="parameters-grid layout-${this.panelConfig.layout}">
-          ${Array.from(this.parameterDefinitions.keys()).map(id => `
+          ${Array.from(this.parameterDefinitions.keys())
+            .map(
+              (id) => `
             <div class="parameter-wrapper" data-parameter-id="${id}"></div>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
       </div>
     `;
@@ -623,15 +665,21 @@ export class ParameterPanel extends AIControl {
     return `
       <div class="actions-section">
         <div class="actions-left">
-          ${this.panelConfig.showResetAll ? `
+          ${
+            this.panelConfig.showResetAll
+              ? `
             <button class="action-btn danger" id="reset-btn">
               <span>↻</span>
               <span>Reset All</span>
             </button>
-          ` : ''}
+          `
+              : ''
+          }
         </div>
         <div class="actions-right">
-          ${this.panelConfig.showExportImport ? `
+          ${
+            this.panelConfig.showExportImport
+              ? `
             <button class="action-btn" id="import-btn">
               <span>📥</span>
               <span>Import</span>
@@ -640,7 +688,9 @@ export class ParameterPanel extends AIControl {
               <span>📤</span>
               <span>Export</span>
             </button>
-          ` : ''}
+          `
+              : ''
+          }
         </div>
       </div>
     `;
@@ -657,7 +707,7 @@ export class ParameterPanel extends AIControl {
 
     // Preset buttons
     const presetButtons = this.shadowRoot.querySelectorAll('.preset-btn');
-    presetButtons.forEach(btn => {
+    presetButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
         const presetId = (btn as HTMLElement).dataset.presetId;
         if (presetId) this.loadPreset(presetId);
@@ -706,22 +756,23 @@ export class ParameterPanel extends AIControl {
       slider.addEventListener('valuechange', ((e: CustomEvent) => {
         // Stop propagation to prevent event bubbling
         e.stopPropagation();
-        
+
         // Update our state and emit our own event
         const paramDef = this.parameterDefinitions.get(parameterId);
         if (!paramDef) return;
 
         const value = e.detail.value;
         const source = e.detail.source;
-        
+
         // Clamp value to range
         const clampedValue = Math.max(paramDef.min, Math.min(paramDef.max, value));
-        
+
         // Validate if enabled
         if (this.panelConfig.validateOnChange && paramDef.validate) {
           const validationResult = paramDef.validate(clampedValue, this.state.values);
           if (validationResult !== true) {
-            this.state.errors[parameterId] = typeof validationResult === 'string' ? validationResult : 'Validation failed';
+            this.state.errors[parameterId] =
+              typeof validationResult === 'string' ? validationResult : 'Validation failed';
             this.dispatchValidationError(parameterId, this.state.errors[parameterId]);
             this.render();
             return;
@@ -734,7 +785,7 @@ export class ParameterPanel extends AIControl {
         // Update value
         const oldValue = this.state.values[parameterId];
         this.state.values[parameterId] = clampedValue;
-        
+
         // Mark dirty and clear preset for user changes
         if (source !== 'reset' && source !== 'import' && source !== 'preset') {
           this.state.isDirty = true;
@@ -783,16 +834,19 @@ export class ParameterPanel extends AIControl {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      file.text().then((text) => {
-        try {
-          const config = JSON.parse(text);
-          this.importConfig(config);
-        } catch (error) {
-          this.log('Failed to parse config file', 'error', error);
-        }
-      }).catch((error) => {
-        this.log('Failed to read config file', 'error', error);
-      });
+      file
+        .text()
+        .then((text) => {
+          try {
+            const config = JSON.parse(text);
+            this.importConfig(config);
+          } catch (error) {
+            this.log('Failed to parse config file', 'error', error);
+          }
+        })
+        .catch((error) => {
+          this.log('Failed to read config file', 'error', error);
+        });
     };
     input.click();
   }

@@ -54,7 +54,7 @@ describe('RetryProgress Component', () => {
     it('should track retry timing', () => {
       progress.attempt('Operation 1');
       progress.waitForRetry(1000);
-      
+
       const timeUntilRetry = progress.getTimeUntilRetry();
       expect(timeUntilRetry).toBeGreaterThan(0);
     });
@@ -64,7 +64,7 @@ describe('RetryProgress Component', () => {
     describe('attempt()', () => {
       it('should start new attempt', () => {
         progress.attempt('Test operation');
-        
+
         expect(progress.getStatus()).toBe('attempting');
         expect(progress.getAttempt()).toBe(1);
       });
@@ -96,7 +96,7 @@ describe('RetryProgress Component', () => {
 
       it('should set retry wait state', () => {
         progress.waitForRetry(1000);
-        
+
         expect(progress.getStatus()).toBe('waiting');
         expect(progress.getTimeUntilRetry()).toBeGreaterThan(0);
       });
@@ -114,9 +114,9 @@ describe('RetryProgress Component', () => {
       it('should countdown retry timer', async () => {
         progress.waitForRetry(100);
         const initialTime = progress.getTimeUntilRetry();
-        
-        await new Promise(resolve => setTimeout(resolve, 50));
-        
+
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
         const laterTime = progress.getTimeUntilRetry();
         expect(laterTime).toBeLessThan(initialTime);
       });
@@ -165,11 +165,11 @@ describe('RetryProgress Component', () => {
 
       it('should track max attempts reached', () => {
         const maxAttempts = progress['config'].maxAttempts || 3;
-        
+
         // First attempt
         progress.attempt(`Attempt 1`);
         expect(progress.getAttempt()).toBe(1);
-        
+
         // Subsequent attempts via waitForRetry which increments
         for (let i = 2; i <= maxAttempts; i++) {
           progress.waitForRetry({ attempt: i });
@@ -269,7 +269,7 @@ describe('RetryProgress Component', () => {
 
       expProgress.attempt('Test 1');
       const delay1 = expProgress['calculateDelay'](1);
-      
+
       expProgress.attempt('Test 2');
       const delay2 = expProgress['calculateDelay'](2);
 
@@ -285,7 +285,7 @@ describe('RetryProgress Component', () => {
 
       zeroProgress.attempt('Test');
       expect(zeroProgress.getAttempt()).toBe(1);
-      
+
       zeroProgress.remove();
     });
 

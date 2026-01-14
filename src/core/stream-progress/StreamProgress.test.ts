@@ -54,7 +54,7 @@ describe('StreamProgress Component', () => {
     it('should update state when started', () => {
       progress.start('Starting...');
       const state = progress['state'];
-      
+
       expect(state.isStreaming).toBe(true);
       expect(state.startTime).toBeGreaterThan(0);
       expect(state.message).toBe('Starting...');
@@ -63,7 +63,7 @@ describe('StreamProgress Component', () => {
     it('should track tokens correctly', () => {
       progress.start();
       progress.update({ tokensGenerated: 100 });
-      
+
       const state = progress['state'];
       expect(state.tokensGenerated).toBe(100);
     });
@@ -74,7 +74,7 @@ describe('StreamProgress Component', () => {
       it('should start streaming', () => {
         progress.start('Generating...');
         const state = progress['state'];
-        
+
         expect(state.isStreaming).toBe(true);
         expect(state.tokensGenerated).toBe(0);
         expect(state.message).toBe('Generating...');
@@ -94,7 +94,7 @@ describe('StreamProgress Component', () => {
       it('should not start if already streaming', () => {
         progress.start();
         const firstStartTime = progress['state'].startTime;
-        
+
         progress.start();
         expect(progress['state'].startTime).toBe(firstStartTime);
       });
@@ -108,7 +108,7 @@ describe('StreamProgress Component', () => {
       it('should update token count', async () => {
         progress.update({ tokensGenerated: 50 });
         await waitForNextTick();
-        
+
         const state = progress['state'];
         expect(state.tokensGenerated).toBe(50);
       });
@@ -116,7 +116,7 @@ describe('StreamProgress Component', () => {
       it('should calculate tokens per second', async () => {
         progress.update({ tokensGenerated: 100, tokensPerSecond: 25 });
         await waitForNextTick();
-        
+
         const state = progress['state'];
         expect(state.tokensPerSecond).toBe(25);
       });
@@ -124,7 +124,7 @@ describe('StreamProgress Component', () => {
       it('should update message', async () => {
         progress.update({ tokensGenerated: 50, message: 'Processing...' });
         await waitForNextTick();
-        
+
         const state = progress['state'];
         expect(state.message).toBe('Processing...');
       });
@@ -134,7 +134,7 @@ describe('StreamProgress Component', () => {
         progress.addEventListener('streamupdate', spy);
 
         progress.update({ tokensGenerated: 100 });
-        await new Promise(resolve => setTimeout(resolve, 150));
+        await new Promise((resolve) => setTimeout(resolve, 150));
 
         expect(spy).toHaveBeenCalled();
       });
@@ -142,7 +142,7 @@ describe('StreamProgress Component', () => {
       it('should not update if cancelled', () => {
         progress.cancel();
         const tokensBeforeUpdate = progress['state'].tokensGenerated;
-        
+
         progress.update({ tokensGenerated: 100 });
         expect(progress['state'].tokensGenerated).toBe(tokensBeforeUpdate);
       });
@@ -173,7 +173,7 @@ describe('StreamProgress Component', () => {
       it('should complete streaming', () => {
         progress.complete();
         const state = progress['state'];
-        
+
         expect(state.isStreaming).toBe(false);
       });
 
@@ -198,7 +198,7 @@ describe('StreamProgress Component', () => {
 
         const spy = vi.fn();
         notStreamingProgress.addEventListener('streamcomplete', spy);
-        
+
         notStreamingProgress.complete();
         expect(spy).not.toHaveBeenCalled();
 
@@ -215,7 +215,7 @@ describe('StreamProgress Component', () => {
       it('should cancel streaming', () => {
         progress.cancel();
         const state = progress['state'];
-        
+
         expect(state.isStreaming).toBe(false);
         expect(state.isCancelled).toBe(true);
       });
@@ -258,7 +258,7 @@ describe('StreamProgress Component', () => {
 
         progress.cancel();
         await waitForNextTick();
-        
+
         progress.cancel();
         await waitForNextTick();
 
@@ -350,7 +350,7 @@ describe('StreamProgress Component', () => {
       }
 
       // Wait for throttle to process at least one update
-      await new Promise(resolve => setTimeout(resolve, 250));
+      await new Promise((resolve) => setTimeout(resolve, 250));
 
       const state = progress['state'];
       expect(state.tokensGenerated).toBeGreaterThan(0);
@@ -360,7 +360,7 @@ describe('StreamProgress Component', () => {
     it('should handle zero tokens', () => {
       progress.start();
       progress.update({ tokensGenerated: 0 });
-      
+
       const state = progress['state'];
       expect(state.tokensGenerated).toBe(0);
       expect(state.totalCost).toBe(0);
@@ -370,7 +370,7 @@ describe('StreamProgress Component', () => {
       progress.start();
       progress.update({ tokensGenerated: 1000000 });
       await waitForNextTick();
-      
+
       const state = progress['state'];
       expect(state.tokensGenerated).toBe(1000000);
     });
@@ -379,7 +379,7 @@ describe('StreamProgress Component', () => {
       progress.start();
       progress.update({ tokensGenerated: 100, tokensPerSecond: -5 });
       await waitForNextTick();
-      
+
       const state = progress['state'];
       expect(state.tokensPerSecond).toBe(-5);
     });
@@ -388,7 +388,7 @@ describe('StreamProgress Component', () => {
   describe('Accessibility', () => {
     it('should have proper ARIA role', async () => {
       await waitForElement(progress);
-      
+
       const role = progress.getAttribute('role');
       expect(role).toBe('progressbar');
     });

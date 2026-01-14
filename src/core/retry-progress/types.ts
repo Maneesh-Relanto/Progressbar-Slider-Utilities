@@ -18,55 +18,55 @@ export type RetryStrategy = 'exponential' | 'linear' | 'fixed' | 'fibonacci';
 export interface RetryProgressConfig {
   /** Current attempt number (1-indexed) */
   attempt?: number;
-  
+
   /** Maximum number of retry attempts */
   maxAttempts?: number;
-  
+
   /** Initial delay in milliseconds */
   initialDelay?: number;
-  
+
   /** Maximum delay in milliseconds */
   maxDelay?: number;
-  
+
   /** Backoff multiplier for exponential strategy */
   backoffMultiplier?: number;
-  
+
   /** Retry strategy */
   strategy?: RetryStrategy;
-  
+
   /** Operation message */
   message?: string;
-  
+
   /** Show attempt count */
   showAttemptCount?: boolean;
-  
+
   /** Show next retry time */
   showNextRetry?: boolean;
-  
+
   /** Show progress bar for wait time */
   showProgressBar?: boolean;
-  
+
   /** Show elapsed time */
   showElapsedTime?: boolean;
-  
+
   /** Enable manual retry button */
   allowManualRetry?: boolean;
-  
+
   /** Enable cancel button */
   allowCancel?: boolean;
-  
+
   /** Enable animations */
   animate?: boolean;
-  
+
   /** Custom CSS class */
   className?: string;
-  
+
   /** ARIA label for accessibility */
   ariaLabel?: string;
-  
+
   /** Debug mode */
   debug?: boolean;
-  
+
   /** Disabled state */
   disabled?: boolean;
 }
@@ -93,13 +93,13 @@ export interface RetryProgressState {
 export interface RetryAttemptUpdate {
   /** New attempt number */
   attempt?: number;
-  
+
   /** Operation message */
   message?: string;
-  
+
   /** Error from last attempt */
   error?: Error;
-  
+
   /** Override calculated delay (ms) */
   delay?: number;
 }

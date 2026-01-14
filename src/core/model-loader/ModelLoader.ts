@@ -15,10 +15,10 @@ import { styles } from './styles';
 
 /**
  * ModelLoader Component
- * 
+ *
  * Displays multi-stage progress for AI model loading operations.
  * Shows download progress, initialization stages, memory usage, and ETA.
- * 
+ *
  * @example
  * ```typescript
  * // Create the component
@@ -29,31 +29,31 @@ import { styles } from './styles';
  *   showMemoryUsage: true,
  *   showETA: true,
  * });
- * 
+ *
  * document.body.appendChild(loader);
- * 
+ *
  * // Start loading
  * loader.start();
- * 
+ *
  * // Update download stage
  * loader.updateStage('download', {
  *   bytesLoaded: 50000000,
  *   totalBytes: 100000000,
  *   message: 'Downloading model weights...'
  * });
- * 
+ *
  * // Move to next stage
  * loader.setStage('load', { message: 'Loading into memory...' });
- * 
+ *
  * // Complete
  * loader.complete();
- * 
+ *
  * // Listen to events
  * loader.addEventListener('stagechange', (e) => {
  *   console.log('Stage changed', e.detail);
  * });
  * ```
- * 
+ *
  * @fires loadstart - Fired when loading starts
  * @fires stagechange - Fired when stage changes
  * @fires stageupdate - Fired when stage progress updates
@@ -127,7 +127,11 @@ export class ModelLoader extends AIControl {
     return 'progressbar';
   }
 
-  protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
+  protected override handleAttributeChange(
+    name: string,
+    _oldValue: string,
+    newValue: string
+  ): void {
     switch (name) {
       case 'model-name':
         this.config.modelName = newValue || 'AI Model';
@@ -308,7 +312,7 @@ export class ModelLoader extends AIControl {
 
     // Mark all stages as completed
     const completedStages: Record<ModelStage, StageState> = { ...this.state.stages };
-    this.config.stages.forEach(stage => {
+    this.config.stages.forEach((stage) => {
       const stageState = completedStages[stage];
       completedStages[stage] = {
         ...stageState,
@@ -438,7 +442,7 @@ export class ModelLoader extends AIControl {
 
     // Estimate based on completed stages + current progress
     const effectiveProgress = (completedStages + currentProgress / 100) / totalStages;
-    
+
     if (effectiveProgress === 0) {
       return '--';
     }
@@ -455,7 +459,8 @@ export class ModelLoader extends AIControl {
   private getOverallStatus(): string {
     if (this.state.hasError) return 'error';
     if (this.state.isLoading) return 'loading';
-    if (!this.state.isLoading && this.state.stages.ready?.status === 'completed') return 'completed';
+    if (!this.state.isLoading && this.state.stages.ready?.status === 'completed')
+      return 'completed';
     return 'idle';
   }
 
@@ -474,7 +479,7 @@ export class ModelLoader extends AIControl {
    */
   private generateStagesHtml(): string {
     return this.config.stages
-      .map(stage => {
+      .map((stage) => {
         const stageState = this.state.stages[stage];
         if (!stageState) return '';
 

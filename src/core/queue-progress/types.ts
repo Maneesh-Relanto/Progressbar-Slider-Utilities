@@ -9,46 +9,46 @@ export type QueueStatus = 'waiting' | 'processing' | 'completed' | 'cancelled' |
 export interface QueueProgressConfig {
   /** Initial position in queue */
   position?: number;
-  
+
   /** Total queue size */
   queueSize?: number;
-  
+
   /** Estimated wait time in seconds */
   estimatedWait?: number;
-  
+
   /** Processing rate (items per second) */
   processingRate?: number;
-  
+
   /** Show position counter */
   showPosition?: boolean;
-  
+
   /** Show estimated wait time */
   showWaitTime?: boolean;
-  
+
   /** Show processing rate */
   showRate?: boolean;
-  
+
   /** Show queue size */
   showQueueSize?: boolean;
-  
+
   /** Show visual progress bar */
   showProgressBar?: boolean;
-  
+
   /** Custom message */
   message?: string;
-  
+
   /** Enable animations */
   animate?: boolean;
-  
+
   /** Update throttle in milliseconds */
   updateThrottle?: number;
-  
+
   /** Debug mode */
   debug?: boolean;
-  
+
   /** Custom CSS class */
   className?: string;
-  
+
   /** Aria label */
   ariaLabel?: string;
 }

@@ -51,7 +51,7 @@ describe('ModelLoader Component', () => {
     it('should update state when started', () => {
       loader.start('Loading model...');
       const state = loader.getState();
-      
+
       expect(state.isLoading).toBe(true);
       expect(state.currentStage).toBe('download');
     });
@@ -62,7 +62,7 @@ describe('ModelLoader Component', () => {
       it('should start loading process', () => {
         loader.start('Loading...');
         const state = loader.getState();
-        
+
         expect(state.isLoading).toBe(true);
         expect(state.currentStage).toBe('download');
       });
@@ -86,7 +86,7 @@ describe('ModelLoader Component', () => {
       it('should update stage progress', () => {
         loader.updateStage('download', { progress: 50 });
         const state = loader.getState();
-        
+
         expect(state.stages.download.progress).toBe(50);
       });
 
@@ -109,7 +109,7 @@ describe('ModelLoader Component', () => {
       it('should change current stage', () => {
         loader.setStage('load');
         const state = loader.getState();
-        
+
         expect(state.currentStage).toBe('load');
       });
     });
@@ -123,7 +123,7 @@ describe('ModelLoader Component', () => {
         loader.setStage('download');
         loader.updateStage('download', { progress: 100 });
         loader.completeStage();
-        
+
         const state = loader.getState();
         expect(state.stages.download.status).toBe('completed');
       });
@@ -131,7 +131,7 @@ describe('ModelLoader Component', () => {
       it('should advance to next stage', () => {
         loader.setStage('download');
         loader.completeStage();
-        
+
         const state = loader.getState();
         expect(state.currentStage).toBe('load');
       });
@@ -145,7 +145,7 @@ describe('ModelLoader Component', () => {
       it('should complete loading process', () => {
         loader.complete();
         const state = loader.getState();
-        
+
         expect(state.isLoading).toBe(false);
         expect(state.currentStage).toBe('ready');
       });
@@ -169,7 +169,7 @@ describe('ModelLoader Component', () => {
       it('should handle error', () => {
         loader.error('Failed to load');
         const state = loader.getState();
-        
+
         expect(state.isLoading).toBe(false);
         expect(state.hasError).toBe(true);
       });

@@ -7,7 +7,7 @@ import type { AIControlConfig, ThemeConfig } from './types';
  * - Event handling
  * - Accessibility features
  * - Debug logging
- * 
+ *
  * @example
  * ```typescript
  * class MyControl extends AIControl {
@@ -15,7 +15,7 @@ import type { AIControlConfig, ThemeConfig } from './types';
  *     super();
  *     this.attachShadow({ mode: 'open' });
  *   }
- * 
+ *
  *   protected render() {
  *     // Your rendering logic
  *   }

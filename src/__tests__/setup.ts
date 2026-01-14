@@ -8,7 +8,7 @@ import { beforeAll, afterEach, vi } from 'vitest';
 // Mock globalThis.customElements if not available
 beforeAll(() => {
   if (!globalThis.customElements) {
-    // @ts-ignore - Mock for testing
+    // @ts-expect-error - Mock for testing
     globalThis.customElements = {
       define: vi.fn(),
       get: vi.fn(),
@@ -47,7 +47,7 @@ if (!globalThis.customElements) {
     }
   }
 
-  // @ts-ignore
+  // @ts-expect-error - Polyfill for testing
   globalThis.customElements = new CustomElementRegistry();
 }
 

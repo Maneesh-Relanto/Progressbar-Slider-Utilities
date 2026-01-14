@@ -10,10 +10,10 @@ import { styles } from './styles';
 
 /**
  * RetryProgress Component
- * 
+ *
  * Displays retry progress with exponential backoff, attempt tracking, and error handling.
  * Perfect for handling transient failures in API calls, network requests, or AI operations.
- * 
+ *
  * @example
  * ```typescript
  * // Create the component
@@ -23,27 +23,27 @@ import { styles } from './styles';
  *   strategy: 'exponential',
  *   allowManualRetry: true,
  * });
- * 
+ *
  * document.body.appendChild(retry);
- * 
+ *
  * // Start first attempt
  * retry.attempt('Connecting to API...');
- * 
+ *
  * // If it fails, start waiting for retry
  * retry.waitForRetry({
  *   attempt: 2,
  *   error: new Error('Connection timeout'),
  * });
- * 
+ *
  * // On success
  * retry.success('Connected successfully!');
- * 
+ *
  * // Listen to events
  * retry.addEventListener('retryattempt', (e) => {
  *   console.log('Attempting:', e.detail);
  * });
  * ```
- * 
+ *
  * @fires retryattempt - Fired when a retry attempt starts
  * @fires retrywaiting - Fired when waiting for next retry
  * @fires retrysuccess - Fired when operation succeeds
@@ -60,7 +60,7 @@ export class RetryProgress extends AIControl {
 
   constructor(config: RetryProgressConfig = {}) {
     super(config);
-    
+
     this.config = {
       attempt: config.attempt ?? 1,
       maxAttempts: config.maxAttempts ?? 3,
@@ -101,7 +101,7 @@ export class RetryProgress extends AIControl {
    */
   override connectedCallback(): void {
     super.connectedCallback();
-    
+
     // Read configuration from attributes
     if (this.hasAttribute('max-attempts')) {
       const val = Number.parseInt(this.getAttribute('max-attempts') || '', 10);
@@ -140,7 +140,7 @@ export class RetryProgress extends AIControl {
     if (this.hasAttribute('show-progress-bar')) {
       this.config.showProgressBar = this.getAttribute('show-progress-bar') === 'true';
     }
-    
+
     this.render();
   }
 
@@ -149,28 +149,28 @@ export class RetryProgress extends AIControl {
    */
   private calculateDelay(attempt: number): number {
     const { strategy, initialDelay, backoffMultiplier, maxDelay } = this.config;
-    
+
     let delay: number;
-    
+
     switch (strategy) {
       case 'exponential':
         delay = initialDelay * Math.pow(backoffMultiplier, attempt - 1);
         break;
-      
+
       case 'linear':
         delay = initialDelay * attempt;
         break;
-      
+
       case 'fibonacci':
         delay = initialDelay * this.fibonacci(attempt);
         break;
-      
+
       case 'fixed':
       default:
         delay = initialDelay;
         break;
     }
-    
+
     return Math.min(delay, maxDelay);
   }
 
@@ -179,7 +179,8 @@ export class RetryProgress extends AIControl {
    */
   private fibonacci(n: number): number {
     if (n <= 1) return 1;
-    let a = 1, b = 1;
+    let a = 1,
+      b = 1;
     for (let i = 2; i < n; i++) {
       [a, b] = [b, a + b];
     }
@@ -191,9 +192,9 @@ export class RetryProgress extends AIControl {
    */
   public attempt(message?: string): void {
     this.stopTimers();
-    
+
     const attemptMessage = message || `Attempt ${this.state.attempt} of ${this.state.maxAttempts}`;
-    
+
     this.setState({
       status: 'attempting',
       message: attemptMessage,
@@ -202,12 +203,16 @@ export class RetryProgress extends AIControl {
 
     this.startElapsedTimer();
 
-    this.dispatchEvent(new CustomEvent('retryattempt', { detail: {
-      attempt: this.state.attempt,
-      maxAttempts: this.state.maxAttempts,
-      message: attemptMessage,
-      timestamp: Date.now(),
-    }}));
+    this.dispatchEvent(
+      new CustomEvent('retryattempt', {
+        detail: {
+          attempt: this.state.attempt,
+          maxAttempts: this.state.maxAttempts,
+          message: attemptMessage,
+          timestamp: Date.now(),
+        },
+      })
+    );
 
     this.log(`Retry attempt ${this.state.attempt}/${this.state.maxAttempts}: ${attemptMessage}`);
   }
@@ -217,7 +222,7 @@ export class RetryProgress extends AIControl {
    */
   public waitForRetry(update: RetryAttemptUpdate = {}): void {
     const nextAttempt = update.attempt ?? this.state.attempt + 1;
-    
+
     if (nextAttempt > this.state.maxAttempts) {
       this.failure(update.error);
       return;
@@ -239,13 +244,17 @@ export class RetryProgress extends AIControl {
     this.startWaitTimer(delay);
     this.startProgressTimer(delay);
 
-    this.dispatchEvent(new CustomEvent('retrywaiting', { detail: {
-      attempt: nextAttempt,
-      delay,
-      nextRetryTime,
-      strategy: this.config.strategy,
-      timestamp: Date.now(),
-    }}));
+    this.dispatchEvent(
+      new CustomEvent('retrywaiting', {
+        detail: {
+          attempt: nextAttempt,
+          delay,
+          nextRetryTime,
+          strategy: this.config.strategy,
+          timestamp: Date.now(),
+        },
+      })
+    );
 
     this.log(`Waiting ${delay}ms before retry ${nextAttempt}/${this.state.maxAttempts}`);
   }
@@ -257,19 +266,23 @@ export class RetryProgress extends AIControl {
     this.stopTimers();
 
     const successMessage = message || 'Operation successful!';
-    
+
     this.setState({
       status: 'success',
       message: successMessage,
     });
 
-    this.dispatchEvent(new CustomEvent('retrysuccess', { detail: {
-      attempt: this.state.attempt,
-      totalAttempts: this.state.attempt,
-      elapsedTime: this.state.elapsedTime,
-      message: successMessage,
-      timestamp: Date.now(),
-    }}));
+    this.dispatchEvent(
+      new CustomEvent('retrysuccess', {
+        detail: {
+          attempt: this.state.attempt,
+          totalAttempts: this.state.attempt,
+          elapsedTime: this.state.elapsedTime,
+          message: successMessage,
+          timestamp: Date.now(),
+        },
+      })
+    );
 
     this.log(`Success after ${this.state.attempt} attempts (${this.state.elapsedTime}ms)`);
   }
@@ -287,12 +300,16 @@ export class RetryProgress extends AIControl {
       lastError: error,
     });
 
-    this.dispatchEvent(new CustomEvent('retryfailure', { detail: {
-      totalAttempts: this.state.attempt,
-      lastError: error,
-      elapsedTime: this.state.elapsedTime,
-      timestamp: Date.now(),
-    }}));
+    this.dispatchEvent(
+      new CustomEvent('retryfailure', {
+        detail: {
+          totalAttempts: this.state.attempt,
+          lastError: error,
+          elapsedTime: this.state.elapsedTime,
+          timestamp: Date.now(),
+        },
+      })
+    );
 
     this.logError('Retry failed', error || new Error('Maximum attempts reached'));
   }
@@ -308,11 +325,15 @@ export class RetryProgress extends AIControl {
       message: reason || 'Operation cancelled',
     });
 
-    this.dispatchEvent(new CustomEvent('retrycancel', { detail: {
-      attempt: this.state.attempt,
-      reason,
-      timestamp: Date.now(),
-    }}));
+    this.dispatchEvent(
+      new CustomEvent('retrycancel', {
+        detail: {
+          attempt: this.state.attempt,
+          reason,
+          timestamp: Date.now(),
+        },
+      })
+    );
 
     this.log(`Retry cancelled: ${reason || 'User cancelled'}`);
   }
@@ -387,7 +408,6 @@ export class RetryProgress extends AIControl {
    * Start progress bar timer
    */
   private startProgressTimer(_totalDelay: number): void {
-    
     this.progressTimer = globalThis.setInterval(() => {
       if (this.state.status === 'waiting') {
         const remaining = Math.max(0, this.state.nextRetryTime - Date.now());
@@ -421,10 +441,14 @@ export class RetryProgress extends AIControl {
   private handleManualRetry(): void {
     if (this.state.status !== 'waiting' && this.state.status !== 'failed') return;
 
-    this.dispatchEvent(new CustomEvent('manualretry', { detail: {
-      attempt: this.state.attempt,
-      timestamp: Date.now(),
-    }}));
+    this.dispatchEvent(
+      new CustomEvent('manualretry', {
+        detail: {
+          attempt: this.state.attempt,
+          timestamp: Date.now(),
+        },
+      })
+    );
 
     this.attempt();
   }
@@ -436,20 +460,21 @@ export class RetryProgress extends AIControl {
     this.cancel('User cancelled operation');
   }
 
-
-
   /**
    * Update state and re-render
    */
   private setState(update: Partial<RetryProgressState>): void {
     Object.assign(this.state, update);
     this.render();
-    
+
     // Update ARIA attributes
     const progress = ((this.state.attempt / this.state.maxAttempts) * 100).toFixed(0);
     this.setAttribute('aria-valuenow', this.state.attempt.toString());
     this.setAttribute('aria-valuemax', this.state.maxAttempts.toString());
-    this.setAttribute('aria-valuetext', `Attempt ${this.state.attempt} of ${this.state.maxAttempts}, ${progress}% complete`);
+    this.setAttribute(
+      'aria-valuetext',
+      `Attempt ${this.state.attempt} of ${this.state.maxAttempts}, ${progress}% complete`
+    );
   }
 
   /**
@@ -497,7 +522,7 @@ export class RetryProgress extends AIControl {
    */
   private getProgressPercentage(): number {
     if (this.state.status !== 'waiting') return 0;
-    
+
     const elapsed = Date.now() - (this.state.nextRetryTime - this.state.currentDelay);
     return Math.min(100, (elapsed / this.state.currentDelay) * 100);
   }
@@ -507,7 +532,7 @@ export class RetryProgress extends AIControl {
    */
   private renderSuccessMessage(status: RetryStatus, attempt: number): string {
     if (status !== 'success') return '';
-    
+
     const attemptText = attempt > 1 ? 's' : '';
     return `
       <div class="success-message">
@@ -521,17 +546,22 @@ export class RetryProgress extends AIControl {
   /**
    * Render action buttons
    */
-  private renderActions(status: RetryStatus, allowManualRetry: boolean, allowCancel: boolean, disabled: boolean): string {
+  private renderActions(
+    status: RetryStatus,
+    allowManualRetry: boolean,
+    allowCancel: boolean,
+    disabled: boolean
+  ): string {
     if (status === 'success' || (!allowManualRetry && !allowCancel)) return '';
-    
+
     const showRetryButton = allowManualRetry && (status === 'waiting' || status === 'failed');
     const showCancelButton = allowCancel && status !== 'cancelled' && status !== 'failed';
-    
+
     if (!showRetryButton && !showCancelButton) return '';
-    
+
     const retryButtonText = status === 'failed' ? 'Try Again' : 'Retry Now';
     const disabledAttr = disabled ? 'disabled' : '';
-    
+
     let buttonsHtml = '';
     if (showRetryButton) {
       buttonsHtml += `
@@ -547,7 +577,7 @@ export class RetryProgress extends AIControl {
         </button>
       `;
     }
-    
+
     return `
       <div class="actions">
         ${buttonsHtml}
@@ -562,7 +592,15 @@ export class RetryProgress extends AIControl {
     if (!this.shadowRoot) return;
 
     const { status, attempt, maxAttempts, message, errorMessage, elapsedTime } = this.state;
-    const { showAttemptCount, showNextRetry, showProgressBar, showElapsedTime, allowManualRetry, allowCancel, disabled } = this.config;
+    const {
+      showAttemptCount,
+      showNextRetry,
+      showProgressBar,
+      showElapsedTime,
+      allowManualRetry,
+      allowCancel,
+      disabled,
+    } = this.config;
 
     const remainingTime = this.getTimeUntilRetry();
     const progressPercentage = this.getProgressPercentage();
@@ -579,47 +617,67 @@ export class RetryProgress extends AIControl {
           <span class="status-badge ${status}">${this.getStatusText()}</span>
         </div>
 
-        ${showAttemptCount ? `
+        ${
+          showAttemptCount
+            ? `
           <div class="attempt-counter">
             <div class="attempt-number ${status}">${attempt}</div>
             <div class="attempt-label">of ${maxAttempts} attempts</div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
         <div class="metrics-grid">
-          ${showNextRetry && status === 'waiting' ? `
+          ${
+            showNextRetry && status === 'waiting'
+              ? `
             <div class="metric">
               <div class="metric-value">${formatTime(Math.ceil(remainingTime / 1000))}</div>
               <div class="metric-label">Next Retry</div>
             </div>
-          ` : ''}
-          ${showElapsedTime && elapsedTime > 0 ? `
+          `
+              : ''
+          }
+          ${
+            showElapsedTime && elapsedTime > 0
+              ? `
             <div class="metric">
               <div class="metric-value">${formatTime(Math.ceil(elapsedTime / 1000))}</div>
               <div class="metric-label">Elapsed</div>
             </div>
-          ` : ''}
+          `
+              : ''
+          }
           <div class="metric">
             <div class="metric-value">${this.config.strategy}</div>
             <div class="metric-label">Strategy</div>
           </div>
         </div>
 
-        ${showProgressBar && status === 'waiting' ? `
+        ${
+          showProgressBar && status === 'waiting'
+            ? `
           <div class="progress-bar-container">
             <div class="progress-label">Time until next attempt</div>
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${progressPercentage}%"></div>
             </div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
-        ${errorMessage && (status === 'waiting' || status === 'failed') ? `
+        ${
+          errorMessage && (status === 'waiting' || status === 'failed')
+            ? `
           <div class="error-display">
             <div class="error-title">Last Error</div>
             <div class="error-message">${errorMessage}</div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
         ${this.renderSuccessMessage(status, attempt)}
 
@@ -662,14 +720,18 @@ export class RetryProgress extends AIControl {
       'allow-cancel',
       'show-attempt-count',
       'show-progress-bar',
-      'disabled'
+      'disabled',
     ];
   }
 
   /**
    * Handle attribute changes
    */
-  protected override handleAttributeChange(name: string, _oldValue: string, newValue: string): void {
+  protected override handleAttributeChange(
+    name: string,
+    _oldValue: string,
+    newValue: string
+  ): void {
     switch (name) {
       case 'attempt': {
         this.state.attempt = Number.parseInt(newValue, 10) || 1;
