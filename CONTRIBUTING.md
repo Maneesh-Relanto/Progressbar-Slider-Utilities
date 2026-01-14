@@ -48,10 +48,10 @@ npm run test:coverage  # With coverage report
 npm run type-check
 ```
 
-### Linting & Formatting
+### Type Checking & Formatting
 
 ```bash
-npm run lint
+npm run type-check
 npm run format
 ```
 
@@ -64,21 +64,23 @@ src/
 │   ├── stream-progress/    # StreamProgress component
 │   ├── model-loader/       # ModelLoader component
 │   ├── parameter-slider/   # ParameterSlider component
+│   ├── parameter-panel/    # ParameterPanel component
 │   ├── queue-progress/     # QueueProgress component
 │   ├── retry-progress/     # RetryProgress component
+│   ├── batch-progress/     # BatchProgress component
 │   └── index.ts            # Exports
-├── themes/            # CSS themes (if applicable)
+├── themes/            # CSS themes
 └── index.ts           # Main entry point
 
 examples/              # Example applications
-├── vanilla/           # Vanilla JS examples (5 components × 4 examples = 20)
+├── vanilla/           # Vanilla JS examples (10 demos)
 └── index.html         # Examples gallery
 
 docs/                  # Documentation
-├── api/               # API documentation (5 component docs)
-└── GETTING_STARTED.md # Getting started guide
-
-tests/                 # Unit tests (to be added)
+├── api/               # API documentation (7 component docs)
+├── visual-variants.md # Visual customization guide
+├── theming.md         # Theming guide
+└── getting-started.md # Getting started guide
 ```
 
 ## How to Contribute
@@ -105,18 +107,20 @@ tests/                 # Unit tests (to be added)
 
 1. **Ensure your code follows our standards**:
    - TypeScript with strict mode
-   - ESLint and Prettier compliant
-   - All tests passing
+   - Prettier formatted
+   - All tests passing (292 tests)
    - Type definitions included
+   - SonarQube clean
 
 2. **Write tests** for new features
 
 3. **Update documentation** if needed
 
 4. **Write a clear commit message**:
+
    ```
    feat: add temperature slider component
-   
+
    - Implements temperature slider (0-2 range)
    - Includes visual feedback and presets
    - Adds comprehensive tests
@@ -237,8 +241,7 @@ npm run test:coverage      # Coverage report
 ## Community
 
 - **GitHub Discussions**: Ask questions, share ideas
-- **Discord**: Join our community (link)
-- **Twitter**: Follow for updates @aiprogresscontrols
+- **GitHub Issues**: Report bugs and request features
 
 ## Code of Conduct
 
@@ -254,9 +257,9 @@ By contributing, you agree that your contributions will be licensed under the MI
 ## Questions?
 
 Feel free to reach out:
-- Open an issue
-- Join our Discord
-- Email: support@example.com
+
+- Open an issue on GitHub
+- Start a discussion on GitHub Discussions
 
 ---
 

@@ -447,11 +447,7 @@ export class BatchProgress extends AIControl {
       pending: this.state.totalItems - this.state.completedCount,
       progress: this.getOverallProgress(),
       rate: this.getRate(),
-      duration: this.state.endTime
-        ? this.state.endTime - (this.state.startTime || 0)
-        : this.state.startTime
-          ? Date.now() - this.state.startTime
-          : 0,
+      duration: this._calculateDuration(),
     };
   }
 
@@ -468,12 +464,37 @@ export class BatchProgress extends AIControl {
   }
 
   /**
-   * Render the component
+   * Calculate duration based on state
    */
-  protected render(): void {
-    if (!this.shadowRoot) return;
+  private _calculateDuration(): number {
+    if (this.state.endTime) {
+      return this.state.endTime - (this.state.startTime || 0);
+    }
+    if (this.state.startTime) {
+      return Date.now() - this.state.startTime;
+    }
+    return 0;
+  }
 
-    // Sync attributes to host element for CSS selectors
+  /**
+   * Get rate display HTML
+   */
+  private _getRateDisplay(rate: number): string {
+    if (!this.config.showRate) {
+      return '';
+    }
+    return `
+            <div class="stat-item">
+              <span class="stat-label">Rate</span>
+              <span class="stat-value rate">${rate.toFixed(1)}/s</span>
+            </div>
+          `;
+  }
+
+  /**
+   * Sync config attributes to host element
+   */
+  private _syncAttributes(): void {
     if (this.config.size && this.getAttribute('size') !== this.config.size) {
       this.setAttribute('size', this.config.size);
     }
@@ -483,44 +504,50 @@ export class BatchProgress extends AIControl {
     if (this.config.animation && this.getAttribute('animation') !== this.config.animation) {
       this.setAttribute('animation', this.config.animation);
     }
+  }
 
-    const overallProgress = this.getOverallProgress();
-    const rate = this.getRate();
-    const stats = this.getStats();
+  /**
+   * Get status badge CSS class
+   */
+  private _getStatusBadgeClass(status: string): string {
+    switch (status) {
+      case 'processing':
+        return 'processing';
+      case 'completed':
+        return 'completed';
+      case 'cancelled':
+        return 'cancelled';
+      default:
+        return '';
+    }
+  }
 
-    const getStatusBadgeClass = (status: string) => {
-      switch (status) {
-        case 'processing':
-          return 'processing';
-        case 'completed':
-          return 'completed';
-        case 'cancelled':
-          return 'cancelled';
-        default:
-          return '';
-      }
-    };
+  /**
+   * Get status display text
+   */
+  private _getStatusText(status: string): string {
+    switch (status) {
+      case 'idle':
+        return 'Ready';
+      case 'processing':
+        return 'Processing';
+      case 'completed':
+        return 'Completed';
+      case 'cancelled':
+        return 'Cancelled';
+      default:
+        return '';
+    }
+  }
 
-    const getStatusText = (status: string) => {
-      switch (status) {
-        case 'idle':
-          return 'Ready';
-        case 'processing':
-          return 'Processing';
-        case 'completed':
-          return 'Completed';
-        case 'cancelled':
-          return 'Cancelled';
-        default:
-          return '';
-      }
-    };
-
-    const statusBadgeClass = getStatusBadgeClass(this.state.status);
-    const statusText = getStatusText(this.state.status);
-
-    const statsHtml = this.config.showStats
-      ? `
+  /**
+   * Get stats section HTML
+   */
+  private _getStatsHtml(stats: BatchStats, rate: number): string {
+    if (!this.config.showStats) {
+      return '';
+    }
+    return `
         <div class="stats">
           <div class="stat-item">
             <span class="stat-label">Total</span>
@@ -534,22 +561,19 @@ export class BatchProgress extends AIControl {
             <span class="stat-label">Failed</span>
             <span class="stat-value error">${stats.failed}</span>
           </div>
-          ${
-            this.config.showRate
-              ? `
-            <div class="stat-item">
-              <span class="stat-label">Rate</span>
-              <span class="stat-value rate">${rate.toFixed(1)}/s</span>
-            </div>
-          `
-              : ''
-          }
+          ${this._getRateDisplay(rate)}
         </div>
-      `
-      : '';
+      `;
+  }
 
-    const progressHtml = this.config.showProgressBar
-      ? `
+  /**
+   * Get progress bar HTML
+   */
+  private _getProgressBarHtml(overallProgress: number, stats: BatchStats): string {
+    if (!this.config.showProgressBar) {
+      return '';
+    }
+    return `
         <div class="overall-progress">
           <div class="progress-header">
             <span>Overall Progress</span>
@@ -559,21 +583,56 @@ export class BatchProgress extends AIControl {
             <div class="progress-fill" style="width: ${overallProgress}%"></div>
           </div>
         </div>
-      `
-      : '';
+      `;
+  }
 
-    const itemsHtml = this.config.showItems ? this.renderItems() : '';
-
-    const controlsHtml =
-      this.config.allowCancel && this.state.status === 'processing'
-        ? `
+  /**
+   * Get controls HTML
+   */
+  private _getControlsHtml(): string {
+    if (!this.config.allowCancel || this.state.status !== 'processing') {
+      return '';
+    }
+    const disabledAttr = this.config.disabled ? 'disabled' : '';
+    return `
         <div class="controls">
-          <button class="cancel-btn" id="cancel-btn" ${this.config.disabled ? 'disabled' : ''}>
+          <button class="cancel-btn" id="cancel-btn" ${disabledAttr}>
             ${this.config.cancelLabel}
           </button>
         </div>
-      `
-        : '';
+      `;
+  }
+
+  /**
+   * Attach event listeners to rendered elements
+   */
+  private _attachEventListeners(): void {
+    if (!this.config.allowCancel) return;
+
+    const cancelBtn = this.shadowRoot?.getElementById('cancel-btn');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => this.cancel('User cancelled'));
+    }
+  }
+
+  /**
+   * Render the component
+   */
+  protected render(): void {
+    if (!this.shadowRoot) return;
+
+    this._syncAttributes();
+
+    const overallProgress = this.getOverallProgress();
+    const rate = this.getRate();
+    const stats = this.getStats();
+    const statusBadgeClass = this._getStatusBadgeClass(this.state.status);
+    const statusText = this._getStatusText(this.state.status);
+
+    const statsHtml = this._getStatsHtml(stats, rate);
+    const progressHtml = this._getProgressBarHtml(overallProgress, stats);
+    const itemsHtml = this.config.showItems ? this.renderItems() : '';
+    const controlsHtml = this._getControlsHtml();
 
     this.shadowRoot.innerHTML = `
       <style>${styles}</style>
@@ -589,13 +648,7 @@ export class BatchProgress extends AIControl {
       </div>
     `;
 
-    // Attach event listeners
-    if (this.config.allowCancel) {
-      const cancelBtn = this.shadowRoot.getElementById('cancel-btn');
-      if (cancelBtn) {
-        cancelBtn.addEventListener('click', () => this.cancel('User cancelled'));
-      }
-    }
+    this._attachEventListeners();
   }
 
   /**

@@ -365,12 +365,9 @@ export class StreamProgress extends AIControl {
   }
 
   /**
-   * Render the component
+   * Sync config attributes to host element
    */
-  protected render(): void {
-    if (!this.shadowRoot) return;
-
-    // Sync attributes to host element for CSS selectors (only if different to avoid infinite loop)
+  private _syncAttributes(): void {
     if (this.config.size && this.getAttribute('size') !== this.config.size) {
       this.setAttribute('size', this.config.size);
     }
@@ -380,68 +377,111 @@ export class StreamProgress extends AIControl {
     if (this.config.animation && this.getAttribute('animation') !== this.config.animation) {
       this.setAttribute('animation', this.config.animation);
     }
+  }
 
-    const percentage = this.calculatePercentage(this.displayTokens, this.config.maxTokens);
-
-    const tokensDisplay = Math.round(this.displayTokens);
-    const rateDisplay = Math.round(this.state.tokensPerSecond);
-    const costDisplay = formatCurrency(this.state.totalCost);
-
-    const progressBarHtml = this.config.showProgressBar
-      ? `
+  /**
+   * Get progress bar HTML
+   */
+  private _getProgressBarHtml(percentage: number): string {
+    if (!this.config.showProgressBar) {
+      return '';
+    }
+    return `
         <div class="progress-bar">
           <div class="progress-fill" style="width: ${percentage}%"></div>
         </div>
-      `
-      : '';
+      `;
+  }
 
-    const statsHtml = `
-      <div class="stats">
-        <div class="stat-item">
-          <span class="stat-label">Tokens:</span>
-          <span class="stat-value">${tokensDisplay} / ${this.config.maxTokens}</span>
-        </div>
-        ${
-          this.config.showRate
-            ? `
+  /**
+   * Get stats HTML
+   */
+  private _getStatsHtml(tokensDisplay: number, rateDisplay: number, costDisplay: string): string {
+    const rateHtml = this.config.showRate
+      ? `
           <div class="stat-item">
             <span class="stat-label">Rate:</span>
             <span class="stat-value">${rateDisplay} tokens/s</span>
           </div>
         `
-            : ''
-        }
-        ${
-          this.config.showCost
-            ? `
+      : '';
+
+    const costHtml = this.config.showCost
+      ? `
           <div class="stat-item">
             <span class="stat-label">Cost:</span>
             <span class="stat-value">${costDisplay}</span>
           </div>
         `
-            : ''
-        }
-      </div>
-    `;
-
-    const messageHtml = this.state.message
-      ? `<div class="message">${this.state.message}</div>`
       : '';
 
-    const cancelButtonHtml =
-      this.config.showCancelButton && this.state.isStreaming
-        ? `
+    return `
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-label">Tokens:</span>
+          <span class="stat-value">${tokensDisplay} / ${this.config.maxTokens}</span>
+        </div>
+        ${rateHtml}
+        ${costHtml}
+      </div>
+    `;
+  }
+
+  /**
+   * Get cancel button HTML
+   */
+  private _getCancelButtonHtml(): string {
+    if (!this.config.showCancelButton || !this.state.isStreaming) {
+      return '';
+    }
+    return `
         <button class="cancel-button" aria-label="Cancel streaming">
           ${this.config.cancelLabel}
         </button>
-      `
-        : '';
+      `;
+  }
 
-    const statusClass = (() => {
-      if (this.state.isCancelled) return 'cancelled';
-      if (this.state.isStreaming) return 'streaming';
-      return 'idle';
-    })();
+  /**
+   * Get status CSS class
+   */
+  private _getStatusClass(): string {
+    if (this.state.isCancelled) return 'cancelled';
+    if (this.state.isStreaming) return 'streaming';
+    return 'idle';
+  }
+
+  /**
+   * Attach event listeners to rendered elements
+   */
+  private _attachEventListeners(): void {
+    if (!this.config.showCancelButton) return;
+
+    const cancelBtn = this.shadowRoot?.querySelector('.cancel-button');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => this.cancel('user'));
+    }
+  }
+
+  /**
+   * Render the component
+   */
+  protected render(): void {
+    if (!this.shadowRoot) return;
+
+    this._syncAttributes();
+
+    const percentage = this.calculatePercentage(this.displayTokens, this.config.maxTokens);
+    const tokensDisplay = Math.round(this.displayTokens);
+    const rateDisplay = Math.round(this.state.tokensPerSecond);
+    const costDisplay = formatCurrency(this.state.totalCost);
+
+    const progressBarHtml = this._getProgressBarHtml(percentage);
+    const statsHtml = this._getStatsHtml(tokensDisplay, rateDisplay, costDisplay);
+    const messageHtml = this.state.message
+      ? `<div class="message">${this.state.message}</div>`
+      : '';
+    const cancelButtonHtml = this._getCancelButtonHtml();
+    const statusClass = this._getStatusClass();
 
     this.shadowRoot.innerHTML = `
       ${styles}
@@ -453,13 +493,7 @@ export class StreamProgress extends AIControl {
       </div>
     `;
 
-    // Attach event listeners
-    if (this.config.showCancelButton) {
-      const cancelBtn = this.shadowRoot.querySelector('.cancel-button');
-      if (cancelBtn) {
-        cancelBtn.addEventListener('click', () => this.cancel('user'));
-      }
-    }
+    this._attachEventListeners();
   }
 
   /**

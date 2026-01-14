@@ -101,37 +101,70 @@ export class RetryProgress extends AIControl {
   }
 
   /**
-   * Connected callback - read initial attributes
+   * Read max-attempts attribute
    */
-  override connectedCallback(): void {
-    super.connectedCallback();
+  private _readMaxAttemptsAttribute(): void {
+    if (!this.hasAttribute('max-attempts')) return;
 
-    // Read configuration from attributes
-    if (this.hasAttribute('max-attempts')) {
-      const val = Number.parseInt(this.getAttribute('max-attempts') || '', 10);
-      if (Number.isNaN(val) === false) {
-        this.config.maxAttempts = val;
-        this.state.maxAttempts = val;
-      }
+    const val = Number.parseInt(this.getAttribute('max-attempts') || '', 10);
+    if (!Number.isNaN(val)) {
+      this.config.maxAttempts = val;
+      this.state.maxAttempts = val;
     }
-    if (this.hasAttribute('initial-delay')) {
-      const val = Number.parseInt(this.getAttribute('initial-delay') || '', 10);
-      if (Number.isNaN(val) === false) this.config.initialDelay = val;
+  }
+
+  /**
+   * Read initial-delay attribute
+   */
+  private _readInitialDelayAttribute(): void {
+    if (!this.hasAttribute('initial-delay')) return;
+
+    const val = Number.parseInt(this.getAttribute('initial-delay') || '', 10);
+    if (!Number.isNaN(val)) {
+      this.config.initialDelay = val;
     }
-    if (this.hasAttribute('max-delay')) {
-      const val = Number.parseInt(this.getAttribute('max-delay') || '', 10);
-      if (Number.isNaN(val) === false) this.config.maxDelay = val;
+  }
+
+  /**
+   * Read max-delay attribute
+   */
+  private _readMaxDelayAttribute(): void {
+    if (!this.hasAttribute('max-delay')) return;
+
+    const val = Number.parseInt(this.getAttribute('max-delay') || '', 10);
+    if (!Number.isNaN(val)) {
+      this.config.maxDelay = val;
     }
-    if (this.hasAttribute('backoff-multiplier')) {
-      const val = Number.parseFloat(this.getAttribute('backoff-multiplier') || '');
-      if (Number.isNaN(val) === false) this.config.backoffMultiplier = val;
+  }
+
+  /**
+   * Read backoff-multiplier attribute
+   */
+  private _readBackoffMultiplierAttribute(): void {
+    if (!this.hasAttribute('backoff-multiplier')) return;
+
+    const val = Number.parseFloat(this.getAttribute('backoff-multiplier') || '');
+    if (!Number.isNaN(val)) {
+      this.config.backoffMultiplier = val;
     }
-    if (this.hasAttribute('strategy')) {
-      const strategy = this.getAttribute('strategy') as RetryStatus;
-      if (['exponential', 'linear', 'fixed', 'fibonacci'].includes(strategy)) {
-        this.config.strategy = strategy as any;
-      }
+  }
+
+  /**
+   * Read strategy attribute
+   */
+  private _readStrategyAttribute(): void {
+    if (!this.hasAttribute('strategy')) return;
+
+    const strategy = this.getAttribute('strategy') as RetryStatus;
+    if (['exponential', 'linear', 'fixed', 'fibonacci'].includes(strategy)) {
+      this.config.strategy = strategy as any;
     }
+  }
+
+  /**
+   * Read boolean attributes
+   */
+  private _readBooleanAttributes(): void {
     if (this.hasAttribute('allow-manual-retry')) {
       this.config.allowManualRetry = this.getAttribute('allow-manual-retry') === 'true';
     }
@@ -144,6 +177,20 @@ export class RetryProgress extends AIControl {
     if (this.hasAttribute('show-progress-bar')) {
       this.config.showProgressBar = this.getAttribute('show-progress-bar') === 'true';
     }
+  }
+
+  /**
+   * Connected callback - read initial attributes
+   */
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    this._readMaxAttemptsAttribute();
+    this._readInitialDelayAttribute();
+    this._readMaxDelayAttribute();
+    this._readBackoffMultiplierAttribute();
+    this._readStrategyAttribute();
+    this._readBooleanAttributes();
 
     this.render();
   }
@@ -608,12 +655,9 @@ export class RetryProgress extends AIControl {
   }
 
   /**
-   * Render component
+   * Sync config attributes to host element
    */
-  protected override render(): void {
-    if (!this.shadowRoot) return;
-
-    // Sync attributes to host element for CSS selectors
+  private _syncAttributes(): void {
     if (this.config.size && this.getAttribute('size') !== this.config.size) {
       this.setAttribute('size', this.config.size);
     }
@@ -623,6 +667,129 @@ export class RetryProgress extends AIControl {
     if (this.config.animation && this.getAttribute('animation') !== this.config.animation) {
       this.setAttribute('animation', this.config.animation);
     }
+  }
+
+  /**
+   * Get attempt counter HTML
+   */
+  private _getAttemptCounterHtml(
+    showAttemptCount: boolean,
+    attempt: number,
+    maxAttempts: number,
+    status: RetryStatus
+  ): string {
+    if (!showAttemptCount) {
+      return '';
+    }
+    return `
+          <div class="attempt-counter">
+            <div class="attempt-number ${status}">${attempt}</div>
+            <div class="attempt-label">of ${maxAttempts} attempts</div>
+          </div>
+        `;
+  }
+
+  /**
+   * Get metrics grid HTML
+   */
+  private _getMetricsGridHtml(
+    showNextRetry: boolean,
+    showElapsedTime: boolean,
+    status: RetryStatus,
+    remainingTime: number,
+    elapsedTime: number,
+    strategy: string
+  ): string {
+    const nextRetryHtml =
+      showNextRetry && status === 'waiting'
+        ? `
+            <div class="metric">
+              <div class="metric-value">${formatTime(Math.ceil(remainingTime / 1000))}</div>
+              <div class="metric-label">Next Retry</div>
+            </div>
+          `
+        : '';
+
+    const elapsedHtml =
+      showElapsedTime && elapsedTime > 0
+        ? `
+            <div class="metric">
+              <div class="metric-value">${formatTime(Math.ceil(elapsedTime / 1000))}</div>
+              <div class="metric-label">Elapsed</div>
+            </div>
+          `
+        : '';
+
+    return `
+        <div class="metrics-grid">
+          ${nextRetryHtml}
+          ${elapsedHtml}
+          <div class="metric">
+            <div class="metric-value">${strategy}</div>
+            <div class="metric-label">Strategy</div>
+          </div>
+        </div>
+        `;
+  }
+
+  /**
+   * Get progress bar HTML
+   */
+  private _getProgressBarHtml(
+    showProgressBar: boolean,
+    status: RetryStatus,
+    progressPercentage: number
+  ): string {
+    if (!showProgressBar || status !== 'waiting') {
+      return '';
+    }
+    return `
+          <div class="progress-bar-container">
+            <div class="progress-label">Time until next attempt</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${progressPercentage}%"></div>
+            </div>
+          </div>
+        `;
+  }
+
+  /**
+   * Get error display HTML
+   */
+  private _getErrorDisplayHtml(errorMessage: string, status: RetryStatus): string {
+    if (!errorMessage || (status !== 'waiting' && status !== 'failed')) {
+      return '';
+    }
+    return `
+          <div class="error-display">
+            <div class="error-title">Last Error</div>
+            <div class="error-message">${errorMessage}</div>
+          </div>
+        `;
+  }
+
+  /**
+   * Attach event listeners to rendered elements
+   */
+  private _attachEventListeners(allowManualRetry: boolean, allowCancel: boolean): void {
+    if (allowManualRetry) {
+      const retryBtn = this.shadowRoot?.getElementById('manual-retry');
+      retryBtn?.addEventListener('click', () => this.handleManualRetry());
+    }
+
+    if (allowCancel) {
+      const cancelBtn = this.shadowRoot?.getElementById('cancel-btn');
+      cancelBtn?.addEventListener('click', () => this.handleCancel());
+    }
+  }
+
+  /**
+   * Render component
+   */
+  protected override render(): void {
+    if (!this.shadowRoot) return;
+
+    this._syncAttributes();
 
     const { status, attempt, maxAttempts, message, errorMessage, elapsedTime } = this.state;
     const {
@@ -638,6 +805,25 @@ export class RetryProgress extends AIControl {
     const remainingTime = this.getTimeUntilRetry();
     const progressPercentage = this.getProgressPercentage();
 
+    const attemptCounterHtml = this._getAttemptCounterHtml(
+      showAttemptCount,
+      attempt,
+      maxAttempts,
+      status
+    );
+    const metricsGridHtml = this._getMetricsGridHtml(
+      showNextRetry,
+      showElapsedTime,
+      status,
+      remainingTime,
+      elapsedTime,
+      this.config.strategy
+    );
+    const progressBarHtml = this._getProgressBarHtml(showProgressBar, status, progressPercentage);
+    const errorDisplayHtml = this._getErrorDisplayHtml(errorMessage, status);
+    const successMessageHtml = this.renderSuccessMessage(status, attempt);
+    const actionsHtml = this.renderActions(status, allowManualRetry, allowCancel, disabled);
+
     this.shadowRoot.innerHTML = `
       <style>${styles}</style>
       <div class="retry-container ${disabled ? 'disabled' : ''}" role="status">
@@ -650,84 +836,16 @@ export class RetryProgress extends AIControl {
           <span class="status-badge ${status}">${this.getStatusText()}</span>
         </div>
 
-        ${
-          showAttemptCount
-            ? `
-          <div class="attempt-counter">
-            <div class="attempt-number ${status}">${attempt}</div>
-            <div class="attempt-label">of ${maxAttempts} attempts</div>
-          </div>
-        `
-            : ''
-        }
-
-        <div class="metrics-grid">
-          ${
-            showNextRetry && status === 'waiting'
-              ? `
-            <div class="metric">
-              <div class="metric-value">${formatTime(Math.ceil(remainingTime / 1000))}</div>
-              <div class="metric-label">Next Retry</div>
-            </div>
-          `
-              : ''
-          }
-          ${
-            showElapsedTime && elapsedTime > 0
-              ? `
-            <div class="metric">
-              <div class="metric-value">${formatTime(Math.ceil(elapsedTime / 1000))}</div>
-              <div class="metric-label">Elapsed</div>
-            </div>
-          `
-              : ''
-          }
-          <div class="metric">
-            <div class="metric-value">${this.config.strategy}</div>
-            <div class="metric-label">Strategy</div>
-          </div>
-        </div>
-
-        ${
-          showProgressBar && status === 'waiting'
-            ? `
-          <div class="progress-bar-container">
-            <div class="progress-label">Time until next attempt</div>
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: ${progressPercentage}%"></div>
-            </div>
-          </div>
-        `
-            : ''
-        }
-
-        ${
-          errorMessage && (status === 'waiting' || status === 'failed')
-            ? `
-          <div class="error-display">
-            <div class="error-title">Last Error</div>
-            <div class="error-message">${errorMessage}</div>
-          </div>
-        `
-            : ''
-        }
-
-        ${this.renderSuccessMessage(status, attempt)}
-
-        ${this.renderActions(status, allowManualRetry, allowCancel, disabled)}
+        ${attemptCounterHtml}
+        ${metricsGridHtml}
+        ${progressBarHtml}
+        ${errorDisplayHtml}
+        ${successMessageHtml}
+        ${actionsHtml}
       </div>
     `;
 
-    // Attach event listeners
-    if (allowManualRetry) {
-      const retryBtn = this.shadowRoot.getElementById('manual-retry');
-      retryBtn?.addEventListener('click', () => this.handleManualRetry());
-    }
-
-    if (allowCancel) {
-      const cancelBtn = this.shadowRoot.getElementById('cancel-btn');
-      cancelBtn?.addEventListener('click', () => this.handleCancel());
-    }
+    this._attachEventListeners(allowManualRetry, allowCancel);
   }
 
   /**

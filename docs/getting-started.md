@@ -14,7 +14,7 @@
 
 ## 🎯 What You'll Build
 
-AI Progress Controls provides **6 production-ready components** for AI/ML workflows:
+AI Progress Controls provides **7 production-ready components** for AI/ML workflows:
 
 <table>
 <tr>
@@ -25,9 +25,10 @@ AI Progress Controls provides **6 production-ready components** for AI/ML workfl
 1. 🌊 **StreamProgress** - Token streaming with cost tracking
 2. 📥 **ModelLoader** - Multi-stage model loading
 3. 🎛️ **ParameterSlider** - LLM parameter controls
-4. ⏳ **QueueProgress** - Queue position tracking
-5. 🔄 **RetryProgress** - Exponential backoff retry
-6. 📊 **BatchProgress** - Batch processing progress
+4. 🎚️ **ParameterPanel** - Multi-parameter configuration
+5. ⏳ **QueueProgress** - Queue position tracking
+6. 🔄 **RetryProgress** - Exponential backoff retry
+7. 📊 **BatchProgress** - Batch processing progress
 
 </td>
 <td width="50%">
@@ -39,7 +40,9 @@ AI Progress Controls provides **6 production-ready components** for AI/ML workfl
 ✓ **Zero dependencies** - lightweight and fast  
 ✓ **TypeScript first** - complete type definitions  
 ✓ **Accessibility** - WCAG AA compliant  
-✓ **Themeable** - CSS variables, dark mode  
+✓ **4 visual variants** - default, minimal, gradient, glassmorphic  
+✓ **4 animations** - none, striped, pulse, glow  
+✓ **Themeable** - CSS variables, dark mode
 
 </td>
 </tr>
@@ -52,6 +55,7 @@ AI Progress Controls provides **6 production-ready components** for AI/ML workfl
 <div align="center">
 
 ### ⚠️ **Development Preview**
+
 Package not yet published to npm. For now, clone and build locally.
 
 </div>
@@ -106,30 +110,33 @@ npm install ai-progress-controls
 <td align="center" width="33%">
 
 ### **Line 1**
+
 #### Import the component
+
 ```javascript
-import { StreamProgress } 
-from 'ai-progress-controls';
+import { StreamProgress } from 'ai-progress-controls';
 ```
 
 </td>
 <td align="center" width="33%">
 
 ### **Line 2**
+
 #### Create an instance
+
 ```javascript
-const progress = 
-new StreamProgress();
+const progress = new StreamProgress();
 ```
 
 </td>
 <td align="center" width="33%">
 
 ### **Line 3**
+
 #### Add to DOM
+
 ```javascript
-document.body
-.appendChild(progress);
+document.body.appendChild(progress);
 ```
 
 </td>
@@ -151,53 +158,53 @@ Here's the complete 3-line setup with optional configuration:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>My AI App</title>
-</head>
-<body>
-  <div id="app"></div>
+  <head>
+    <title>My AI App</title>
+  </head>
+  <body>
+    <div id="app"></div>
 
-  <script type="module">
-    import { StreamProgress } from 'ai-progress-controls';
+    <script type="module">
+      import { StreamProgress } from 'ai-progress-controls';
 
-    // THE 3 LINES:
-    // Line 1: Import (done above)
-    // Line 2: Create
-    const progress = new StreamProgress({
-      maxTokens: 2000,
-      costPerToken: 0.00002,
-      showRate: true,
-      showCost: true,
-    });
-
-    // Line 3: Append to DOM
-    document.getElementById('app').appendChild(progress);
-
-    // DONE! Component is ready.
-    // Now use it:
-    progress.start('Generating response...');
-
-    // Update progress (you'd get this from your AI API)
-    let tokens = 0;
-    const interval = setInterval(() => {
-      tokens += 25;
-      progress.update({
-        tokensGenerated: tokens,
-        tokensPerSecond: 25
+      // THE 3 LINES:
+      // Line 1: Import (done above)
+      // Line 2: Create
+      const progress = new StreamProgress({
+        maxTokens: 2000,
+        costPerToken: 0.00002,
+        showRate: true,
+        showCost: true,
       });
 
-      if (tokens >= 500) {
-        clearInterval(interval);
-        progress.complete();
-      }
-    }, 100);
+      // Line 3: Append to DOM
+      document.getElementById('app').appendChild(progress);
 
-    // Listen to events
-    progress.addEventListener('streamcomplete', (e) => {
-      console.log('Stream completed!', e.detail);
-    });
-  </script>
-</body>
+      // DONE! Component is ready.
+      // Now use it:
+      progress.start('Generating response...');
+
+      // Update progress (you'd get this from your AI API)
+      let tokens = 0;
+      const interval = setInterval(() => {
+        tokens += 25;
+        progress.update({
+          tokensGenerated: tokens,
+          tokensPerSecond: 25,
+        });
+
+        if (tokens >= 500) {
+          clearInterval(interval);
+          progress.complete();
+        }
+      }, 100);
+
+      // Listen to events
+      progress.addEventListener('streamcomplete', (e) => {
+        console.log('Stream completed!', e.detail);
+      });
+    </script>
+  </body>
 </html>
 ```
 
@@ -211,7 +218,7 @@ import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true // For client-side only
+  dangerouslyAllowBrowser: true, // For client-side only
 });
 
 async function streamChatCompletion(prompt) {
@@ -256,7 +263,7 @@ async function streamChatCompletion(prompt) {
           progress.update({
             tokensGenerated: tokens,
             tokensPerSecond: rate,
-            message: 'Generating...'
+            message: 'Generating...',
           });
           lastUpdate = now;
         }
@@ -269,7 +276,6 @@ async function streamChatCompletion(prompt) {
     }
 
     return content;
-
   } catch (error) {
     progress.cancel('error');
     console.error('Error:', error);
@@ -330,14 +336,14 @@ function ChatInterface() {
   const handleStartStream = () => {
     if (progressRef.current) {
       progressRef.current.start('Starting generation...');
-      
+
       // Simulate streaming
       let tokens = 0;
       const interval = setInterval(() => {
         tokens += 30;
         progressRef.current?.update({
           tokensGenerated: tokens,
-          tokensPerSecond: 30
+          tokensPerSecond: 30,
         });
 
         if (tokens >= 500) {
@@ -409,7 +415,7 @@ function startStream() {
     tokens += 30;
     progress?.update({
       tokensGenerated: tokens,
-      tokensPerSecond: 30
+      tokensPerSecond: 30,
     });
 
     if (tokens >= 500) {
@@ -434,7 +440,7 @@ import { StreamProgress } from 'ai-progress-controls';
       <div #progressContainer></div>
       <button (click)="startStream()">Start Streaming</button>
     </div>
-  `
+  `,
 })
 export class ChatComponent implements AfterViewInit, OnDestroy {
   @ViewChild('progressContainer') container!: ElementRef;
@@ -472,7 +478,7 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
       tokens += 30;
       this.progress?.update({
         tokensGenerated: tokens,
-        tokensPerSecond: 30
+        tokensPerSecond: 30,
       });
 
       if (tokens >= 500) {
@@ -524,7 +530,7 @@ export default function ChatPage() {
     // Call your Next.js API route
     const response = await fetch('/api/generate', {
       method: 'POST',
-      body: JSON.stringify({ prompt: 'Hello!' })
+      body: JSON.stringify({ prompt: 'Hello!' }),
     });
 
     const reader = response.body?.getReader();
@@ -625,7 +631,7 @@ function ChatComponent() {
       tokens += 30;
       progress?.update({
         tokensGenerated: tokens,
-        tokensPerSecond: 30
+        tokensPerSecond: 30,
       });
 
       if (tokens >= 500) {
@@ -820,6 +826,7 @@ All components are built with accessibility in mind:
 ## 📦 Available Components
 
 ### 1. StreamProgress
+
 Real-time token streaming visualization with rate tracking and cost estimation.
 
 ```javascript
@@ -832,6 +839,7 @@ progress.start();
 **[📖 API Docs](./api/stream-progress.md)** | **[🎮 Examples](../examples/vanilla/stream-progress.html)**
 
 ### 2. ModelLoader
+
 Multi-stage progress for model download, loading, and initialization.
 
 ```javascript
@@ -844,6 +852,7 @@ loader.start();
 **[📖 API Docs](./api/model-loader.md)** | **[🎮 Examples](../examples/vanilla/model-loader.html)**
 
 ### 3. ParameterSlider
+
 Intuitive controls for temperature, top-p, max tokens, and other LLM parameters.
 
 ```javascript
@@ -855,6 +864,7 @@ document.body.appendChild(slider);
 **[📖 API Docs](./api/parameter-slider.md)** | **[🎮 Examples](../examples/vanilla/parameter-slider.html)**
 
 ### 4. QueueProgress
+
 Show user's position in processing queue with live updates and ETA.
 
 ```javascript
@@ -867,6 +877,7 @@ queue.start();
 **[📖 API Docs](./api/queue-progress.md)** | **[🎮 Examples](../examples/vanilla/queue-progress.html)**
 
 ### 5. RetryProgress
+
 Exponential backoff retry mechanism with multiple strategies for handling API failures.
 
 ```javascript
@@ -879,6 +890,7 @@ retry.start();
 **[📖 API Docs](./api/retry-progress.md)** | **[🎮 Examples](../examples/vanilla/retry-progress.html)**
 
 ### 6. BatchProgress
+
 Process multiple items in parallel with individual progress tracking and concurrency control.
 
 ```javascript

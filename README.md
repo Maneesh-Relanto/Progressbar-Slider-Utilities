@@ -11,14 +11,14 @@
 [![Web Components](https://img.shields.io/badge/Web_Components-Native-f97316?style=for-the-badge&logo=webcomponents.org&logoColor=white)](https://www.webcomponents.org/)
 [![Bundle Size](https://img.shields.io/badge/Size-~28KB_gzipped-8b5cf6?style=for-the-badge)](https://bundlephobia.com)
 
-[![Tests](https://img.shields.io/badge/Tests-220_passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Tests](https://img.shields.io/badge/Tests-292_passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Coverage](https://img.shields.io/badge/Coverage-91.34%25-22c55e?style=for-the-badge&logo=codecov&logoColor=white)](https://vitest.dev/)
-[![Code Quality](https://img.shields.io/badge/ESLint-Passing-22c55e?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
+[![Code Quality](https://img.shields.io/badge/SonarQube-Clean-22c55e?style=for-the-badge)](https://www.sonarsource.com/)
 [![Lighthouse](https://img.shields.io/badge/Lighthouse-95%2B-22c55e?style=for-the-badge&logo=lighthouse&logoColor=white)](https://developers.google.com/web/tools/lighthouse)
 [![Accessibility](https://img.shields.io/badge/WCAG-AA_Compliant-22c55e?style=for-the-badge)](https://www.w3.org/WAI/WCAG21/quickref/)
 
 <p align="center">
-  <strong>🎯 7 Components • 📦 28+ Examples • 📖 Complete Docs • ✅ WCAG AA Compliant</strong>
+  <strong>🎯 7 Components • 📦 10 Examples • 📖 Complete Docs • ✅ WCAG AA Compliant</strong>
 </p>
 
 </div>
@@ -55,11 +55,12 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 ### 🎨 **Visual Customization**
 
-🎭 **4 Visual Variants** - default, minimal, gradient, glassmorphic  
-✨ **4 Animation Effects** - none, striped, pulse, glow  
-📏 **3 Size Variants** - compact, default, large  
-🌈 **5 Brand Themes** - OpenAI, Anthropic, Google AI, Cohere, Dark  
-🖱️ **Cursor Feedback** - Automatic state indication
+✅ **4 Visual Variants** - default, minimal, gradient, glassmorphic  
+✅ **4 Animation Effects** - none, striped, pulse, glow  
+✅ **3 Size Variants** - compact, default, large  
+✅ **5 Brand Themes** - OpenAI, Anthropic, Google AI, Cohere, Dark  
+✅ **Cursor Feedback** - Automatic state indication  
+✅ **Smooth Animations** - Hardware-accelerated transitions
 
 </td>
 </tr>
@@ -69,9 +70,9 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 ### 🎯 **Production Stats**
 
-| **7** Components | **30** Examples  | **292** Tests | **91.34%** Coverage | **0** Errors |
-| :--------------: | :--------------: | :-----------: | :-----------------: | :----------: |
-| Fully documented | Copy-paste ready | 100% passing  | Exceeds 80% target  | ESLint clean |
+| **7** Components | **10** Examples  | **292** Tests | **91.34%** Coverage |  **0** Errors   |
+| :--------------: | :--------------: | :-----------: | :-----------------: | :-------------: |
+| Fully documented | Copy-paste ready | 100% passing  | Exceeds 80% target  | SonarQube clean |
 
 </div>
 
@@ -134,9 +135,9 @@ npm run dev
 
 ### 🌐 **Open http://localhost:5173**
 
-|                      🏠 Homepage                      |               📚 Examples Gallery                |           📖 Documentation            |
-| :---------------------------------------------------: | :----------------------------------------------: | :-----------------------------------: |
-| [Interactive demos of all 7 components](./index.html) | [28+ copy-paste examples](./examples/index.html) | [Complete API reference](./docs/api/) |
+|                      🏠 Homepage                      |               📚 Examples Gallery               |
+| :---------------------------------------------------: | :---------------------------------------------: |
+| [Interactive demos of all 7 components](./index.html) | [10 copy-paste examples](./examples/index.html) |
 
 </div>
 
@@ -374,11 +375,11 @@ Specialized UI components built FOR AI workflows:
 
 #### 📚 **Documentation**
 
-- ✅ 28+ interactive examples (4+ per component)
-- ✅ Complete API docs (1,100+ lines each)
+- ✅ 10 interactive examples (visual variants, theming, cursor states)
+- ✅ Complete API docs (400+ lines each)
 - ✅ Getting started guide
-- ✅ Framework integration examples
 - ✅ TypeScript definitions
+- ✅ Visual variants guide
 
 </td>
 </tr>
@@ -388,11 +389,11 @@ Specialized UI components built FOR AI workflows:
 
 <div align="center">
 
-[![Tests](https://img.shields.io/badge/Tests-220_Passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
+[![Tests](https://img.shields.io/badge/Tests-292_Passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Coverage](https://img.shields.io/badge/Components-7/7_Tested-3b82f6?style=for-the-badge)](./src/core/)
 [![Framework](https://img.shields.io/badge/Vitest-1.6.1-729B1B?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 
-**220 tests • 100% pass rate • ~2.5s execution time**
+**292 tests • 100% pass rate • ~7.2s execution time**
 
 </div>
 
@@ -404,14 +405,14 @@ Specialized UI components built FOR AI workflows:
 
 | Component          |  Tests  |   Status    |
 | ------------------ | :-----: | :---------: |
-| �️ ParameterPanel   |   55    |    ✅ 🆕    |
-| 🌊 StreamProgress  |   37    |     ✅      |
-| 📊 BatchProgress   |   34    |     ✅      |
-| 🔄 RetryProgress   |   28    |     ✅      |
-| ⏳ QueueProgress   |   24    |     ✅      |
-| 🎛️ ParameterSlider |   22    |     ✅      |
-| 📥 ModelLoader     |   20    |     ✅      |
-| **TOTAL**          | **220** | **✅ 100%** |
+| 🎛️ ParameterPanel  |   55    |     ✅      |
+| 🌊 StreamProgress  |   49    |     ✅      |
+| 📊 BatchProgress   |   46    |     ✅      |
+| 🔄 RetryProgress   |   40    |     ✅      |
+| ⏳ QueueProgress   |   36    |     ✅      |
+| 🎛️ ParameterSlider |   34    |     ✅      |
+| 📥 ModelLoader     |   32    |     ✅      |
+| **TOTAL**          | **292** | **✅ 100%** |
 
 </td>
 <td width="50%">
@@ -434,7 +435,7 @@ Specialized UI components built FOR AI workflows:
 
 <div align="center">
 
-**🔬 Test Framework:** Vitest with jsdom • **⚡ Fast:** ~4s for 220 tests • **🎯 Comprehensive:** Every public API tested
+**🔬 Test Framework:** Vitest with jsdom • **⚡ Fast:** ~7.2s for 292 tests • **🎯 Comprehensive:** Every public API + visual variants tested
 
 [Run Tests: `npm test`](./package.json)
 
@@ -623,29 +624,26 @@ document.body.appendChild(progress);
 
 ### ✅ **Phase 3**
 
-**Documentation**
+**Visual Variants & Animations** 🎨
 
-✅ 30 examples  
-✅ 7 API docs  
-✅ Getting started  
-✅ Framework guides  
-✅ Accessibility
+✅ 4 Visual Variants (default, minimal, gradient, glassmorphic)  
+✅ 4 Animation Effects (none, striped, pulse, glow)  
+✅ 3 Size Variants (compact, default, large)  
+✅ Cursor States (auto-updating based on component state)  
+✅ 48 additional tests (292 total)
 
 </td>
 <td width="25%">
 
 ### ✅ **Phase 4**
 
-**Quality & Testing** 🎉
+**Documentation & Examples** 📚
 
-✅ **220 Unit Tests** - 100% passing  
-✅ **91.34% Coverage** - Exceeds 80%  
-✅ **TypeScript Strict** - Zero errors  
-✅ **ESLint + Prettier** - Code quality  
-✅ **Lighthouse 95+** - Performance  
-✅ **WCAG AA** - Accessible  
-✅ **Git Hooks** - Auto-validation  
-✅ **CI/CD Ready** - GitHub Actions
+✅ **10 Examples** - Interactive demos  
+✅ **7 API Docs** - Complete references  
+✅ **Visual Variants Guide** - Customization  
+✅ **Theming Guide** - CSS variables  
+✅ **Getting Started** - Quick setup
 
 </td>
 </tr>
@@ -668,18 +666,16 @@ We maintain enterprise-grade quality standards with multiple layers of automated
 
 <div align="center">
 
-|      Validation      |         Tool          | Status |           Metric           |
-| :------------------: | :-------------------: | :----: | :------------------------: |
-|  🧪 **Unit Tests**   |        Vitest         |   ✅   |     220 tests passing      |
-|   📊 **Coverage**    |        Vitest         |   ✅   |    91.34% (target: 80%)    |
-|  🔒 **Type Safety**  |      TypeScript       |   ✅   |   Strict mode, 0 errors    |
-| ✨ **Code Quality**  |        ESLint         |   ✅   |   0 errors, 21 warnings    |
-|  🎨 **Formatting**   |       Prettier        |   ✅   |       Auto-formatted       |
-|  ⚡ **Performance**  |      Lighthouse       |   ✅   |         95+ scores         |
-| ♿ **Accessibility** |   Axe + Lighthouse    |   ✅   |        WCAG 2.1 AA         |
-|   🔐 **Security**    | npm audit + SonarQube |   ✅   |     0 vulnerabilities      |
-|   🪝 **Git Hooks**   |         Husky         |   ✅   | Pre-commit/push validation |
-|     🚀 **CI/CD**     |    GitHub Actions     |   ✅   |     Automated testing      |
+|      Validation      |       Tool       | Status |        Metric         |
+| :------------------: | :--------------: | :----: | :-------------------: |
+|  🧪 **Unit Tests**   |      Vitest      |   ✅   |   292 tests passing   |
+|   📊 **Coverage**    |      Vitest      |   ✅   | 91.34% (target: 80%)  |
+|  🔒 **Type Safety**  |    TypeScript    |   ✅   | Strict mode, 0 errors |
+| ✨ **Code Quality**  |    SonarQube     |   ✅   |   0 critical issues   |
+|  🎨 **Formatting**   |     Prettier     |   ✅   |    Auto-formatted     |
+|  ⚡ **Performance**  |    Lighthouse    |   ✅   |      95+ scores       |
+| ♿ **Accessibility** | Axe + Lighthouse |   ✅   |      WCAG 2.1 AA      |
+|   🔐 **Security**    |    npm audit     |   ✅   |   0 vulnerabilities   |
 
 **[📖 View Full Quality Guide](./docs/quality.md)**
 
@@ -695,10 +691,10 @@ We maintain enterprise-grade quality standards with multiple layers of automated
 | :--------------------: | -------------------------------- | :---------------------------------------------: |
 | 📘 **Getting Started** | Setup guide for all frameworks   |        [View](./docs/getting-started.md)        |
 |  📚 **API Reference**  | Complete API docs (7 components) |               [View](./docs/api/)               |
-|    🎮 **Examples**     | 30 interactive examples          |               [View](./examples/)               |
-|  🎨 **Theming Guide**  | CSS variables & customization    |    [View](./docs/getting-started.md#theming)    |
+|    🎮 **Examples**     | 10 interactive examples          |               [View](./examples/)               |
+| 🎨 **Visual Variants** | Customization & animations       |        [View](./docs/visual-variants.md)        |
+|  🖌️ **Theming Guide**  | CSS variables & brand themes     |            [View](./docs/theming.md)            |
 |  ♿ **Accessibility**  | WCAG compliance details          | [View](./docs/getting-started.md#accessibility) |
-|  🛡️ **Quality Guide**  | Testing & validation tools       |            [View](./docs/quality.md)            |
 
 </div>
 
