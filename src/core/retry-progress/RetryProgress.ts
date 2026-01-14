@@ -756,7 +756,7 @@ export class RetryProgress extends AIControl {
   /**
    * Get error display HTML
    */
-  private _getErrorDisplayHtml(errorMessage: string, status: RetryStatus): string {
+  private _getErrorDisplayHtml(errorMessage: string | undefined, status: RetryStatus): string {
     if (!errorMessage || (status !== 'waiting' && status !== 'failed')) {
       return '';
     }

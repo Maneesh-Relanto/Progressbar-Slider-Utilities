@@ -543,7 +543,7 @@ export class BatchProgress extends AIControl {
   /**
    * Get stats section HTML
    */
-  private _getStatsHtml(stats: BatchStats, rate: number): string {
+  private _getStatsHtml(stats: ReturnType<typeof this.getStats>, rate: number): string {
     if (!this.config.showStats) {
       return '';
     }
@@ -569,7 +569,10 @@ export class BatchProgress extends AIControl {
   /**
    * Get progress bar HTML
    */
-  private _getProgressBarHtml(overallProgress: number, stats: BatchStats): string {
+  private _getProgressBarHtml(
+    overallProgress: number,
+    stats: ReturnType<typeof this.getStats>
+  ): string {
     if (!this.config.showProgressBar) {
       return '';
     }
