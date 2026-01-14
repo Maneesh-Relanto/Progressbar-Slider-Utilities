@@ -56,7 +56,7 @@ export class ParameterSlider extends AIControl {
   private sliderThumb: HTMLElement | null = null;
 
   static get observedAttributes() {
-    return ['label', 'min', 'max', 'value', 'disabled'];
+    return ['label', 'min', 'max', 'value', 'disabled', 'size'];
   }
 
   constructor(config: ParameterSliderConfig = {}) {
@@ -87,6 +87,7 @@ export class ParameterSlider extends AIControl {
       debug: config.debug ?? false,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? `${config.label ?? 'Parameter'} Slider`,
+      size: config.size ?? 'default',
     };
 
     // Initialize state
@@ -139,6 +140,10 @@ export class ParameterSlider extends AIControl {
         break;
       case 'disabled':
         this._disabled = newValue !== null;
+        this.render();
+        break;
+      case 'size':
+        this.config.size = newValue as any;
         this.render();
         break;
     }

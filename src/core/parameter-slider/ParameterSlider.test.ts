@@ -209,4 +209,43 @@ describe('ParameterSlider Component', () => {
       expect(slider.getValue()).toBe(0.5);
     });
   });
+
+  describe('Size Variants', () => {
+    it('should default to default size', () => {
+      expect(slider['config'].size).toBe('default');
+    });
+
+    it('should accept size in constructor', () => {
+      const compact = new ParameterSlider({ size: 'compact' });
+      expect(compact['config'].size).toBe('compact');
+      compact.remove();
+
+      const large = new ParameterSlider({ size: 'large' });
+      expect(large['config'].size).toBe('large');
+      large.remove();
+    });
+
+    it('should update size via attribute', async () => {
+      await waitForElement(slider);
+
+      slider.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(slider['config'].size).toBe('compact');
+      expect(slider.getAttribute('size')).toBe('compact');
+
+      slider.setAttribute('size', 'large');
+      await waitForNextTick();
+      expect(slider['config'].size).toBe('large');
+      expect(slider.getAttribute('size')).toBe('large');
+    });
+
+    it('should apply size attribute to host element', async () => {
+      await waitForElement(slider);
+
+      slider.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(slider.hasAttribute('size')).toBe(true);
+      expect(slider.getAttribute('size')).toBe('compact');
+    });
+  });
 });

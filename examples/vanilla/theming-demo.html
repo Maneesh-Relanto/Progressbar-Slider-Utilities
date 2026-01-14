@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Theming & Size Variants - AI Progress Controls</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      .page-header {
+        max-width: 1400px;
+        margin: 0 auto 3rem;
+        text-align: center;
+      }
+
+      .page-header h1 {
+        font-size: 2.5rem;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        font-size: 1.1rem;
+        color: #666;
+      }
+
+      .theme-switcher {
+        max-width: 1400px;
+        margin: 0 auto 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .theme-btn {
+        padding: 0.75rem 1.5rem;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+
+      .theme-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .theme-btn.openai { color: #10a37f; }
+      .theme-btn.openai.active { 
+        background: #10a37f;
+        color: white;
+        border-color: #10a37f;
+      }
+      
+      .theme-btn.anthropic { color: #d97757; }
+      .theme-btn.anthropic.active { 
+        background: #d97757;
+        color: white;
+        border-color: #d97757;
+      }
+      
+      .theme-btn.google { color: #4285f4; }
+      .theme-btn.google.active { 
+        background: #4285f4;
+        color: white;
+        border-color: #4285f4;
+      }
+      
+      .theme-btn.cohere { color: #d18ee2; }
+      .theme-btn.cohere.active { 
+        background: #d18ee2;
+        color: white;
+        border-color: #d18ee2;
+      }
+      
+      .theme-btn.dark { color: #1f2937; }
+      .theme-btn.dark.active { 
+        background: #1f2937;
+        color: white;
+        border-color: #1f2937;
+      }
+
+      .size-switcher {
+        max-width: 1400px;
+        margin: 0 auto 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .size-label {
+        font-weight: 600;
+        color: #666;
+      }
+
+      .size-btn {
+        padding: 0.5rem 1rem;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+      }
+
+      .size-btn:hover {
+        border-color: #3b82f6;
+      }
+
+      .size-btn.active {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+      }
+
+      .demo-grid {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 2rem;
+      }
+
+      .demo-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .demo-card h2 {
+        font-size: 1.25rem;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+      }
+
+      .demo-card p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        background: #3b82f6;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.2s;
+      }
+
+      .btn:hover {
+        background: #2563eb;
+      }
+
+      .btn-secondary {
+        background: #6b7280;
+      }
+
+      .btn-secondary:hover {
+        background: #4b5563;
+      }
+
+      .code-example {
+        max-width: 1400px;
+        margin: 3rem auto;
+        background: #1f2937;
+        border-radius: 12px;
+        padding: 2rem;
+        overflow-x: auto;
+      }
+
+      .code-example h3 {
+        color: white;
+        margin-bottom: 1rem;
+      }
+
+      .code-example pre {
+        color: #e5e7eb;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .code-example code {
+        color: #60a5fa;
+      }
+
+      /* Theme-specific styles - CSS variables inherit into shadow DOM */
+      :root,
+      body.openai-theme {
+        --ai-primary-color: #10a37f;
+        --ai-secondary-color: #19c37d;
+        --ai-background-color: #ffffff;
+        --ai-text-color: #2d333a;
+        --ai-border-color: #e5e7eb;
+        --ai-border-radius: 6px;
+      }
+
+      body.anthropic-theme {
+        --ai-primary-color: #d97757;
+        --ai-secondary-color: #e88c6a;
+        --ai-background-color: #faf8f5;
+        --ai-text-color: #1a1818;
+        --ai-border-color: #e8dfd2;
+        --ai-border-radius: 8px;
+      }
+
+      body.anthropic-theme .demo-card {
+        background: #fefdfb;
+      }
+
+      body.google-theme {
+        --ai-primary-color: #4285f4;
+        --ai-secondary-color: #34a853;
+        --ai-error-color: #ea4335;
+        --ai-warning-color: #fbbc04;
+        --ai-background-color: #ffffff;
+        --ai-text-color: #202124;
+        --ai-border-radius: 8px;
+      }
+
+      body.cohere-theme {
+        --ai-primary-color: #d18ee2;
+        --ai-secondary-color: #9d5db8;
+        --ai-background-color: #1a1625;
+        --ai-text-color: #f4f1f8;
+        --ai-border-color: #342d42;
+        --ai-border-radius: 12px;
+      }
+
+      body.cohere-theme {
+        background: #0f0e14;
+      }
+
+      body.cohere-theme .demo-card {
+        background: #1a1625;
+        border: 1px solid #342d42;
+      }
+
+      body.cohere-theme .page-header h1,
+      body.cohere-theme .demo-card h2 {
+        color: #f4f1f8;
+      }
+
+      body.cohere-theme .page-header p,
+      body.cohere-theme .demo-card p {
+        color: #b8a9c9;
+      }
+
+      body.dark-theme {
+        --ai-primary-color: #60a5fa;
+        --ai-secondary-color: #34d399;
+        --ai-background-color: #1f2937;
+        --ai-text-color: #f9fafb;
+        --ai-border-color: #374151;
+        --ai-border-radius: 8px;
+      }
+
+      body.dark-theme {
+        background: #111827;
+      }
+
+      body.dark-theme .demo-card {
+        background: #1f2937;
+      }
+
+      body.dark-theme .page-header h1,
+      body.dark-theme .demo-card h2 {
+        color: #f9fafb;
+      }
+
+      body.dark-theme .page-header p,
+      body.dark-theme .demo-card p {
+        color: #9ca3af;
+      }
+    </style>
+  </head>
+  <body class="openai-theme">
+    <div class="page-header">
+      <h1>🎨 Theming & Size Variants</h1>
+      <p>See how easy it is to customize AI Progress Controls for any brand</p>
+    </div>
+
+    <div class="theme-switcher">
+      <button class="theme-btn openai active" onclick="switchTheme('openai')">
+        🟢 OpenAI
+      </button>
+      <button class="theme-btn anthropic" onclick="switchTheme('anthropic')">
+        🟠 Anthropic
+      </button>
+      <button class="theme-btn google" onclick="switchTheme('google')">
+        🔵 Google AI
+      </button>
+      <button class="theme-btn cohere" onclick="switchTheme('cohere')">
+        🟣 Cohere
+      </button>
+      <button class="theme-btn dark" onclick="switchTheme('dark')">
+        ⚫ Dark Mode
+      </button>
+    </div>
+
+    <div class="size-switcher">
+      <span class="size-label">Size:</span>
+      <button class="size-btn" onclick="switchSize('compact')">Compact</button>
+      <button class="size-btn active" onclick="switchSize('default')">Default</button>
+      <button class="size-btn" onclick="switchSize('large')">Large</button>
+    </div>
+
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h2>Stream Progress</h2>
+        <p>Shows token streaming with real-time updates</p>
+        <stream-progress id="stream-demo" size="default"></stream-progress>
+        <div class="controls">
+          <button class="btn" onclick="startStream()">Start</button>
+          <button class="btn btn-secondary" onclick="cancelStream()">Cancel</button>
+          <button class="btn btn-secondary" onclick="completeStream()">Complete</button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>Batch Progress</h2>
+        <p>Track batch operations with item counts</p>
+        <batch-progress id="batch-demo" size="default"></batch-progress>
+        <div class="controls">
+          <button class="btn" onclick="startBatch()">Start</button>
+          <button class="btn btn-secondary" onclick="updateBatch()">Add Item</button>
+          <button class="btn btn-secondary" onclick="completeBatch()">Complete</button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>Model Loader</h2>
+        <p>Multi-stage model loading visualization</p>
+        <model-loader id="loader-demo" size="default"></model-loader>
+        <div class="controls">
+          <button class="btn" onclick="startLoader()">Start</button>
+          <button class="btn btn-secondary" onclick="advanceStage()">Next Stage</button>
+          <button class="btn btn-secondary" onclick="completeLoader()">Complete</button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>Queue Progress</h2>
+        <p>Monitor queue position and wait times</p>
+        <queue-progress id="queue-demo" size="default"></queue-progress>
+        <div class="controls">
+          <button class="btn" onclick="startQueue()">Start</button>
+          <button class="btn btn-secondary" onclick="updateQueue()">Update</button>
+          <button class="btn btn-secondary" onclick="completeQueue()">Complete</button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>Retry Progress</h2>
+        <p>Exponential backoff retry tracking</p>
+        <retry-progress id="retry-demo" size="default"></retry-progress>
+        <div class="controls">
+          <button class="btn" onclick="startRetry()">Attempt</button>
+          <button class="btn btn-secondary" onclick="waitRetry()">Wait</button>
+          <button class="btn btn-secondary" onclick="successRetry()">Success</button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h2>Parameter Slider</h2>
+        <p>Interactive AI parameter control</p>
+        <parameter-slider
+          id="slider-demo"
+          label="Temperature"
+          min="0"
+          max="2"
+          value="0.7"
+          step="0.1"
+          size="default"
+        ></parameter-slider>
+      </div>
+    </div>
+
+    <div class="code-example">
+      <h3>✨ It's This Easy:</h3>
+      <pre><code>&lt;!-- Just add CSS variables to theme components --&gt;
+&lt;style&gt;
+  :root {
+    --ai-primary-color: #10a37f;     /* OpenAI green */
+    --ai-background-color: #ffffff;
+    --ai-text-color: #2d333a;
+    --ai-border-radius: 6px;
+  }
+&lt;/style&gt;
+
+&lt;!-- Use size attribute for instant scaling --&gt;
+&lt;stream-progress size="compact"&gt;&lt;/stream-progress&gt;
+&lt;batch-progress size="default"&gt;&lt;/batch-progress&gt;
+&lt;model-loader size="large"&gt;&lt;/model-loader&gt;
+
+&lt;!-- Or inline per component --&gt;
+&lt;stream-progress style="--ai-primary-color: #d97757;"&gt;&lt;/stream-progress&gt;</code></pre>
+    </div>
+
+    <script type="module">
+      import {
+        StreamProgress,
+        BatchProgress,
+        ModelLoader,
+        QueueProgress,
+        RetryProgress,
+        ParameterSlider,
+      } from '../../src/index.ts';
+
+      // Initialize components
+      const streamDemo = document.getElementById('stream-demo');
+      const batchDemo = document.getElementById('batch-demo');
+      const loaderDemo = document.getElementById('loader-demo');
+      const queueDemo = document.getElementById('queue-demo');
+      const retryDemo = document.getElementById('retry-demo');
+
+      // Stream controls
+      let streamTokens = 0;
+      let streamInterval;
+      window.startStream = () => {
+        clearInterval(streamInterval);
+        streamTokens = 0;
+        streamDemo.start('Streaming response...');
+        streamInterval = setInterval(() => {
+          streamTokens += Math.floor(Math.random() * 10) + 1;
+          streamDemo.update({ tokensGenerated: streamTokens });
+          if (streamTokens > 100) {
+            clearInterval(streamInterval);
+            streamDemo.complete();
+            // Auto-restart after 2 seconds to keep demo running
+            setTimeout(() => window.startStream(), 2000);
+          }
+        }, 200);
+      };
+      window.cancelStream = () => {
+        clearInterval(streamInterval);
+        streamDemo.cancel();
+      };
+      window.completeStream = () => {
+        clearInterval(streamInterval);
+        streamDemo.complete();
+      };
+
+      // Batch controls
+      let batchItems = 0;
+      window.startBatch = () => {
+        batchItems = 0;
+        batchDemo.start({ total: 10, message: 'Processing batch...' });
+        const batchInterval = setInterval(() => {
+          if (batchItems < 10) {
+            batchItems++;
+            batchDemo.updateItem({ completed: batchItems });
+          } else {
+            clearInterval(batchInterval);
+            batchDemo.complete();
+            // Auto-restart after 2 seconds
+            setTimeout(() => window.startBatch(), 2000);
+          }
+        }, 400);
+      };
+      window.updateBatch = () => {
+        if (batchItems < 10) {
+          batchItems++;
+          batchDemo.updateItem({ completed: batchItems });
+        }
+      };
+      window.completeBatch = () => batchDemo.complete();
+
+      // Loader controls
+      let currentStage = 0;
+      const stages = ['download', 'parse', 'compile', 'ready'];
+      window.startLoader = () => {
+        currentStage = 0;
+        loaderDemo.start();
+        const loaderInterval = setInterval(() => {
+          if (currentStage < stages.length - 1) {
+            currentStage++;
+            loaderDemo.completeStage(`Stage ${currentStage + 1} complete`);
+          } else {
+            clearInterval(loaderInterval);
+            loaderDemo.complete();
+            // Auto-restart after 2 seconds
+            setTimeout(() => window.startLoader(), 2000);
+          }
+        }, 800);
+      };
+      window.advanceStage = () => {
+        if (currentStage < stages.length - 1) {
+          currentStage++;
+          loaderDemo.completeStage(`Stage ${currentStage + 1} complete`);
+        }
+      };
+      window.completeLoader = () => loaderDemo.complete();
+
+      // Queue controls
+      let queuePosition = 50;
+      window.startQueue = () => {
+        queuePosition = 50;
+        queueDemo.start('You are in the queue...');
+        const queueInterval = setInterval(() => {
+          if (queuePosition > 0) {
+            queuePosition -= 5;
+            queueDemo.update({
+              position: Math.max(0, queuePosition),
+              estimatedWait: queuePosition * 2,
+            });
+          } else {
+            clearInterval(queueInterval);
+            queueDemo.complete();
+            // Auto-restart after 2 seconds
+            setTimeout(() => window.startQueue(), 2000);
+          }
+        }, 500);
+      };
+      window.updateQueue = () => {
+        if (queuePosition > 0) {
+          queuePosition -= 5;
+          queueDemo.update({
+            position: Math.max(0, queuePosition),
+            estimatedWait: queuePosition * 2,
+          });
+        }
+      };
+      window.completeQueue = () => queueDemo.complete();
+
+      // Retry controls
+      window.startRetry = () => retryDemo.attempt('Attempting connection...');
+      window.waitRetry = () => retryDemo.waitForRetry({ attempt: 2, delay: 2000 });
+      window.successRetry = () => retryDemo.success('Connected successfully!');
+
+      // Theme configurations
+      const themes = {
+        openai: {
+          '--ai-primary-color': '#10a37f',
+          '--ai-secondary-color': '#19c37d',
+          '--ai-background-color': '#ffffff',
+          '--ai-text-color': '#2d333a',
+          '--ai-border-color': '#e5e7eb',
+          '--ai-border-radius': '6px',
+        },
+        anthropic: {
+          '--ai-primary-color': '#d97757',
+          '--ai-secondary-color': '#e88c6a',
+          '--ai-background-color': '#faf8f5',
+          '--ai-text-color': '#1a1818',
+          '--ai-border-color': '#e8dfd2',
+          '--ai-border-radius': '8px',
+        },
+        google: {
+          '--ai-primary-color': '#4285f4',
+          '--ai-secondary-color': '#34a853',
+          '--ai-error-color': '#ea4335',
+          '--ai-warning-color': '#fbbc04',
+          '--ai-background-color': '#ffffff',
+          '--ai-text-color': '#202124',
+          '--ai-border-radius': '8px',
+        },
+        cohere: {
+          '--ai-primary-color': '#d18ee2',
+          '--ai-secondary-color': '#9d5db8',
+          '--ai-background-color': '#1a1625',
+          '--ai-text-color': '#f4f1f8',
+          '--ai-border-color': '#342d42',
+          '--ai-border-radius': '12px',
+        },
+        dark: {
+          '--ai-primary-color': '#60a5fa',
+          '--ai-secondary-color': '#34d399',
+          '--ai-background-color': '#1f2937',
+          '--ai-text-color': '#f9fafb',
+          '--ai-border-color': '#374151',
+          '--ai-border-radius': '8px',
+        },
+      };
+
+      // Theme switching
+      window.switchTheme = (theme) => {
+        // Set body class for page styling
+        document.body.className = theme + '-theme';
+        
+        // Set CSS variables on :root so they inherit into shadow DOM
+        const root = document.documentElement;
+        const themeVars = themes[theme];
+        
+        Object.entries(themeVars).forEach(([property, value]) => {
+          root.style.setProperty(property, value);
+        });
+        
+        // Force re-render of all components by triggering style recalculation
+        document.querySelectorAll('stream-progress, batch-progress, model-loader, queue-progress, retry-progress, parameter-slider').forEach((component) => {
+          component.offsetHeight; // Trigger reflow
+          if (component.render && typeof component.render === 'function') {
+            component.render();
+          }
+        });
+        
+        // Update button states
+        document.querySelectorAll('.theme-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.classList.contains(theme));
+        });
+      };
+
+      // Size switching
+      window.switchSize = (size) => {
+        document.querySelectorAll('[size]').forEach((el) => {
+          el.setAttribute('size', size);
+        });
+        document.querySelectorAll('.size-btn').forEach((btn, i) => {
+          const sizes = ['compact', 'default', 'large'];
+          btn.classList.toggle('active', sizes[i] === size);
+        });
+      };
+
+      // Auto-start demos and set initial theme
+      setTimeout(() => {
+        // Apply initial OpenAI theme
+        window.switchTheme('openai');
+        
+        // Start component demos
+        window.startStream();
+        window.startBatch();
+        window.startLoader();
+        window.startQueue();
+        window.startRetry();
+      }, 500);
+    </script>
+  </body>
+</html>

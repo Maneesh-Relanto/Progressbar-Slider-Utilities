@@ -1,10 +1,10 @@
 export const styles = `
   :host {
+    /* CSS variables inherit from document root with fallback defaults */
     display: block;
     font-family: var(--queue-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
     font-size: var(--queue-font-size, 14px);
     color: var(--queue-text, #e4e4e7);
-    --transition-speed: 0.3s;
   }
 
   :host([style*="cursor: wait"]) .queue-container {
@@ -286,6 +286,57 @@ export const styles = `
 
   .position-number.changing {
     animation: positionChange 0.5s ease;
+  }
+
+  /* Size variants */
+  :host([size="compact"]) .queue-container {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  :host([size="compact"]) .progress-bar {
+    height: 6px;
+  }
+
+  :host([size="compact"]) .queue-status {
+    font-size: 14px;
+  }
+
+  :host([size="compact"]) .queue-message {
+    font-size: 11px;
+  }
+
+  :host([size="compact"]) .position-number {
+    font-size: 48px;
+  }
+
+  :host([size="compact"]) .metric-value {
+    font-size: 22px;
+  }
+
+  :host([size="large"]) .queue-container {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  :host([size="large"]) .progress-bar {
+    height: 10px;
+  }
+
+  :host([size="large"]) .queue-status {
+    font-size: 18px;
+  }
+
+  :host([size="large"]) .queue-message {
+    font-size: 15px;
+  }
+
+  :host([size="large"]) .position-number {
+    font-size: 72px;
+  }
+
+  :host([size="large"]) .metric-value {
+    font-size: 32px;
   }
 
   /* Responsive design */

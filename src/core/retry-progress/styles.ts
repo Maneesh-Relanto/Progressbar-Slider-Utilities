@@ -4,15 +4,10 @@
 
 export const styles = `
   :host {
+    /* CSS variables inherit from document root with fallback defaults */
     display: block;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --retry-primary: #f59e0b;
-    --retry-success: #10b981;
-    --retry-error: #ef4444;
-    --retry-background: #1f2937;
-    --retry-text: #f3f4f6;
-    --retry-text-secondary: #9ca3af;
-    --retry-border: #374151;
+    font-family: var(--ai-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    font-size: var(--ai-font-size, 14px);
   }
 
   :host([style*="cursor: progress"]) .retry-container {
@@ -349,6 +344,57 @@ export const styles = `
   .success-details {
     font-size: 13px;
     color: var(--retry-text-secondary);
+  }
+
+  /* Size variants */
+  :host([size="compact"]) .retry-container {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  :host([size="compact"]) .progress-bar {
+    height: 6px;
+  }
+
+  :host([size="compact"]) .retry-title {
+    font-size: 14px;
+  }
+
+  :host([size="compact"]) .retry-message {
+    font-size: 12px;
+  }
+
+  :host([size="compact"]) .attempt-number {
+    font-size: 40px;
+  }
+
+  :host([size="compact"]) .metric-value {
+    font-size: 20px;
+  }
+
+  :host([size="large"]) .retry-container {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  :host([size="large"]) .progress-bar {
+    height: 10px;
+  }
+
+  :host([size="large"]) .retry-title {
+    font-size: 18px;
+  }
+
+  :host([size="large"]) .retry-message {
+    font-size: 16px;
+  }
+
+  :host([size="large"]) .attempt-number {
+    font-size: 56px;
+  }
+
+  :host([size="large"]) .metric-value {
+    font-size: 28px;
   }
 
   /* Responsive */

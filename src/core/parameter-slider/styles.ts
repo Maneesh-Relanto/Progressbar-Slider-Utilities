@@ -1,9 +1,11 @@
 export const styles = `
   <style>
     :host {
+      /* CSS variables inherit from document root with fallback defaults */
       display: block;
       width: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--ai-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+      font-size: var(--ai-font-size, 14px);
     }
 
     :host([style*="cursor: grab"]) .slider-thumb {
@@ -280,6 +282,61 @@ export const styles = `
       .preset-button {
         min-width: unset;
       }
+    }
+
+    /* Size variants */
+    :host([size="compact"]) .parameter-slider {
+      padding: 8px;
+      font-size: 12px;
+      gap: 8px;
+    }
+
+    :host([size="compact"]) .slider-track {
+      height: 4px;
+    }
+
+    :host([size="compact"]) .slider-thumb {
+      width: 16px;
+      height: 16px;
+    }
+
+    :host([size="compact"]) .label {
+      font-size: 12px;
+    }
+
+    :host([size="compact"]) .current-value {
+      font-size: 16px;
+    }
+
+    :host([size="compact"]) .description {
+      font-size: 10px;
+    }
+
+    :host([size="large"]) .parameter-slider {
+      padding: 16px;
+      font-size: 16px;
+      gap: 16px;
+    }
+
+    :host([size="large"]) .slider-track {
+      height: 8px;
+    }
+
+    :host([size="large"]) .slider-thumb {
+      width: 24px;
+      height: 24px;
+    }
+
+    :host([size="large"]) .label {
+      font-size: 16px;
+    }
+
+    :host([size="large"]) .current-value {
+      font-size: 20px;
+    }
+
+    :host([size="large"]) .description {
+      font-size: 14px;
     }
 
     /* Dark mode overrides (already default, but can be customized) */

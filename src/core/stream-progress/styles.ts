@@ -1,19 +1,11 @@
 export const styles = `
 <style>
 :host {
-  --ai-primary-color: #3b82f6;
-  --ai-secondary-color: #10b981;
-  --ai-background-color: #ffffff;
-  --ai-text-color: #1f2937;
-  --ai-border-color: #e5e7eb;
-  --ai-border-radius: 8px;
-  --ai-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --ai-font-size: 14px;
-  --ai-spacing: 12px;
+  /* CSS variables inherit from document root with fallback defaults */
   
   display: block;
-  font-family: var(--ai-font-family);
-  font-size: var(--ai-font-size);
+  font-family: var(--ai-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: var(--ai-font-size, 14px);
 }
 
 :host([style*="cursor: progress"]) .stream-progress {
@@ -29,15 +21,15 @@ export const styles = `
 }
 
 .stream-progress {
-  background: var(--ai-background-color);
-  border: 1px solid var(--ai-border-color);
-  border-radius: var(--ai-border-radius);
-  padding: var(--ai-spacing);
+  background: var(--ai-background-color, #ffffff);
+  border: 1px solid var(--ai-border-color, #e5e7eb);
+  border-radius: var(--ai-border-radius, 8px);
+  padding: var(--ai-spacing, 12px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .stream-progress.streaming {
-  border-color: var(--ai-primary-color);
+  border-color: var(--ai-primary-color, #3b82f6);
 }
 
 .stream-progress.cancelled {
@@ -46,9 +38,9 @@ export const styles = `
 }
 
 .message {
-  color: var(--ai-text-color);
+  color: var(--ai-text-color, #1f2937);
   font-weight: 500;
-  margin-bottom: calc(var(--ai-spacing) * 0.75);
+  margin-bottom: calc(var(--ai-spacing, 12px) * 0.75);
   font-size: 13px;
 }
 
@@ -58,12 +50,12 @@ export const styles = `
   background: #f3f4f6;
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: var(--ai-spacing);
+  margin-bottom: var(--ai-spacing, 12px);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--ai-primary-color), var(--ai-secondary-color));
+  background: linear-gradient(90deg, var(--ai-primary-color, #3b82f6), var(--ai-secondary-color, #10b981));
   transition: width 0.3s ease;
   border-radius: 4px;
 }
@@ -86,8 +78,8 @@ export const styles = `
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: calc(var(--ai-spacing) * 0.75);
-  margin-bottom: var(--ai-spacing);
+  gap: calc(var(--ai-spacing, 12px) * 0.75);
+  margin-bottom: var(--ai-spacing, 12px);
 }
 
 .stat-item {
@@ -106,7 +98,7 @@ export const styles = `
 
 .stat-value {
   font-size: 16px;
-  color: var(--ai-text-color);
+  color: var(--ai-text-color, #1f2937);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -117,7 +109,7 @@ export const styles = `
   background: #ef4444;
   color: white;
   border: none;
-  border-radius: calc(var(--ai-border-radius) * 0.75);
+  border-radius: calc(var(--ai-border-radius, 8px) * 0.75);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -134,8 +126,63 @@ export const styles = `
 }
 
 .cancel-button:focus-visible {
-  outline: 2px solid var(--ai-primary-color);
+  outline: 2px solid var(--ai-primary-color, #3b82f6);
   outline-offset: 2px;
+}
+
+/* Size variants */
+:host([size="compact"]) .stream-progress {
+  padding: 8px;
+  font-size: 12px;
+}
+
+:host([size="compact"]) .progress-bar {
+  height: 6px;
+}
+
+:host([size="compact"]) .message {
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+:host([size="compact"]) .stat-label {
+  font-size: 10px;
+}
+
+:host([size="compact"]) .stat-value {
+  font-size: 14px;
+}
+
+:host([size="compact"]) .cancel-button {
+  padding: 6px 12px;
+  font-size: 11px;
+}
+
+:host([size="large"]) .stream-progress {
+  padding: 16px;
+  font-size: 16px;
+}
+
+:host([size="large"]) .progress-bar {
+  height: 10px;
+}
+
+:host([size="large"]) .message {
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+:host([size="large"]) .stat-label {
+  font-size: 12px;
+}
+
+:host([size="large"]) .stat-value {
+  font-size: 18px;
+}
+
+:host([size="large"]) .cancel-button {
+  padding: 10px 20px;
+  font-size: 15px;
 }
 
 /* Dark mode support */

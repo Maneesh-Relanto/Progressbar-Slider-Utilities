@@ -1,21 +1,10 @@
 export const styles = `
 <style>
 :host {
-  --ai-primary-color: #3b82f6;
-  --ai-secondary-color: #10b981;
-  --ai-error-color: #ef4444;
-  --ai-warning-color: #f59e0b;
-  --ai-background-color: #ffffff;
-  --ai-text-color: #1f2937;
-  --ai-border-color: #e5e7eb;
-  --ai-border-radius: 8px;
-  --ai-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --ai-font-size: 14px;
-  --ai-spacing: 12px;
-  
+  /* CSS variables inherit from document root with fallback defaults */
   display: block;
-  font-family: var(--ai-font-family);
-  font-size: var(--ai-font-size);
+  font-family: var(--ai-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: var(--ai-font-size, 14px);
 }
 
 :host([style*="cursor: progress"]) .model-loader {
@@ -31,36 +20,36 @@ export const styles = `
 }
 
 .model-loader {
-  background: var(--ai-background-color);
-  border: 1px solid var(--ai-border-color);
-  border-radius: var(--ai-border-radius);
-  padding: var(--ai-spacing);
+  background: var(--ai-background-color, #ffffff);
+  border: 1px solid var(--ai-border-color, #e5e7eb);
+  border-radius: var(--ai-border-radius, 8px);
+  padding: var(--ai-spacing, 12px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .model-loader.loading {
-  border-color: var(--ai-primary-color);
+  border-color: var(--ai-primary-color, #3b82f6);
 }
 
 .model-loader.error {
-  border-color: var(--ai-error-color);
+  border-color: #ef4444;
 }
 
 .model-loader.completed {
-  border-color: var(--ai-secondary-color);
+  border-color: var(--ai-secondary-color, #10b981);
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--ai-spacing);
+  margin-bottom: var(--ai-spacing, 12px);
 }
 
 .model-name {
   font-size: 15px;
   font-weight: 600;
-  color: var(--ai-text-color);
+  color: var(--ai-text-color, #1f2937);
 }
 
 .status-badge {
@@ -90,8 +79,8 @@ export const styles = `
 .stages {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing);
-  margin-bottom: var(--ai-spacing);
+  gap: var(--ai-spacing, 12px);
+  margin-bottom: var(--ai-spacing, 12px);
 }
 
 .stage {
@@ -157,7 +146,7 @@ export const styles = `
 .stage-name {
   font-size: 13px;
   font-weight: 600;
-  color: var(--ai-text-color);
+  color: var(--ai-text-color, #1f2937);
   text-transform: capitalize;
 }
 
@@ -186,13 +175,13 @@ export const styles = `
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--ai-primary-color), var(--ai-secondary-color));
+  background: linear-gradient(90deg, var(--ai-primary-color, #3b82f6), var(--ai-secondary-color, #10b981));
   transition: width 0.3s ease;
   border-radius: 3px;
 }
 
 .progress-fill.error {
-  background: var(--ai-error-color);
+  background: #ef4444;
 }
 
 .stage.in-progress .progress-fill {
@@ -214,10 +203,10 @@ export const styles = `
 .stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: var(--ai-spacing);
-  padding-top: var(--ai-spacing);
-  border-top: 1px solid var(--ai-border-color);
-  margin-top: var(--ai-spacing);
+  gap: var(--ai-spacing, 12px);
+  padding-top: var(--ai-spacing, 12px);
+  border-top: 1px solid var(--ai-border-color, #e5e7eb);
+  margin-top: var(--ai-spacing, 12px);
 }
 
 .stat-item {
@@ -236,7 +225,7 @@ export const styles = `
 
 .stat-value {
   font-size: 15px;
-  color: var(--ai-text-color);
+  color: var(--ai-text-color, #1f2937);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -246,7 +235,7 @@ export const styles = `
   border: 1px solid #fecaca;
   border-radius: 6px;
   padding: 12px;
-  margin-top: var(--ai-spacing);
+  margin-top: var(--ai-spacing, 12px);
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -268,16 +257,16 @@ export const styles = `
 .retry-button {
   width: 100%;
   padding: 10px 16px;
-  background: var(--ai-primary-color);
+  background: var(--ai-primary-color, #3b82f6);
   color: white;
   border: none;
-  border-radius: calc(var(--ai-border-radius) * 0.75);
+  border-radius: calc(var(--ai-border-radius, 8px) * 0.75);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s ease;
   font-family: inherit;
-  margin-top: var(--ai-spacing);
+  margin-top: var(--ai-spacing, 12px);
 }
 
 .retry-button:hover {
@@ -289,18 +278,12 @@ export const styles = `
 }
 
 .retry-button:focus-visible {
-  outline: 2px solid var(--ai-primary-color);
+  outline: 2px solid var(--ai-primary-color, #3b82f6);
   outline-offset: 2px;
 }
 
-/* Dark mode support */
+/* Dark mode support - variables can be overridden at document level */
 @media (prefers-color-scheme: dark) {
-  :host {
-    --ai-background-color: #1f2937;
-    --ai-text-color: #f9fafb;
-    --ai-border-color: #374151;
-  }
-  
   .progress-bar {
     background: #374151;
   }
@@ -329,6 +312,59 @@ export const styles = `
   .retry-button {
     transition: none;
   }
+}
+
+/* Size variants */
+:host([size="compact"]) .model-loader {
+  padding: 8px;
+  font-size: 12px;
+}
+
+:host([size="compact"]) .progress-bar {
+  height: 6px;
+}
+
+:host([size="compact"]) .model-name {
+  font-size: 13px;
+}
+
+:host([size="compact"]) .status-badge {
+  padding: 3px 8px;
+  font-size: 10px;
+}
+
+:host([size="compact"]) .stage-name {
+  font-size: 11px;
+}
+
+:host([size="compact"]) .stat-value {
+  font-size: 14px;
+}
+
+:host([size="large"]) .model-loader {
+  padding: 16px;
+  font-size: 16px;
+}
+
+:host([size="large"]) .progress-bar {
+  height: 10px;
+}
+
+:host([size="large"]) .model-name {
+  font-size: 17px;
+}
+
+:host([size="large"]) .status-badge {
+  padding: 5px 12px;
+  font-size: 12px;
+}
+
+:host([size="large"]) .stage-name {
+  font-size: 15px;
+}
+
+:host([size="large"]) .stat-value {
+  font-size: 18px;
 }
 
 /* Responsive design */

@@ -61,7 +61,7 @@ export class QueueProgress extends AIControl {
   private initialPosition: number = 0;
 
   static get observedAttributes() {
-    return ['position', 'queue-size', 'disabled'];
+    return ['position', 'queue-size', 'disabled', 'size'];
   }
 
   constructor(config: QueueProgressConfig = {}) {
@@ -89,6 +89,7 @@ export class QueueProgress extends AIControl {
       debug: config.debug ?? false,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Queue Progress',
+      size: config.size ?? 'default',
     };
 
     // Initialize state
@@ -140,6 +141,10 @@ export class QueueProgress extends AIControl {
         break;
       case 'disabled':
         this._disabled = newValue !== null;
+        this.render();
+        break;
+      case 'size':
+        this.config.size = newValue as any;
         this.render();
         break;
     }

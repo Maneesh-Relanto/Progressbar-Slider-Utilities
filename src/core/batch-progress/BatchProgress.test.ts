@@ -368,4 +368,43 @@ describe('BatchProgress Component', () => {
       expect(progress['state'].completedCount).toBe(10);
     });
   });
+
+  describe('Size Variants', () => {
+    it('should default to default size', () => {
+      expect(progress['config'].size).toBe('default');
+    });
+
+    it('should accept size in constructor', () => {
+      const compact = new BatchProgress({ size: 'compact' });
+      expect(compact['config'].size).toBe('compact');
+      compact.remove();
+
+      const large = new BatchProgress({ size: 'large' });
+      expect(large['config'].size).toBe('large');
+      large.remove();
+    });
+
+    it('should update size via attribute', async () => {
+      await waitForElement(progress);
+
+      progress.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(progress['config'].size).toBe('compact');
+      expect(progress.getAttribute('size')).toBe('compact');
+
+      progress.setAttribute('size', 'large');
+      await waitForNextTick();
+      expect(progress['config'].size).toBe('large');
+      expect(progress.getAttribute('size')).toBe('large');
+    });
+
+    it('should apply size attribute to host element', async () => {
+      await waitForElement(progress);
+
+      progress.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(progress.hasAttribute('size')).toBe(true);
+      expect(progress.getAttribute('size')).toBe('compact');
+    });
+  });
 });

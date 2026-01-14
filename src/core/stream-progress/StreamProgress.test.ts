@@ -441,4 +441,43 @@ describe('StreamProgress Component', () => {
       expect(progress['animationFrame']).toBe(animationFrame);
     });
   });
+
+  describe('Size Variants', () => {
+    it('should default to default size', () => {
+      expect(progress['config'].size).toBe('default');
+    });
+
+    it('should accept size in constructor', () => {
+      const compactProgress = new StreamProgress({ size: 'compact' });
+      expect(compactProgress['config'].size).toBe('compact');
+      compactProgress.remove();
+
+      const largeProgress = new StreamProgress({ size: 'large' });
+      expect(largeProgress['config'].size).toBe('large');
+      largeProgress.remove();
+    });
+
+    it('should update size via attribute', async () => {
+      await waitForElement(progress);
+
+      progress.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(progress['config'].size).toBe('compact');
+      expect(progress.getAttribute('size')).toBe('compact');
+
+      progress.setAttribute('size', 'large');
+      await waitForNextTick();
+      expect(progress['config'].size).toBe('large');
+      expect(progress.getAttribute('size')).toBe('large');
+    });
+
+    it('should apply size attribute to host element', async () => {
+      await waitForElement(progress);
+
+      progress.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(progress.hasAttribute('size')).toBe(true);
+      expect(progress.getAttribute('size')).toBe('compact');
+    });
+  });
 });

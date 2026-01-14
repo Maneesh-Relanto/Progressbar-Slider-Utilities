@@ -59,7 +59,7 @@ export class StreamProgress extends AIControl {
   private displayTokens: number = 0;
 
   static get observedAttributes() {
-    return ['max-tokens', 'cost-per-token', 'disabled'];
+    return ['max-tokens', 'cost-per-token', 'disabled', 'size'];
   }
 
   constructor(config: StreamProgressConfig = {}) {
@@ -85,6 +85,7 @@ export class StreamProgress extends AIControl {
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'AI Stream Progress',
       cursorFeedback: config.cursorFeedback ?? true,
+      size: config.size ?? 'default',
     };
 
     // Initialize state
@@ -157,6 +158,10 @@ export class StreamProgress extends AIControl {
         break;
       case 'disabled':
         this._disabled = newValue !== null;
+        this.render();
+        break;
+      case 'size':
+        this.config.size = newValue as any;
         this.render();
         break;
     }

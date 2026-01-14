@@ -66,7 +66,7 @@ export class ModelLoader extends AIControl {
   private readonly updateThrottled: (update: StageUpdate) => void;
 
   static get observedAttributes() {
-    return ['model-name', 'disabled'];
+    return ['model-name', 'disabled', 'size'];
   }
 
   constructor(config: ModelLoaderConfig = {}) {
@@ -92,6 +92,7 @@ export class ModelLoader extends AIControl {
       debug: config.debug ?? false,
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Model Loading Progress',
+      size: config.size ?? 'default',
     };
 
     // Initialize state
@@ -156,6 +157,10 @@ export class ModelLoader extends AIControl {
         break;
       case 'disabled':
         this._disabled = newValue !== null;
+        this.render();
+        break;
+      case 'size':
+        this.config.size = newValue as any;
         this.render();
         break;
     }

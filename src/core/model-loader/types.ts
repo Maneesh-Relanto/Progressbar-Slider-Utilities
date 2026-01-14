@@ -42,6 +42,9 @@ export interface ModelLoaderConfig {
   /** Enable automatic cursor state changes based on component state */
   cursorFeedback?: boolean;
 
+  /** Component size variant */
+  size?: 'compact' | 'default' | 'large';
+
   /** Debug mode */
   debug?: boolean;
 

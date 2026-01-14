@@ -81,6 +81,7 @@ export class RetryProgress extends AIControl {
       cursorFeedback: config.cursorFeedback ?? true,
       debug: config.debug ?? false,
       disabled: config.disabled ?? false,
+      size: config.size ?? 'default',
     };
 
     this.state = {
@@ -740,6 +741,7 @@ export class RetryProgress extends AIControl {
       'show-attempt-count',
       'show-progress-bar',
       'disabled',
+      'size',
     ];
   }
 
@@ -799,6 +801,9 @@ export class RetryProgress extends AIControl {
         break;
       case 'disabled':
         this._disabled = newValue !== null;
+        break;
+      case 'size':
+        this.config.size = newValue as any;
         break;
     }
     this.render();

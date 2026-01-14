@@ -1,4 +1,9 @@
 /**
+ * Size variant for components
+ */
+export type SizeVariant = 'compact' | 'default' | 'large';
+
+/**
  * Base configuration for all AI Progress Controls
  */
 export interface AIControlConfig {
@@ -12,6 +17,8 @@ export interface AIControlConfig {
   ariaLabel?: string;
   /** Enable automatic cursor feedback based on state (default: true) */
   cursorFeedback?: boolean;
+  /** Size variant: compact, default, or large */
+  size?: SizeVariant;
 }
 
 /**

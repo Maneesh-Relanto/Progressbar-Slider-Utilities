@@ -221,4 +221,43 @@ describe('ModelLoader Component', () => {
       expect(role).toBe('progressbar');
     });
   });
+
+  describe('Size Variants', () => {
+    it('should default to default size', () => {
+      expect(loader['config'].size).toBe('default');
+    });
+
+    it('should accept size in constructor', () => {
+      const compact = new ModelLoader({ size: 'compact' });
+      expect(compact['config'].size).toBe('compact');
+      compact.remove();
+
+      const large = new ModelLoader({ size: 'large' });
+      expect(large['config'].size).toBe('large');
+      large.remove();
+    });
+
+    it('should update size via attribute', async () => {
+      await waitForElement(loader);
+
+      loader.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(loader['config'].size).toBe('compact');
+      expect(loader.getAttribute('size')).toBe('compact');
+
+      loader.setAttribute('size', 'large');
+      await waitForNextTick();
+      expect(loader['config'].size).toBe('large');
+      expect(loader.getAttribute('size')).toBe('large');
+    });
+
+    it('should apply size attribute to host element', async () => {
+      await waitForElement(loader);
+
+      loader.setAttribute('size', 'compact');
+      await waitForNextTick();
+      expect(loader.hasAttribute('size')).toBe(true);
+      expect(loader.getAttribute('size')).toBe('compact');
+    });
+  });
 });

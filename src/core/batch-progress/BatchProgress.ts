@@ -69,7 +69,7 @@ export class BatchProgress extends AIControl {
   private updateThrottleTimer: ReturnType<typeof setTimeout> | null = null;
 
   static get observedAttributes() {
-    return ['total-items', 'disabled'];
+    return ['total-items', 'disabled', 'size'];
   }
 
   constructor(config: BatchProgressConfig = {}) {
@@ -97,6 +97,7 @@ export class BatchProgress extends AIControl {
       className: config.className ?? '',
       ariaLabel: config.ariaLabel ?? 'Batch Progress',
       cursorFeedback: config.cursorFeedback ?? true,
+      size: config.size ?? 'default',
     };
 
     this.state = {
@@ -134,6 +135,10 @@ export class BatchProgress extends AIControl {
         break;
       case 'disabled':
         this._disabled = newValue !== null;
+        this.render();
+        break;
+      case 'size':
+        this.config.size = newValue as any;
         this.render();
         break;
     }
