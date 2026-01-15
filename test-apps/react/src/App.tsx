@@ -8,7 +8,7 @@ import {
   QueueProgress,
   RetryProgress,
   StreamProgress,
-} from './adapters';
+} from '@ai-progress-controls/react';
 
 function App() {
   const [activeTab, setActiveTab] = useState<string>('batch');
@@ -16,10 +16,10 @@ function App() {
   // BatchProgress state
   const [batchProgress, setBatchProgress] = useState(0);
   const [batchItems] = useState([
-    { id: 1, label: 'Task 1', status: 'completed' as const },
-    { id: 2, label: 'Task 2', status: 'processing' as const },
-    { id: 3, label: 'Task 3', status: 'pending' as const },
-    { id: 4, label: 'Task 4', status: 'pending' as const },
+    { id: '1', label: 'Task 1', status: 'completed' as const },
+    { id: '2', label: 'Task 2', status: 'processing' as const },
+    { id: '3', label: 'Task 3', status: 'pending' as const },
+    { id: '4', label: 'Task 4', status: 'pending' as const },
   ]);
 
   // ModelLoader state
@@ -133,8 +133,8 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>AI Progress Controls Test Suite</h1>
-        <p>Testing all 7 components from the library</p>
+        <h1>AI Progress Controls - React Test</h1>
+        <p>Testing all 7 components in React + Vite</p>
       </header>
 
       <nav className="tab-navigation">
@@ -307,7 +307,7 @@ function App() {
             <div className="component-wrapper">
               <QueueProgress
                 position={queuePosition}
-                total={queueTotal}
+                queueSize={queueTotal}
                 label="Your request is in queue"
               />
             </div>
@@ -337,7 +337,7 @@ function App() {
 
             <div className="component-wrapper">
               <RetryProgress
-                currentAttempt={retryAttempt}
+                attempt={retryAttempt}
                 maxAttempts={maxRetries}
                 label="Retrying request..."
               />
