@@ -27,8 +27,8 @@
     "url": "https://github.com/yourusername/ai-progress-controls/issues"
   },
   "homepage": "https://github.com/yourusername/ai-progress-controls#readme",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/ai-progress-controls.umd.js",
+  "module": "dist/ai-progress-controls.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
