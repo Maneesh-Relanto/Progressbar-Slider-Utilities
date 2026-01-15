@@ -25,6 +25,8 @@
     "*.config.ts",
     "*.config.js",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "test-apps",
+    "examples"
   ]
 }
