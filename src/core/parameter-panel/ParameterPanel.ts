@@ -585,12 +585,24 @@ export class ParameterPanel extends AIControl {
 
   private renderHeader(): string {
     const collapsedClass = this.state.isCollapsed ? 'collapsed' : '';
+    const showTitle = this.panelConfig.title !== undefined && this.panelConfig.title !== null;
+
     return `
       <div class="header ${this.panelConfig.collapsible ? 'collapsible' : ''}" id="header">
+        ${
+          showTitle
+            ? `
         <div class="title-section">
           <h3 class="title">${this.panelConfig.title}</h3>
           <span class="dirty-indicator ${this.state.isDirty ? 'show' : ''}"></span>
         </div>
+        `
+            : `
+        <div class="title-section">
+          <span class="dirty-indicator ${this.state.isDirty ? 'show' : ''}"></span>
+        </div>
+        `
+        }
         ${
           this.panelConfig.collapsible
             ? `
