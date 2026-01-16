@@ -1,38 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import {
+  BatchProgress,
+  ModelLoader,
+  ParameterPanel,
+  ParameterSlider,
+  QueueProgress,
+  RetryProgress,
+  StreamProgress,
+} from '@ai-progress-controls/next';
 import './page.css';
-
-// Dynamically import adapters with no SSR
-const BatchProgress = dynamic(
-  () => import('../adapters').then((mod) => ({ default: mod.BatchProgress })),
-  { ssr: false }
-);
-const ModelLoader = dynamic(
-  () => import('../adapters').then((mod) => ({ default: mod.ModelLoader })),
-  { ssr: false }
-);
-const ParameterPanel = dynamic(
-  () => import('../adapters').then((mod) => ({ default: mod.ParameterPanel })),
-  { ssr: false }
-);
-const ParameterSlider = dynamic(
-  () => import('../adapters').then((mod) => ({ default: mod.ParameterSlider })),
-  { ssr: false }
-);
-const QueueProgress = dynamic(
-  () => import('../adapters').then((mod) => ({ default: mod.QueueProgress })),
-  { ssr: false }
-);
-const RetryProgress = dynamic(
-  () => import('../adapters').then((mod) => ({ default: mod.RetryProgress })),
-  { ssr: false }
-);
-const StreamProgress = dynamic(
-  () => import('../adapters').then((mod) => ({ default: mod.StreamProgress })),
-  { ssr: false }
-);
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>('batch');
