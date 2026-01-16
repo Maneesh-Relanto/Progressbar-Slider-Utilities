@@ -596,6 +596,7 @@ Consider users with motion sensitivity:
 
 For more information, see:
 
-- [Getting Started Guide](getting-started.md)
+- [Quick Start Guide](QUICK_START.md)
+- [Installation Guide](installation-guide.md)
 - [API Documentation](api/)
 - [Examples](../examples/)

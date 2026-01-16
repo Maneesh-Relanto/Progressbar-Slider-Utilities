@@ -580,3 +580,16 @@ npm run dev
 - 📖 [Documentation](../README.md)
 - 💬 [GitHub Issues](https://github.com/Maneesh-Relanto/ai-progress-controls/issues)
 - 📝 [Contributing Guide](../CONTRIBUTING.md)
+
+---
+
+## 📚 Related Documentation
+
+- [🏠 Main README](../README.md) - Project overview
+- [🎯 Quick Start](./QUICK_START.md) - 2-minute guide
+- [💻 npm Usage Examples](./npm-usage-examples.md) - Real-world patterns
+- [⚛️ React Examples](./react-examples.md) - Copy-paste React code
+- [▲ Next.js Examples](./nextjs-examples.md) - SSR patterns
+- [🖖 Vue Guide](./vue-guide.md) - Complete Vue integration
+- [🅰️ Angular Guide](./angular-guide.md) - Complete Angular integration
+- [🔥 Svelte Guide](./svelte-guide.md) - Complete Svelte integration

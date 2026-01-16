@@ -840,6 +840,18 @@ Svelte's Web Components support is **good** because:
 ## Need Help?
 
 - 📖 [Main Documentation](../README.md)
-- 🚀 [Getting Started](./getting-started.md)
+- 🚀 [Quick Start](./QUICK_START.md)
 - 📦 [npm Package](https://www.npmjs.com/package/ai-progress-controls)
 - 💬 [GitHub Issues](https://github.com/Maneesh-Relanto/ai-progress-controls/issues)
+
+---
+
+## 📚 Related Documentation
+
+- [🏠 Main README](../README.md) - Project overview
+- [🎯 Quick Start](./QUICK_START.md) - 2-minute guide
+- [📦 Installation Guide](./installation-guide.md) - Complete setup
+- [⚛️ React Examples](./react-examples.md) - React integration
+- [▲ Next.js Examples](./nextjs-examples.md) - Next.js integration
+- [🖖 Vue Guide](./vue-guide.md) - Vue integration
+- [🅰️ Angular Guide](./angular-guide.md) - Angular integration

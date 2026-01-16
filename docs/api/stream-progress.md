@@ -604,6 +604,7 @@ Requires support for:
 
 ## Related
 
-- [Getting Started Guide](../getting-started.md)
+- [Quick Start Guide](../QUICK_START.md)
+- [Installation Guide](../installation-guide.md)
 - [Examples](../../examples/vanilla/stream-progress.html)
 - [GitHub Repository](https://github.com/Maneesh-Relanto/ai-progress-controls)

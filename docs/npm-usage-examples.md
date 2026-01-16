@@ -844,3 +844,15 @@ export const OptimizedProgress = memo(StreamProgress);
 - **[Next.js Examples](./nextjs-examples.md)** - SSR patterns
 - **[Theming Guide](./theming.md)** - Customization options
 - **[GitHub Repository](https://github.com/Maneesh-Relanto/ai-progress-controls)** - Source code and issues
+
+---
+
+## 📚 Related Documentation
+
+- [🏠 Main README](../README.md) - Project overview
+- [🎯 Quick Start](./QUICK_START.md) - 2-minute guide
+- [📦 Installation Guide](./installation-guide.md) - Complete setup
+- [⚛️ React Examples](./react-examples.md) - Copy-paste React code
+- [🖖 Vue Guide](./vue-guide.md) - Vue integration
+- [🅰️ Angular Guide](./angular-guide.md) - Angular integration
+- [🔥 Svelte Guide](./svelte-guide.md) - Svelte integration

@@ -428,4 +428,5 @@ export default function Page() {
 - [▲ Next.js Adapter Documentation](../adapters/next/README.md)
 - [⚛️ React Examples](./react-examples.md)
 - [📚 API Documentation](./api/)
-- [🌐 Web Components Guide](./getting-started.md)
+- [🚀 Quick Start](./QUICK_START.md)
+- [📦 Installation Guide](./installation-guide.md)

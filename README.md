@@ -122,7 +122,7 @@ document.body.appendChild(progress);
 
 **That's it!** Import, create, append - works in any framework.
 
-[📖 Getting Started](./docs/getting-started.md) • [🎮 Examples](./examples/index.html)
+[🎯 Quick Start](./docs/QUICK_START.md) • [📦 Installation Guide](./docs/installation-guide.md) • [🎮 Examples](./examples/index.html)
 
 </td>
 </tr>
@@ -132,11 +132,11 @@ document.body.appendChild(progress);
 
 ### 📚 **Documentation**
 
-**Getting Started:**  
-[📦 Installation Guide](./docs/installation-guide.md) • [💻 npm Usage Examples](./docs/npm-usage-examples.md) • [🚀 Getting Started](./docs/getting-started.md)
+**New to AI Progress Controls?**  
+[🎯 Quick Start (2 min)](./docs/QUICK_START.md) • [📦 Complete Installation](./docs/installation-guide.md) • [💻 npm Usage Examples](./docs/npm-usage-examples.md)
 
 **Framework Guides:**  
-[⚛️ React Adapter](./adapters/react/README.md) • [▲ Next.js Adapter](./adapters/next/README.md) • [🖖 Vue 3 Guide](./docs/vue-guide.md) • [�️ Angular Guide](./docs/angular-guide.md) • [🔥 Svelte Guide](./docs/svelte-guide.md) • [�🌐 Web Components](./docs/getting-started.md)
+[⚛️ React Adapter](./adapters/react/README.md) • [▲ Next.js Adapter](./adapters/next/README.md) • [🖖 Vue 3 Guide](./docs/vue-guide.md) • [🅰️ Angular Guide](./docs/angular-guide.md) • [🔥 Svelte Guide](./docs/svelte-guide.md)
 
 **Code Examples:**  
 [⚛️ React Examples](./docs/react-examples.md) • [▲ Next.js Examples](./docs/nextjs-examples.md) • [🎮 Vanilla JS Examples](./examples/index.html)

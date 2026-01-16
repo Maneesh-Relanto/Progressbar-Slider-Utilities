@@ -376,4 +376,5 @@ function ThemingExample() {
 - [⚛️ React Adapter Documentation](../adapters/react/README.md)
 - [📚 API Documentation](./api/)
 - [🎮 Live Examples](../examples/)
-- [🌐 Web Components Guide](./getting-started.md)
+- [🚀 Quick Start](./QUICK_START.md)
+- [📦 Installation Guide](./installation-guide.md)
