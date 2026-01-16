@@ -149,9 +149,21 @@ const config: StreamProgressProps = {
 
 ## 📚 Learn More
 
+**Getting Started:**
+
 - **[Installation Guide](./installation-guide.md)** - Complete setup instructions
 - **[npm Usage Examples](./npm-usage-examples.md)** - Real-world patterns
+
+**Framework Guides:**
+
 - **[React Examples](./react-examples.md)** - 7 ready-to-use examples
+- **[Next.js Examples](./nextjs-examples.md)** - SSR patterns
+- **[Vue 3 Guide](./vue-guide.md)** - Complete Vue integration
+- **[Angular Guide](./angular-guide.md)** - Complete Angular integration
+- **[Svelte Guide](./svelte-guide.md)** - Complete Svelte integration
+
+**Reference:**
+
 - **[API Reference](./api/)** - Complete prop documentation
 
 ---
