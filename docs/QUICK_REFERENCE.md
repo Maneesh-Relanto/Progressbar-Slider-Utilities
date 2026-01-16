@@ -126,9 +126,8 @@ npm run lighthouse:ci
 
 1. ⚠️ Update GitHub URLs in package.json (currently placeholder)
 2. ⚠️ Run lighthouse audit and fix any issues
-3. ⚠️ Write unit tests (Vitest configured but no tests yet)
-4. ⚠️ Create GitHub repository
-5. ⚠️ Add CHANGELOG.md for version history
+3. ⚠️ Create GitHub repository
+4. ⚠️ Add CHANGELOG.md for version history
 
 **Publishing to npm:**
 

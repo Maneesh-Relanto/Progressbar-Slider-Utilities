@@ -90,4 +90,4 @@ Every push runs:
 
 ## Learn More
 
-For detailed information, see our internal [QA & Validation Guide](../confidential/QA_VALIDATION_GUIDE.md).
+For additional quality assurance details, see the project's test suite and CI/CD configuration.

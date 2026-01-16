@@ -1,6 +1,6 @@
 # @ai-progress-controls/next
 
-Next.js adapters for [AI Progress Controls](https://github.com/yourusername/ai-progress-controls) - Production-ready UI components for AI/ML workflows with full SSR support.
+Next.js adapters for [AI Progress Controls](https://github.com/Maneesh-Relanto/ai-progress-controls) - Production-ready UI components for AI/ML workflows with full SSR support.
 
 [![npm version](https://img.shields.io/npm/v/@ai-progress-controls/next.svg)](https://www.npmjs.com/package/@ai-progress-controls/next)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?logo=typescript)](https://www.typescriptlang.org/)
@@ -268,7 +268,7 @@ This package depends on `ai-progress-controls` and provides thin Next.js wrapper
 
 ## 🐛 Issues & Support
 
-For issues specific to the Next.js adapter, please open an issue on the [main repository](https://github.com/yourusername/ai-progress-controls/issues) with the `next-adapter` label.
+For issues specific to the Next.js adapter, please open an issue on the [main repository](https://github.com/Maneesh-Relanto/ai-progress-controls/issues) with the `next-adapter` label.
 
 ## 📄 License
 
@@ -276,7 +276,7 @@ MIT © Maneesh Thakur
 
 ## 🔗 Links
 
-- [Core Library](https://github.com/yourusername/ai-progress-controls)
-- [Documentation](https://github.com/yourusername/ai-progress-controls#readme)
+- [Core Library](https://github.com/Maneesh-Relanto/ai-progress-controls)
+- [Documentation](https://github.com/Maneesh-Relanto/ai-progress-controls#readme)
 - [Examples](../../test-apps/next)
 - [React Adapter](../@ai-progress-controls/react)

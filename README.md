@@ -37,7 +37,7 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 🎯 **3 Lines of Code** - Import, create, append  
 🔌 **Works Everywhere** - React, Vue, Angular, Svelte, Next.js, plain HTML  
-📦 **Zero Dependencies** - Lightweight and fast (~27KB gzipped)  
+📦 **Zero Dependencies** - Lightweight and fast (~28KB gzipped)  
 🎨 **Fully Themeable** - CSS variables, dark mode ready  
 📘 **TypeScript First** - Complete type definitions included
 
@@ -125,7 +125,7 @@ document.body.appendChild(progress);
 ## 🎮 Live Demo
 
 ```bash
-git clone https://github.com/yourusername/ai-progress-controls.git
+git clone https://github.com/Maneesh-Relanto/ai-progress-controls.git
 cd ai-progress-controls
 npm install
 npm run dev
@@ -553,7 +553,7 @@ document.body.appendChild(progress);
 ✅ Web Components (native browser standard)  
 ✅ Shadow DOM encapsulation  
 ✅ Zero dependencies  
-✅ ~27KB gzipped (all 7 components)  
+✅ ~28KB gzipped (all 7 components)  
 ✅ TypeScript strict mode
 
 ### 🎯 **AI-Specific**
@@ -706,9 +706,9 @@ Contributions welcome! This is an open-source project aimed at improving DX for 
 
 <div align="center">
 
-**[Report Issues](https://github.com/yourusername/ai-progress-controls/issues)** •
-**[Suggest Features](https://github.com/yourusername/ai-progress-controls/discussions)** •
-**[Submit PRs](https://github.com/yourusername/ai-progress-controls/pulls)**
+**[Report Issues](https://github.com/Maneesh-Relanto/ai-progress-controls/issues)** •
+**[Suggest Features](https://github.com/Maneesh-Relanto/ai-progress-controls/discussions)** •
+**[Submit PRs](https://github.com/Maneesh-Relanto/ai-progress-controls/pulls)**
 
 </div>
 
@@ -732,7 +732,7 @@ Copyright © 2026 Maneesh Thakur
 
 ⭐ **Star this repo** if you find it useful! ⭐
 
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/ai-progress-controls?style=social)](https://github.com/yourusername/ai-progress-controls)
-[![Follow](https://img.shields.io/github/followers/yourusername?style=social)](https://github.com/yourusername)
+[![GitHub stars](https://img.shields.io/github/stars/Maneesh-Relanto/ai-progress-controls?style=social)](https://github.com/Maneesh-Relanto/ai-progress-controls)
+[![Follow](https://img.shields.io/github/followers/Maneesh-Relanto?style=social)](https://github.com/Maneesh-Relanto)
 
 </div>

@@ -37,9 +37,9 @@ Creates a new BatchProgress component instance.
 
 **Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `config` | `BatchProgressConfig` | Optional configuration object |
+| Parameter | Type                  | Description                   |
+| --------- | --------------------- | ----------------------------- |
+| `config`  | `BatchProgressConfig` | Optional configuration object |
 
 **Returns:** `BatchProgress` instance
 
@@ -62,24 +62,24 @@ const batch = new BatchProgress({
 
 Configuration object passed to the constructor.
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `totalItems` | `number` | `0` | Total number of items in batch |
-| `concurrency` | `number` | `5` | Maximum concurrent operations |
-| `showItems` | `boolean` | `true` | Show individual item progress |
-| `maxDisplayItems` | `number` | `100` | Maximum items to display |
-| `showProgressBar` | `boolean` | `true` | Show overall progress bar |
-| `showStats` | `boolean` | `true` | Show statistics (success/fail counts) |
-| `showTime` | `boolean` | `true` | Show elapsed time |
-| `showRate` | `boolean` | `true` | Show processing rate (items/sec) |
-| `allowCancel` | `boolean` | `true` | Allow cancellation |
-| `cancelLabel` | `string` | `'Cancel Batch'` | Cancel button label |
-| `collapseCompleted` | `boolean` | `false` | Automatically collapse completed items |
-| `message` | `string` | `'Processing batch...'` | Status message |
-| `disabled` | `boolean` | `false` | Disabled state |
-| `debug` | `boolean` | `false` | Enable debug logging |
-| `className` | `string` | `''` | Custom CSS class |
-| `ariaLabel` | `string` | `'Batch Progress'` | ARIA label |
+| Property            | Type      | Default                 | Description                            |
+| ------------------- | --------- | ----------------------- | -------------------------------------- |
+| `totalItems`        | `number`  | `0`                     | Total number of items in batch         |
+| `concurrency`       | `number`  | `5`                     | Maximum concurrent operations          |
+| `showItems`         | `boolean` | `true`                  | Show individual item progress          |
+| `maxDisplayItems`   | `number`  | `100`                   | Maximum items to display               |
+| `showProgressBar`   | `boolean` | `true`                  | Show overall progress bar              |
+| `showStats`         | `boolean` | `true`                  | Show statistics (success/fail counts)  |
+| `showTime`          | `boolean` | `true`                  | Show elapsed time                      |
+| `showRate`          | `boolean` | `true`                  | Show processing rate (items/sec)       |
+| `allowCancel`       | `boolean` | `true`                  | Allow cancellation                     |
+| `cancelLabel`       | `string`  | `'Cancel Batch'`        | Cancel button label                    |
+| `collapseCompleted` | `boolean` | `false`                 | Automatically collapse completed items |
+| `message`           | `string`  | `'Processing batch...'` | Status message                         |
+| `disabled`          | `boolean` | `false`                 | Disabled state                         |
+| `debug`             | `boolean` | `false`                 | Enable debug logging                   |
+| `className`         | `string`  | `''`                    | Custom CSS class                       |
+| `ariaLabel`         | `string`  | `'Batch Progress'`      | ARIA label                             |
 
 **Example:**
 
@@ -110,8 +110,8 @@ Start batch processing and initialize the progress display.
 
 **Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
+| Parameter | Type     | Description                        |
+| --------- | -------- | ---------------------------------- |
 | `message` | `string` | Optional status message to display |
 
 **Example:**
@@ -130,10 +130,10 @@ Add an item to the batch.
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `itemId` | `string` | ✅ Yes | Unique identifier for the item |
-| `label` | `string` | ❌ No | Display label (defaults to itemId) |
+| Parameter | Type     | Required | Description                        |
+| --------- | -------- | -------- | ---------------------------------- |
+| `itemId`  | `string` | ✅ Yes   | Unique identifier for the item     |
+| `label`   | `string` | ❌ No    | Display label (defaults to itemId) |
 
 **Example:**
 
@@ -151,16 +151,17 @@ Update the status or progress of a batch item.
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `update.itemId` | `string` | ✅ Yes | Item identifier |
-| `update.status` | `BatchItemStatus` | ❌ No | New status |
-| `update.progress` | `number` | ❌ No | Progress percentage (0-100) |
-| `update.error` | `string` | ❌ No | Error message |
-| `update.result` | `any` | ❌ No | Result data |
-| `update.label` | `string` | ❌ No | Updated label |
+| Parameter         | Type              | Required | Description                 |
+| ----------------- | ----------------- | -------- | --------------------------- |
+| `update.itemId`   | `string`          | ✅ Yes   | Item identifier             |
+| `update.status`   | `BatchItemStatus` | ❌ No    | New status                  |
+| `update.progress` | `number`          | ❌ No    | Progress percentage (0-100) |
+| `update.error`    | `string`          | ❌ No    | Error message               |
+| `update.result`   | `any`             | ❌ No    | Result data                 |
+| `update.label`    | `string`          | ❌ No    | Updated label               |
 
 **BatchItemStatus Values:**
+
 - `'pending'` - Item is waiting to be processed
 - `'processing'` - Item is currently being processed
 - `'completed'` - Item completed successfully
@@ -174,13 +175,13 @@ Update the status or progress of a batch item.
 batch.updateItem({
   itemId: 'doc-001',
   status: 'processing',
-  progress: 0
+  progress: 0,
 });
 
 // Update progress
 batch.updateItem({
   itemId: 'doc-001',
-  progress: 50
+  progress: 50,
 });
 
 // Mark as completed
@@ -188,14 +189,14 @@ batch.updateItem({
   itemId: 'doc-001',
   status: 'completed',
   progress: 100,
-  result: { processed: true, pages: 5 }
+  result: { processed: true, pages: 5 },
 });
 
 // Mark as failed
 batch.updateItem({
   itemId: 'doc-002',
   status: 'failed',
-  error: 'File not found'
+  error: 'File not found',
 });
 ```
 
@@ -209,18 +210,18 @@ Mark a batch item as completed successfully.
 
 **Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `itemId` | `string` | Item identifier |
-| `result` | `any` | Optional result data |
+| Parameter | Type     | Description          |
+| --------- | -------- | -------------------- |
+| `itemId`  | `string` | Item identifier      |
+| `result`  | `any`    | Optional result data |
 
 **Example:**
 
 ```javascript
-batch.completeItem('doc-001', { 
-  processed: true, 
+batch.completeItem('doc-001', {
+  processed: true,
   pages: 5,
-  duration: 1523 
+  duration: 1523,
 });
 ```
 
@@ -234,10 +235,10 @@ Mark a batch item as failed with an error.
 
 **Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `itemId` | `string` | Item identifier |
-| `error` | `string` | Error message |
+| Parameter | Type     | Description     |
+| --------- | -------- | --------------- |
+| `itemId`  | `string` | Item identifier |
+| `error`   | `string` | Error message   |
 
 **Example:**
 
@@ -271,9 +272,9 @@ Cancel batch processing and mark all pending/processing items as cancelled.
 
 **Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `reason` | `string` | Optional cancellation reason |
+| Parameter | Type     | Description                  |
+| --------- | -------- | ---------------------------- |
+| `reason`  | `string` | Optional cancellation reason |
 
 **Example:**
 
@@ -340,16 +341,16 @@ Get comprehensive batch statistics.
 
 **Returns:** Object with the following properties:
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `total` | `number` | Total items in batch |
-| `completed` | `number` | Total completed items |
-| `success` | `number` | Successfully completed items |
-| `failed` | `number` | Failed items |
-| `pending` | `number` | Pending items |
-| `progress` | `number` | Overall progress percentage |
-| `rate` | `number` | Items per second |
-| `duration` | `number` | Duration in milliseconds |
+| Property    | Type     | Description                  |
+| ----------- | -------- | ---------------------------- |
+| `total`     | `number` | Total items in batch         |
+| `completed` | `number` | Total completed items        |
+| `success`   | `number` | Successfully completed items |
+| `failed`    | `number` | Failed items                 |
+| `pending`   | `number` | Pending items                |
+| `progress`  | `number` | Overall progress percentage  |
+| `rate`      | `number` | Items per second             |
+| `duration`  | `number` | Duration in milliseconds     |
 
 **Example:**
 
@@ -376,8 +377,8 @@ Fired when batch processing starts.
 
 ```typescript
 {
-  totalItems: number;   // Total items in batch
-  startTime: number;    // Timestamp
+  totalItems: number; // Total items in batch
+  startTime: number; // Timestamp
 }
 ```
 
@@ -434,7 +435,7 @@ Fired when a batch item completes successfully.
 
 ```typescript
 {
-  item: BatchItem;        // Complete item data
+  item: BatchItem; // Complete item data
   totalCompleted: number; // Total completed items
   remainingItems: number; // Items remaining
 }
@@ -462,9 +463,9 @@ Fired when a batch item fails.
 
 ```typescript
 {
-  item: BatchItem;      // Complete item data
-  error: string;        // Error message
-  totalFailed: number;  // Total failed items
+  item: BatchItem; // Complete item data
+  error: string; // Error message
+  totalFailed: number; // Total failed items
 }
 ```
 
@@ -487,13 +488,13 @@ Fired when all batch items are processed.
 
 ```typescript
 {
-  totalItems: number;   // Total items processed
+  totalItems: number; // Total items processed
   successCount: number; // Successfully completed items
-  failedCount: number;  // Failed items
-  duration: number;     // Total duration in milliseconds
-  averageRate: number;  // Average processing rate (items/sec)
-  startTime: number;    // Start timestamp
-  endTime: number;      // End timestamp
+  failedCount: number; // Failed items
+  duration: number; // Total duration in milliseconds
+  averageRate: number; // Average processing rate (items/sec)
+  startTime: number; // Start timestamp
+  endTime: number; // End timestamp
 }
 ```
 
@@ -564,19 +565,19 @@ Components use CSS custom properties (CSS variables) for theming.
 
 ### CSS Custom Properties
 
-| Property | Default | Description |
-|----------|---------|-------------|
-| `--ai-primary-color` | `#3b82f6` | Primary accent color |
-| `--ai-success-color` | `#10b981` | Success color |
-| `--ai-error-color` | `#ef4444` | Error color |
-| `--ai-warning-color` | `#f59e0b` | Warning color |
-| `--ai-background-color` | `#ffffff` | Background color |
-| `--ai-text-color` | `#1f2937` | Text color |
-| `--ai-border-color` | `#e5e7eb` | Border color |
-| `--ai-border-radius` | `8px` | Border radius |
-| `--ai-font-family` | System font stack | Font family |
-| `--ai-font-size` | `14px` | Base font size |
-| `--ai-spacing` | `12px` | Base spacing unit |
+| Property                | Default           | Description          |
+| ----------------------- | ----------------- | -------------------- |
+| `--ai-primary-color`    | `#3b82f6`         | Primary accent color |
+| `--ai-success-color`    | `#10b981`         | Success color        |
+| `--ai-error-color`      | `#ef4444`         | Error color          |
+| `--ai-warning-color`    | `#f59e0b`         | Warning color        |
+| `--ai-background-color` | `#ffffff`         | Background color     |
+| `--ai-text-color`       | `#1f2937`         | Text color           |
+| `--ai-border-color`     | `#e5e7eb`         | Border color         |
+| `--ai-border-radius`    | `8px`             | Border radius        |
+| `--ai-font-family`      | System font stack | Font family          |
+| `--ai-font-size`        | `14px`            | Base font size       |
+| `--ai-spacing`          | `12px`            | Base spacing unit    |
 
 ### Custom Styling Example
 
@@ -637,18 +638,18 @@ for (let i = 1; i <= 10; i++) {
 let completed = 0;
 const processNext = () => {
   if (completed >= 10) return;
-  
+
   const itemId = `file-${++completed}`;
-  
+
   // Start processing
   batch.updateItem({ itemId, status: 'processing' });
-  
+
   // Simulate progress
   let progress = 0;
   const progressInterval = setInterval(() => {
     progress += 10;
     batch.updateItem({ itemId, progress });
-    
+
     if (progress >= 100) {
       clearInterval(progressInterval);
       batch.completeItem(itemId, { success: true });
@@ -692,7 +693,7 @@ async function processDocuments(documents) {
   // Process with concurrency control
   for (const doc of documents) {
     while (processing.size >= 5) {
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
     processing.add(doc.id);
@@ -705,7 +706,7 @@ async function processDocuments(documents) {
 
   // Wait for all to complete
   while (processing.size > 0) {
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
 
@@ -721,7 +722,7 @@ async function processDocument(doc, openai, batch) {
     batch.updateItem({ itemId: doc.id, progress: 75 });
 
     const summary = response.choices[0].message.content;
-    
+
     batch.completeItem(doc.id, { summary });
   } catch (error) {
     batch.failItem(doc.id, error.message);
@@ -750,7 +751,9 @@ async function processImages(imageFiles) {
   // Track completion
   batch.addEventListener('batchcomplete', (e) => {
     console.log(`Processed ${e.detail.successCount} images in ${e.detail.duration}ms`);
-    alert(`Processing complete! Success: ${e.detail.successCount}, Failed: ${e.detail.failedCount}`);
+    alert(
+      `Processing complete! Success: ${e.detail.successCount}, Failed: ${e.detail.failedCount}`
+    );
   });
 
   // Add all images
@@ -765,10 +768,10 @@ async function processImages(imageFiles) {
 
   async function processNext() {
     if (queue.length === 0) return;
-    
+
     const [index, file] = queue.shift();
     const itemId = `img-${index}`;
-    
+
     active.add(itemId);
     batch.updateItem({ itemId, status: 'processing', progress: 0 });
 
@@ -777,7 +780,7 @@ async function processImages(imageFiles) {
       const result = await processImage(file, (progress) => {
         batch.updateItem({ itemId, progress });
       });
-      
+
       batch.completeItem(itemId, result);
     } catch (error) {
       batch.failItem(itemId, error.message);
@@ -798,34 +801,34 @@ async function processImages(imageFiles) {
 async function processImage(file, onProgress) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    
+
     reader.onload = async (e) => {
       try {
         const img = new Image();
         img.src = e.target.result;
-        
+
         await img.decode();
         onProgress(50);
-        
+
         // Apply filters/transformations
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
-        
+
         onProgress(75);
-        
+
         // Get processed result
         const result = canvas.toDataURL();
         onProgress(100);
-        
+
         resolve({ url: result, width: img.width, height: img.height });
       } catch (error) {
         reject(error);
       }
     };
-    
+
     reader.onerror = () => reject(new Error('Failed to read file'));
     reader.readAsDataURL(file);
   });
@@ -866,8 +869,8 @@ async function processBatchWithRetry(items) {
   // Retry failed items
   if (failed.size > 0) {
     console.log(`Retrying ${failed.size} failed items...`);
-    const failedItems = items.filter(item => failed.has(item.id));
-    
+    const failedItems = items.filter((item) => failed.has(item.id));
+
     for (const item of failedItems) {
       batch.updateItem({ itemId: item.id, status: 'processing' });
       await processItem(item, batch);
@@ -878,27 +881,27 @@ async function processBatchWithRetry(items) {
 async function processItems(items, batch) {
   const concurrency = 5;
   const chunks = [];
-  
+
   for (let i = 0; i < items.length; i += concurrency) {
     chunks.push(items.slice(i, i + concurrency));
   }
-  
+
   for (const chunk of chunks) {
-    await Promise.all(chunk.map(item => processItem(item, batch)));
+    await Promise.all(chunk.map((item) => processItem(item, batch)));
   }
 }
 
 async function processItem(item, batch) {
   const maxRetries = 3;
   let retries = 0;
-  
+
   while (retries < maxRetries) {
     try {
       batch.updateItem({ itemId: item.id, status: 'processing' });
-      
+
       // Simulate API call
       await fetch(`/api/process/${item.id}`);
-      
+
       batch.completeItem(item.id);
       return;
     } catch (error) {
@@ -906,7 +909,7 @@ async function processItem(item, batch) {
       if (retries >= maxRetries) {
         batch.failItem(item.id, `Failed after ${maxRetries} retries: ${error.message}`);
       } else {
-        await new Promise(resolve => setTimeout(resolve, 1000 * retries));
+        await new Promise((resolve) => setTimeout(resolve, 1000 * retries));
       }
     }
   }
@@ -947,12 +950,12 @@ async function cancellableBatch(items) {
   // Process items with cancellation check
   for (const item of items) {
     if (cancelled) break;
-    
+
     batch.updateItem({ itemId: item.id, status: 'processing' });
-    
+
     try {
       await processItemWithCancellation(item, () => cancelled);
-      
+
       if (!cancelled) {
         batch.completeItem(item.id);
       }
@@ -969,7 +972,7 @@ async function processItemWithCancellation(item, isCancelled) {
     if (isCancelled()) {
       throw new Error('Cancelled');
     }
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
 ```
@@ -997,7 +1000,7 @@ setInterval(() => {
   const stats = batch.getStats();
   const progress = batch.getOverallProgress();
   const rate = batch.getRate();
-  
+
   statsDisplay.innerHTML = `
     <h3>Batch Statistics</h3>
     <p>Progress: ${progress.toFixed(1)}%</p>
@@ -1023,9 +1026,9 @@ for (let i = 0; i < 100; i++) {
 Full TypeScript definitions are included:
 
 ```typescript
-import { 
-  BatchProgress, 
-  BatchProgressConfig, 
+import {
+  BatchProgress,
+  BatchProgressConfig,
   BatchProgressUpdate,
   BatchItem,
   BatchItemStatus,
@@ -1085,6 +1088,7 @@ BatchProgress is built with accessibility in mind:
 - Opera 76+
 
 Requires support for:
+
 - Web Components (Custom Elements v1)
 - Shadow DOM
 - ES2020 features
@@ -1156,4 +1160,4 @@ Requires support for:
 
 - [Getting Started Guide](../getting-started.md)
 - [Examples](../../examples/vanilla/batch-progress.html)
-- [GitHub Repository](https://github.com/yourusername/ai-progress-controls)
+- [GitHub Repository](https://github.com/Maneesh-Relanto/ai-progress-controls)

@@ -54,11 +54,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/ai-progress-controls.git",
+    "url": "https://github.com/Maneesh-Relanto/ai-progress-controls.git",
     "directory": "adapters/react"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/ai-progress-controls/issues"
+    "url": "https://github.com/Maneesh-Relanto/ai-progress-controls/issues"
   },
-  "homepage": "https://github.com/yourusername/ai-progress-controls/tree/main/adapters/react#readme"
+  "homepage": "https://github.com/Maneesh-Relanto/ai-progress-controls/tree/main/adapters/react#readme"
 }

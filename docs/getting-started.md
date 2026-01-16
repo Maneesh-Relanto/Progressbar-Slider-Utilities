@@ -64,7 +64,7 @@ Package not yet published to npm. For now, clone and build locally.
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/ai-progress-controls.git
+git clone https://github.com/Maneesh-Relanto/ai-progress-controls.git
 cd ai-progress-controls
 
 # Install dependencies
@@ -915,6 +915,6 @@ batch.completeItem('item-1');
 ## Need Help?
 
 - 📚 [Full Documentation](./README.md)
-- 💬 [GitHub Discussions](https://github.com/yourusername/ai-progress-controls/discussions)
-- 🐛 [Report Issues](https://github.com/yourusername/ai-progress-controls/issues)
+- 💬 [GitHub Discussions](https://github.com/Maneesh-Relanto/ai-progress-controls/discussions)
+- 🐛 [Report Issues](https://github.com/Maneesh-Relanto/ai-progress-controls/issues)
 - 📧 [Email Support](mailto:support@example.com)

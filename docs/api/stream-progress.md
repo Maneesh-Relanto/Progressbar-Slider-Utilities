@@ -37,9 +37,9 @@ Creates a new StreamProgress component instance.
 
 **Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `config` | `StreamProgressConfig` | Optional configuration object |
+| Parameter | Type                   | Description                   |
+| --------- | ---------------------- | ----------------------------- |
+| `config`  | `StreamProgressConfig` | Optional configuration object |
 
 **Returns:** `StreamProgress` instance
 
@@ -62,21 +62,21 @@ const progress = new StreamProgress({
 
 Configuration object passed to the constructor.
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `maxTokens` | `number` | `4000` | Maximum tokens allowed |
-| `costPerToken` | `number` | `0.00002` | Cost per token for estimation |
-| `currency` | `string` | `'$'` | Currency symbol |
-| `showRate` | `boolean` | `true` | Show tokens per second |
-| `showCost` | `boolean` | `true` | Show cost estimation |
-| `showProgressBar` | `boolean` | `true` | Show progress bar |
-| `showCancelButton` | `boolean` | `true` | Show cancel button |
-| `smoothProgress` | `boolean` | `true` | Enable smooth animations |
-| `updateThrottle` | `number` | `100` | Update throttle (ms) |
-| `cancelLabel` | `string` | `'Cancel'` | Cancel button label |
-| `debug` | `boolean` | `false` | Enable debug logging |
-| `className` | `string` | `''` | Custom CSS class |
-| `ariaLabel` | `string` | `'AI Stream Progress'` | ARIA label |
+| Property           | Type      | Default                | Description                   |
+| ------------------ | --------- | ---------------------- | ----------------------------- |
+| `maxTokens`        | `number`  | `4000`                 | Maximum tokens allowed        |
+| `costPerToken`     | `number`  | `0.00002`              | Cost per token for estimation |
+| `currency`         | `string`  | `'$'`                  | Currency symbol               |
+| `showRate`         | `boolean` | `true`                 | Show tokens per second        |
+| `showCost`         | `boolean` | `true`                 | Show cost estimation          |
+| `showProgressBar`  | `boolean` | `true`                 | Show progress bar             |
+| `showCancelButton` | `boolean` | `true`                 | Show cancel button            |
+| `smoothProgress`   | `boolean` | `true`                 | Enable smooth animations      |
+| `updateThrottle`   | `number`  | `100`                  | Update throttle (ms)          |
+| `cancelLabel`      | `string`  | `'Cancel'`             | Cancel button label           |
+| `debug`            | `boolean` | `false`                | Enable debug logging          |
+| `className`        | `string`  | `''`                   | Custom CSS class              |
+| `ariaLabel`        | `string`  | `'AI Stream Progress'` | ARIA label                    |
 
 **Example:**
 
@@ -104,8 +104,8 @@ Start streaming and initialize the progress display.
 
 **Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
+| Parameter | Type     | Description                        |
+| --------- | -------- | ---------------------------------- |
 | `message` | `string` | Optional status message to display |
 
 **Example:**
@@ -124,11 +124,11 @@ Update the progress with new token count and rate.
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `update.tokensGenerated` | `number` | ✅ Yes | Current token count |
-| `update.tokensPerSecond` | `number` | ❌ No | Generation rate (auto-calculated if omitted) |
-| `update.message` | `string` | ❌ No | Status message to display |
+| Parameter                | Type     | Required | Description                                  |
+| ------------------------ | -------- | -------- | -------------------------------------------- |
+| `update.tokensGenerated` | `number` | ✅ Yes   | Current token count                          |
+| `update.tokensPerSecond` | `number` | ❌ No    | Generation rate (auto-calculated if omitted) |
+| `update.message`         | `string` | ❌ No    | Status message to display                    |
 
 **Example:**
 
@@ -136,7 +136,7 @@ Update the progress with new token count and rate.
 progress.update({
   tokensGenerated: 150,
   tokensPerSecond: 25,
-  message: 'Processing...'
+  message: 'Processing...',
 });
 ```
 
@@ -164,9 +164,9 @@ Cancel the stream.
 
 **Parameters:**
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `reason` | `'user' \| 'error' \| 'timeout'` | `'user'` | Cancellation reason |
+| Parameter | Type                             | Default  | Description         |
+| --------- | -------------------------------- | -------- | ------------------- |
+| `reason`  | `'user' \| 'error' \| 'timeout'` | `'user'` | Cancellation reason |
 
 **Example:**
 
@@ -292,10 +292,10 @@ Fired when streaming completes successfully.
 
 ```typescript
 {
-  tokensGenerated: number;    // Total tokens generated
-  duration: number;           // Duration in milliseconds
-  totalCost: number;          // Total cost
-  averageRate: number;        // Average tokens per second
+  tokensGenerated: number; // Total tokens generated
+  duration: number; // Duration in milliseconds
+  totalCost: number; // Total cost
+  averageRate: number; // Average tokens per second
 }
 ```
 
@@ -319,9 +319,9 @@ Fired when streaming is cancelled.
 
 ```typescript
 {
-  tokensGenerated: number;    // Tokens generated before cancellation
-  duration: number;           // Duration in milliseconds
-  reason: 'user' | 'error' | 'timeout';  // Cancellation reason
+  tokensGenerated: number; // Tokens generated before cancellation
+  duration: number; // Duration in milliseconds
+  reason: 'user' | 'error' | 'timeout'; // Cancellation reason
 }
 ```
 
@@ -362,17 +362,17 @@ Components use CSS custom properties (CSS variables) for theming.
 
 ### CSS Custom Properties
 
-| Property | Default | Description |
-|----------|---------|-------------|
-| `--ai-primary-color` | `#3b82f6` | Primary accent color |
-| `--ai-secondary-color` | `#10b981` | Secondary accent color |
-| `--ai-background-color` | `#ffffff` | Background color |
-| `--ai-text-color` | `#1f2937` | Text color |
-| `--ai-border-color` | `#e5e7eb` | Border color |
-| `--ai-border-radius` | `8px` | Border radius |
-| `--ai-font-family` | System font stack | Font family |
-| `--ai-font-size` | `14px` | Base font size |
-| `--ai-spacing` | `12px` | Base spacing unit |
+| Property                | Default           | Description            |
+| ----------------------- | ----------------- | ---------------------- |
+| `--ai-primary-color`    | `#3b82f6`         | Primary accent color   |
+| `--ai-secondary-color`  | `#10b981`         | Secondary accent color |
+| `--ai-background-color` | `#ffffff`         | Background color       |
+| `--ai-text-color`       | `#1f2937`         | Text color             |
+| `--ai-border-color`     | `#e5e7eb`         | Border color           |
+| `--ai-border-radius`    | `8px`             | Border radius          |
+| `--ai-font-family`      | System font stack | Font family            |
+| `--ai-font-size`        | `14px`            | Base font size         |
+| `--ai-spacing`          | `12px`            | Base spacing unit      |
 
 ### Custom Styling Example
 
@@ -423,7 +423,7 @@ let tokens = 0;
 const interval = setInterval(() => {
   tokens += 25;
   progress.update({ tokensGenerated: tokens, tokensPerSecond: 25 });
-  
+
   if (tokens >= 500) {
     clearInterval(interval);
     progress.complete();
@@ -462,7 +462,7 @@ async function streamWithProgress(prompt) {
       tokens++;
       progress.update({ tokensGenerated: tokens });
     }
-    
+
     if (chunk.choices[0]?.finish_reason) {
       progress.complete();
     }
@@ -511,12 +511,12 @@ async function streamClaude(prompt) {
 Full TypeScript definitions are included:
 
 ```typescript
-import { 
-  StreamProgress, 
-  StreamProgressConfig, 
+import {
+  StreamProgress,
+  StreamProgressConfig,
   StreamProgressUpdate,
   StreamCompleteEvent,
-  StreamCancelEvent 
+  StreamCancelEvent,
 } from 'ai-progress-controls';
 
 const config: StreamProgressConfig = {
@@ -555,6 +555,7 @@ StreamProgress is built with accessibility in mind:
 - Opera 76+
 
 Requires support for:
+
 - Web Components (Custom Elements v1)
 - Shadow DOM
 - ES2020 features
@@ -605,4 +606,4 @@ Requires support for:
 
 - [Getting Started Guide](../getting-started.md)
 - [Examples](../../examples/vanilla/stream-progress.html)
-- [GitHub Repository](https://github.com/yourusername/ai-progress-controls)
+- [GitHub Repository](https://github.com/Maneesh-Relanto/ai-progress-controls)

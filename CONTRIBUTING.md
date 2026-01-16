@@ -7,7 +7,7 @@ Thank you for your interest in contributing! We welcome contributions from the c
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/yourusername/ai-progress-controls.git
+   git clone https://github.com/Maneesh-Relanto/ai-progress-controls.git
    cd ai-progress-controls
    ```
 3. **Install dependencies**:
@@ -87,7 +87,7 @@ docs/                  # Documentation
 
 ### 1. Reporting Bugs
 
-- Use the [GitHub Issues](https://github.com/yourusername/ai-progress-controls/issues) page
+- Use the [GitHub Issues](https://github.com/Maneesh-Relanto/ai-progress-controls/issues) page
 - Check if the issue already exists
 - Provide a clear title and description
 - Include steps to reproduce

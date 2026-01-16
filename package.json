@@ -21,12 +21,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/ai-progress-controls.git"
+    "url": "https://github.com/Maneesh-Relanto/ai-progress-controls.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/ai-progress-controls/issues"
+    "url": "https://github.com/Maneesh-Relanto/ai-progress-controls/issues"
   },
-  "homepage": "https://github.com/yourusername/ai-progress-controls#readme",
+  "homepage": "https://github.com/Maneesh-Relanto/ai-progress-controls#readme",
   "main": "dist/ai-progress-controls.umd.js",
   "module": "dist/ai-progress-controls.es.js",
   "types": "dist/index.d.ts",
