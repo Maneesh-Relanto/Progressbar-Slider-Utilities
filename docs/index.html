@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Progress Controls - Production-ready UI components for AI/ML workflows. React, Next.js, Web Components.">
+    <title>AI Progress Controls - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --bg: #ffffff;
+            --bg-alt: #f9fafb;
+            --text: #111827;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #60a5fa;
+                --primary-dark: #3b82f6;
+                --secondary: #a78bfa;
+                --success: #34d399;
+                --bg: #111827;
+                --bg-alt: #1f2937;
+                --text: #f9fafb;
+                --text-muted: #9ca3af;
+                --border: #374151;
+                --shadow: rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px var(--shadow);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .card-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .cta {
+            background: var(--bg-alt);
+            border: 2px solid var(--primary);
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .cta h2 {
+            margin-bottom: 1rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .footer {
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 4rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        code {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 AI Progress Controls</h1>
+        <p>Production-ready UI components for AI/ML workflows</p>
+        <div class="badges">
+            <span class="badge">React</span>
+            <span class="badge">Next.js</span>
+            <span class="badge">Web Components</span>
+            <span class="badge">TypeScript</span>
+            <span class="badge">292 Tests</span>
+            <span class="badge">91% Coverage</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Components</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">292</div>
+                <div class="stat-label">Tests Passing</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">91%</div>
+                <div class="stat-label">Coverage</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">~28KB</div>
+                <div class="stat-label">Gzipped</div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <h2>Get Started in 30 Seconds</h2>
+            <p>Install, import, and start building amazing AI interfaces</p>
+            <div class="cta-buttons">
+                <a href="./QUICK_START.html" class="btn btn-primary">📖 Quick Start Guide</a>
+                <a href="https://github.com/Maneesh-Relanto/Progressbar-Slider-Utilities" class="btn btn-secondary">⭐ View on GitHub</a>
+                <a href="https://www.npmjs.com/package/ai-progress-controls" class="btn btn-secondary">📦 npm Package</a>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>📚 Documentation</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>🚀 Quick Start</h3>
+                    <p>Get up and running in 2 minutes with our quick start guide.</p>
+                    <a href="./QUICK_START.html" class="card-link">Read Guide →</a>
+                </div>
+
+                <div class="card">
+                    <h3>📦 Installation</h3>
+                    <p>Complete installation guide for React, Next.js, and Web Components.</p>
+                    <a href="./installation-guide.html" class="card-link">Read Guide →</a>
+                </div>
+
+                <div class="card">
+                    <h3>💻 npm Usage</h3>
+                    <p>Learn how to use the published npm packages in your projects.</p>
+                    <a href="./npm-usage-examples.html" class="card-link">Read Guide →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎯 Framework Guides</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>⚛️ React</h3>
+                    <p>Complete examples with hooks, state management, and best practices.</p>
+                    <a href="./react-examples.html" class="card-link">View Examples →</a>
+                </div>
+
+                <div class="card">
+                    <h3>▲ Next.js</h3>
+                    <p>Server-side rendering, App Router, and Client Components examples.</p>
+                    <a href="./nextjs-examples.html" class="card-link">View Examples →</a>
+                </div>
+
+                <div class="card">
+                    <h3>🖖 Vue 3</h3>
+                    <p>Integration guide with Composition API, Pinia, and Nuxt 3.</p>
+                    <a href="./vue-guide.html" class="card-link">View Guide →</a>
+                </div>
+
+                <div class="card">
+                    <h3>🅰️ Angular</h3>
+                    <p>Setup with CUSTOM_ELEMENTS_SCHEMA, services, and RxJS.</p>
+                    <a href="./angular-guide.html" class="card-link">View Guide →</a>
+                </div>
+
+                <div class="card">
+                    <h3>🔥 Svelte</h3>
+                    <p>Stores, actions, and SvelteKit SSR integration patterns.</p>
+                    <a href="./svelte-guide.html" class="card-link">View Guide →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>🎨 Customization</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>🎨 Theming Guide</h3>
+                    <p>Customize colors, spacing, and styles using CSS variables.</p>
+                    <a href="./theming.html" class="card-link">Learn More →</a>
+                </div>
+
+                <div class="card">
+                    <h3>🎭 Visual Variants</h3>
+                    <p>4 visual variants, 4 animations, 3 sizes - 48 combinations!</p>
+                    <a href="./visual-variants.html" class="card-link">Explore Variants →</a>
+                </div>
+
+                <div class="card">
+                    <h3>📖 API Reference</h3>
+                    <p>Complete API documentation for all 7 components.</p>
+                    <a href="./api/" class="card-link">View API Docs →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>✨ Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Token Streaming</h3>
+                    <p>Real-time visualization with rate tracking and cost estimation</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">📥</div>
+                    <h3>Model Loading</h3>
+                    <p>Multi-stage loading with progress tracking and ETA</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">🎛️</div>
+                    <h3>LLM Parameters</h3>
+                    <p>Unified controls for temperature, top-p, and more</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">⏳</div>
+                    <h3>Queue Tracking</h3>
+                    <p>Position monitoring with dynamic ETA calculation</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Retry Logic</h3>
+                    <p>4 backoff strategies with automatic retry handling</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Batch Processing</h3>
+                    <p>Concurrency control and per-item progress tracking</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">♿</div>
+                    <h3>Accessible</h3>
+                    <p>WCAG 2.1 AA compliant with keyboard navigation</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Themeable</h3>
+                    <p>Dark mode ready with CSS custom properties</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="footer">
+        <p>Built with ❤️ for the AI developer community</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://github.com/Maneesh-Relanto/Progressbar-Slider-Utilities" style="color: var(--primary); text-decoration: none;">GitHub</a> •
+            <a href="https://www.npmjs.com/package/ai-progress-controls" style="color: var(--primary); text-decoration: none;">npm</a> •
+            <a href="https://github.com/Maneesh-Relanto/Progressbar-Slider-Utilities/blob/main/LICENSE" style="color: var(--primary); text-decoration: none;">MIT License</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.75rem;">Copyright © 2026 Maneesh Thakur</p>
+    </div>
+</body>
+</html>
