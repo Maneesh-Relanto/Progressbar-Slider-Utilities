@@ -772,13 +772,9 @@ We maintain enterprise-grade quality standards with multiple layers of automated
 | ♿ **Accessibility** | Axe + Lighthouse |   ✅   |      WCAG 2.1 AA      |
 |   🔐 **Security**    |    npm audit     |   ✅   |   0 vulnerabilities   |
 
-**[📖 View Full Quality Guide](./docs/quality.md)**
-
 </div>
 
----
-
-## 📖 Documentation
+---## 📖 Documentation
 
 <div align="center">
 
