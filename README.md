@@ -136,7 +136,7 @@ document.body.appendChild(progress);
 [📦 Installation Guide](./docs/installation-guide.md) • [💻 npm Usage Examples](./docs/npm-usage-examples.md) • [🚀 Getting Started](./docs/getting-started.md)
 
 **Framework Guides:**  
-[⚛️ React Adapter](./adapters/react/README.md) • [▲ Next.js Adapter](./adapters/next/README.md) • [🌐 Web Components](./docs/getting-started.md)
+[⚛️ React Adapter](./adapters/react/README.md) • [▲ Next.js Adapter](./adapters/next/README.md) • [🖖 Vue 3 Guide](./docs/vue-guide.md) • [🌐 Web Components](./docs/getting-started.md)
 
 **Code Examples:**  
 [⚛️ React Examples](./docs/react-examples.md) • [▲ Next.js Examples](./docs/nextjs-examples.md) • [🎮 Vanilla JS Examples](./examples/index.html)
