@@ -6,6 +6,12 @@ Next.js adapters for [AI Progress Controls](https://github.com/Maneesh-Relanto/a
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-14%2B%20%7C%2015%2B%20%7C%2016%2B-000000?logo=next.js)](https://nextjs.org/)
 
+## 📖 Complete Examples
+
+**See [▲ Next.js Examples](../../docs/nextjs-examples.md) for full, copy-paste ready code examples!**
+
+---
+
 ## 🎯 Why This Package?
 
 The core `ai-progress-controls` library is built with Web Components. This package provides **Next.js-optimized wrappers** with full SSR support:

@@ -2,6 +2,14 @@
 
 This is a comprehensive test application for the **AI Progress Controls** library, designed to validate all 7 components in a real React environment.
 
+## 📖 Looking for Code Examples?
+
+**See [⚛️ React Examples](../../docs/react-examples.md) for complete, copy-paste ready code examples!**
+
+This test app is for internal testing. For usage in your project, refer to the examples documentation.
+
+---
+
 ## 🎯 Purpose
 
 Testing all 7 components in production-like scenarios:

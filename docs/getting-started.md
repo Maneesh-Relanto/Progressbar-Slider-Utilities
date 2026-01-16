@@ -2,7 +2,7 @@
 
 # 🚀 Getting Started with AI Progress Controls
 
-### **Add AI-aware UI components to your app in 3 lines of code**
+### **React, Next.js, or Web Components - Your choice!**
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6?style=flat-square)](https://www.typescriptlang.org/)
 [![Framework Agnostic](https://img.shields.io/badge/Framework-Agnostic-22c55e?style=flat-square)](https://webcomponents.org)
@@ -35,7 +35,7 @@ AI Progress Controls provides **7 production-ready components** for AI/ML workfl
 
 ### ⚡ **Key Features**
 
-✓ **3 lines of code** to integrate  
+✓ **Single import** - Drop in and use immediately  
 ✓ **ANY framework** - React, Vue, Angular, Svelte, etc.  
 ✓ **Zero dependencies** - lightweight and fast  
 ✓ **TypeScript first** - complete type definitions  
@@ -52,15 +52,31 @@ AI Progress Controls provides **7 production-ready components** for AI/ML workfl
 
 ## 📦 Installation
 
-<div align="center">
+### ⚛️ **React (Recommended)**
 
-### ⚠️ **Development Preview**
+```bash
+npm install ai-progress-controls @ai-progress-controls/react
+```
 
-Package not yet published to npm. For now, clone and build locally.
+See [⚛️ React Adapter Documentation](../adapters/react/README.md) for complete guide.
 
-</div>
+---
 
-### **Option 1: Local Development (Current)**
+### ▲ **Next.js (Recommended)**
+
+```bash
+npm install ai-progress-controls @ai-progress-controls/next
+```
+
+See [▲ Next.js Adapter Documentation](../adapters/next/README.md) for complete guide.
+
+---
+
+### 🌐 **Web Components (Universal)**
+
+Works with Vue, Angular, Svelte, or plain JavaScript.
+
+#### **Option 1: Local Development (Current)**
 
 ```bash
 # Clone repository
@@ -97,61 +113,47 @@ npm install ai-progress-controls
 
 ---
 
-## ⚡ Quick Start - The Famous 3 Lines!
+## ⚡ Quick Start
 
 <div align="center">
 
-### **Yes, it really is just 3 lines of code!**
+### **Choose your framework:**
 
 </div>
 
-<table>
-<tr>
-<td align="center" width="33%">
+### 1️⃣ **React**
 
-### **Line 1**
+```tsx
+import { StreamProgress } from '@ai-progress-controls/react';
+import { useState } from 'react';
 
-#### Import the component
+function App() {
+  const [tokens, setTokens] = useState(0);
 
-```javascript
-import { StreamProgress } from 'ai-progress-controls';
+  return <StreamProgress maxTokens={2000} tokensGenerated={tokens} showCost={true} />;
+}
 ```
 
-</td>
-<td align="center" width="33%">
-
-### **Line 2**
-
-#### Create an instance
-
-```javascript
-const progress = new StreamProgress();
-```
-
-</td>
-<td align="center" width="33%">
-
-### **Line 3**
-
-#### Add to DOM
-
-```javascript
-document.body.appendChild(progress);
-```
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-
-**🎉 That's it! The component is now live and ready to use.**
-
-</div>
+[📖 Full React Guide](../adapters/react/README.md)
 
 ---
 
-### 1️⃣ **Basic Usage (Vanilla JavaScript)**
+### 2️⃣ **Next.js**
+
+```tsx
+// app/page.tsx (App Router)
+import { StreamProgress } from '@ai-progress-controls/next';
+
+export default function Page() {
+  return <StreamProgress maxTokens={2000} model="gpt-4" showRate={true} />;
+}
+```
+
+[📖 Full Next.js Guide](../adapters/next/README.md)
+
+---
+
+### 3️⃣ **Web Components (Vanilla JavaScript)**
 
 Here's the complete 3-line setup with optional configuration:
 
@@ -167,9 +169,9 @@ Here's the complete 3-line setup with optional configuration:
     <script type="module">
       import { StreamProgress } from 'ai-progress-controls';
 
-      // THE 3 LINES:
-      // Line 1: Import (done above)
-      // Line 2: Create
+      // THE 3 STEPS:
+      // Step 1: Import (done above)
+      // Step 2: Create
       const progress = new StreamProgress({
         maxTokens: 2000,
         costPerToken: 0.00002,
@@ -177,7 +179,7 @@ Here's the complete 3-line setup with optional configuration:
         showCost: true,
       });
 
-      // Line 3: Append to DOM
+      // Step 3: Append to DOM
       document.getElementById('app').appendChild(progress);
 
       // DONE! Component is ready.
@@ -210,7 +212,7 @@ Here's the complete 3-line setup with optional configuration:
 
 ### 2️⃣ **With OpenAI Streaming (Real-World Example)**
 
-Here's a complete example integrating with OpenAI's API - **still just 3 lines to set up the component!**
+Here's a complete example integrating with OpenAI's API - **just import, create, and append!**
 
 ```javascript
 import { StreamProgress } from 'ai-progress-controls';
@@ -222,9 +224,9 @@ const openai = new OpenAI({
 });
 
 async function streamChatCompletion(prompt) {
-  // THE 3 LINES TO SET UP:
-  // Line 1: Import (done above)
-  // Line 2: Create instance
+  // SETUP IN 3 STEPS:
+  // Step 1: Import (done above)
+  // Step 2: Create instance
   const progress = new StreamProgress({
     maxTokens: 2000,
     costPerToken: 0.00003, // GPT-4 pricing
@@ -232,7 +234,7 @@ async function streamChatCompletion(prompt) {
     showCost: true,
   });
 
-  // Line 3: Append to DOM
+  // Step 3: Append to DOM
   document.body.appendChild(progress);
 
   // DONE! Now use it with OpenAI:
@@ -288,7 +290,7 @@ streamChatCompletion('Explain quantum computing in simple terms');
 
 ---
 
-## 🎨 Framework Integration - 3 Lines in Every Framework!
+## 🎨 Framework Integration - Same Pattern Everywhere!
 
 <div align="center">
 
@@ -447,7 +449,7 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   private progress: StreamProgress | null = null;
 
   ngAfterViewInit() {
-    // 3 lines to set up!
+    // Import, create, append:
     this.progress = new StreamProgress({
       maxTokens: 2000,
       costPerToken: 0.00002,
@@ -503,7 +505,7 @@ export default function ChatPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 3 lines to set up!
+    // Import, create, append:
     const progress = new StreamProgress({
       maxTokens: 2000,
       costPerToken: 0.00002,
@@ -557,7 +559,7 @@ export default function ChatPage() {
   let progress: StreamProgress;
 
   onMount(() => {
-    // 3 lines to set up!
+    // Import, create, append:
     progress = new StreamProgress({
       maxTokens: 2000,
       costPerToken: 0.00002,
@@ -608,7 +610,7 @@ function ChatComponent() {
   let progress: StreamProgress;
 
   onMount(() => {
-    // 3 lines to set up!
+    // Import, create, append:
     progress = new StreamProgress({
       maxTokens: 2000,
       costPerToken: 0.00002,
@@ -667,7 +669,7 @@ export default ChatComponent;
 <script>
   import { StreamProgress } from 'ai-progress-controls';
 
-  // 3 lines to set up!
+  // Import, create, append:
   const progress = new StreamProgress({
     maxTokens: 2000,
     costPerToken: 0.00002,

@@ -4,7 +4,7 @@
 
 ### **Production-ready UI components for AI/ML workflows**
 
-### **Framework-agnostic • Zero dependencies • Just 3 lines of code**
+### **React • Next.js • Web Components • Drop in with one import**
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![MIT License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
@@ -35,8 +35,9 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 ### ✨ **Developer Experience**
 
-🎯 **3 Lines of Code** - Import, create, append  
-🔌 **Works Everywhere** - React, Vue, Angular, Svelte, Next.js, plain HTML  
+⚛️ **React & Next.js Ready** - Native adapters with hooks & SSR  
+🎯 **One Import Away** - Single import, drop in JSX, done  
+🔌 **Web Components** - Works everywhere (Vue, Angular, Svelte, plain HTML)  
 📦 **Zero Dependencies** - Lightweight and fast (~28KB gzipped)  
 🎨 **Fully Themeable** - CSS variables, dark mode ready  
 📘 **TypeScript First** - Complete type definitions included
@@ -78,35 +79,47 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 ---
 
-## ⚡ Quick Start - Literally 3 Lines!
+## ⚡ Quick Start - Choose Your Framework
 
 <table>
 <tr>
-<td>
+<td width="50%">
 
-### **Line 1:** Import
+### ⚛️ **React / Next.js** (Recommended)
+
+```bash
+npm install ai-progress-controls @ai-progress-controls/react
+```
+
+```tsx
+import { StreamProgress } from '@ai-progress-controls/react';
+
+function App() {
+  return <StreamProgress maxTokens={2000} />;
+}
+```
+
+**That's it!** Props sync automatically, no refs needed.
+
+[📖 React Guide](./adapters/react/README.md) • [📖 Next.js Guide](./adapters/next/README.md)
+
+</td>
+<td width="50%">
+
+### 🌐 **Web Components** (Universal)
+
+Works in Vue, Angular, Svelte, or plain JavaScript:
 
 ```javascript
 import { StreamProgress } from 'ai-progress-controls';
-```
 
-</td>
-<td>
-
-### **Line 2:** Create
-
-```javascript
 const progress = new StreamProgress({ maxTokens: 2000 });
-```
-
-</td>
-<td>
-
-### **Line 3:** Append
-
-```javascript
 document.body.appendChild(progress);
 ```
+
+**That's it!** Import, create, append - works in any framework.
+
+[📖 Getting Started](./docs/getting-started.md) • [🎮 Examples](./examples/index.html)
 
 </td>
 </tr>
@@ -114,11 +127,83 @@ document.body.appendChild(progress);
 
 <div align="center">
 
-**🎉 That's it! Works in React, Vue, Angular, Svelte, and plain JavaScript.**
+### 📚 **Documentation**
 
-[📖 Full Getting Started Guide](./docs/getting-started.md) • [🎮 Live Examples](./examples/index.html) • [📚 API Docs](./docs/api/)
+[⚛️ React Adapter](./adapters/react/README.md) • [▲ Next.js Adapter](./adapters/next/README.md) • [🌐 Web Components](./docs/getting-started.md) • [📚 API Docs](./docs/api/)
+
+**Code Examples:**  
+[⚛️ React Examples](./docs/react-examples.md) • [▲ Next.js Examples](./docs/nextjs-examples.md) • [🎮 Vanilla JS Examples](./examples/index.html)
 
 </div>
+
+---
+
+## 📦 Framework Integration
+
+<div align="center">
+
+### Choose the best package for your stack
+
+</div>
+
+<table>
+<tr>
+<td width="33%">
+
+### ⚛️ **React**
+
+```bash
+npm install @ai-progress-controls/react
+```
+
+**Features:**
+
+- ✅ Hooks-based API
+- ✅ Props sync automatically
+- ✅ TypeScript support
+- ✅ React 18+ compatible
+
+[📖 React Documentation](./adapters/react/README.md)
+
+</td>
+<td width="33%">
+
+### ▲ **Next.js**
+
+```bash
+npm install @ai-progress-controls/next
+```
+
+**Features:**
+
+- ✅ Full SSR support
+- ✅ App Router ready
+- ✅ No hydration errors
+- ✅ Auto client components
+
+[📖 Next.js Documentation](./adapters/next/README.md)
+
+</td>
+<td width="33%">
+
+### 🌐 **Web Components**
+
+```bash
+npm install ai-progress-controls
+```
+
+**Features:**
+
+- ✅ Framework-agnostic
+- ✅ Vue, Angular, Svelte
+- ✅ Plain JavaScript
+- ✅ Zero dependencies
+
+[📖 Web Components Guide](./docs/getting-started.md)
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -456,7 +541,7 @@ Specialized UI components built FOR AI workflows:
 
 <div align="center">
 
-### **Literally 3 lines of code in ANY framework**
+### **One component. Any framework. Zero configuration.**
 
 </div>
 

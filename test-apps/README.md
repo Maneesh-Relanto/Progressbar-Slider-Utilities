@@ -6,6 +6,14 @@ This directory contains integration test applications for the AI Progress Contro
 - **Reference implementations** - Show developers how to integrate the library
 - **Development testing** - Test new features and fixes in actual use cases
 
+## 📖 **Looking for Examples?**
+
+For copy-paste code examples, see:
+
+- [⚛️ React Examples](../docs/react-examples.md) - Complete React code examples
+- [▲ Next.js Examples](../docs/nextjs-examples.md) - Next.js with SSR examples
+- [🎮 Vanilla JS Examples](../examples/index.html) - Web Components examples
+
 ## Available Test Apps
 
 ### React (`/react`)

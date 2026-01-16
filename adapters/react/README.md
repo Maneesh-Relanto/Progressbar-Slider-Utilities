@@ -6,6 +6,12 @@ React adapters for [AI Progress Controls](https://github.com/Maneesh-Relanto/ai-
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B%20%7C%2019%2B-61dafb?logo=react)](https://reactjs.org/)
 
+## 📖 Complete Examples
+
+**See [⚛️ React Examples](../../docs/react-examples.md) for full, copy-paste ready code examples!**
+
+---
+
 ## 🎯 Why This Package?
 
 The core `ai-progress-controls` library is built with Web Components for maximum compatibility. This package provides **idiomatic React wrappers** that make the components feel native to React:
