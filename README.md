@@ -88,11 +88,11 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 ### ⚛️ **React / Next.js** (Recommended)
 
 ```bash
-npm install ai-progress-controls @ai-progress-controls/react
+npm install ai-progress-controls ai-progress-controls-react
 ```
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 
 function App() {
   return <StreamProgress maxTokens={2000} />;
@@ -153,7 +153,7 @@ document.body.appendChild(progress);
 ### ⚛️ **React**
 
 ```bash
-npm install @ai-progress-controls/react
+npm install ai-progress-controls-react
 ```
 
 **Features:**
@@ -171,7 +171,7 @@ npm install @ai-progress-controls/react
 ### ▲ **Next.js**
 
 ```bash
-npm install @ai-progress-controls/next
+npm install ai-progress-controls-next
 ```
 
 **Features:**

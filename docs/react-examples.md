@@ -5,7 +5,7 @@ Complete examples for using AI Progress Controls in React applications.
 ## 📦 Installation
 
 ```bash
-npm install ai-progress-controls @ai-progress-controls/react
+npm install ai-progress-controls ai-progress-controls-react
 ```
 
 ---
@@ -15,7 +15,7 @@ npm install ai-progress-controls @ai-progress-controls/react
 Perfect for ChatGPT-style streaming responses.
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 import { useState } from 'react';
 
 function StreamingChat() {
@@ -63,7 +63,7 @@ function StreamingChat() {
 Display multi-stage model loading progress.
 
 ```tsx
-import { ModelLoader } from '@ai-progress-controls/react';
+import { ModelLoader } from 'ai-progress-controls-react';
 import { useState, useEffect } from 'react';
 
 function ModelLoadingExample() {
@@ -116,7 +116,7 @@ function ModelLoadingExample() {
 Control individual LLM parameters like temperature.
 
 ```tsx
-import { ParameterSlider } from '@ai-progress-controls/react';
+import { ParameterSlider } from 'ai-progress-controls-react';
 import { useState } from 'react';
 
 function TemperatureControl() {
@@ -148,7 +148,7 @@ function TemperatureControl() {
 Unified panel for all LLM parameters with presets.
 
 ```tsx
-import { ParameterPanel } from '@ai-progress-controls/react';
+import { ParameterPanel } from 'ai-progress-controls-react';
 import { useState } from 'react';
 
 function LLMConfiguration() {
@@ -180,7 +180,7 @@ function LLMConfiguration() {
 Track multiple concurrent operations.
 
 ```tsx
-import { BatchProgress } from '@ai-progress-controls/react';
+import { BatchProgress } from 'ai-progress-controls-react';
 import { useState } from 'react';
 
 function BatchProcessing() {
@@ -223,7 +223,7 @@ function BatchProcessing() {
 Show position in processing queue with ETA.
 
 ```tsx
-import { QueueProgress } from '@ai-progress-controls/react';
+import { QueueProgress } from 'ai-progress-controls-react';
 import { useState, useEffect } from 'react';
 
 function QueueExample() {
@@ -256,7 +256,7 @@ function QueueExample() {
 Visualize retry logic with exponential backoff.
 
 ```tsx
-import { RetryProgress } from '@ai-progress-controls/react';
+import { RetryProgress } from 'ai-progress-controls-react';
 import { useState } from 'react';
 
 function RetryExample() {
@@ -306,7 +306,7 @@ function RetryExample() {
 All components support visual variants:
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 
 function VariantsExample() {
   return (
@@ -334,7 +334,7 @@ function VariantsExample() {
 Choose from 3 sizes:
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 
 function SizesExample() {
   return (
@@ -354,7 +354,7 @@ function SizesExample() {
 Apply brand themes:
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 
 function ThemingExample() {
   return (

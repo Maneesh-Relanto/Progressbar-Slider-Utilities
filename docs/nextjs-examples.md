@@ -5,7 +5,7 @@ Complete examples for using AI Progress Controls in Next.js applications with fu
 ## 📦 Installation
 
 ```bash
-npm install ai-progress-controls @ai-progress-controls/next
+npm install ai-progress-controls ai-progress-controls-next
 ```
 
 ---
@@ -24,7 +24,7 @@ All examples use Next.js 13+ App Router with Server and Client Components.
 // app/components/StreamingChat.tsx
 'use client';
 
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 import { useState } from 'react';
 
 export function StreamingChat() {
@@ -97,7 +97,7 @@ export default function HomePage() {
 // app/components/ModelLoadingExample.tsx
 'use client';
 
-import { ModelLoader } from '@ai-progress-controls/next';
+import { ModelLoader } from 'ai-progress-controls-next';
 import { useState, useEffect } from 'react';
 
 export function ModelLoadingExample() {
@@ -159,7 +159,7 @@ export async function updateLLMParameters(params: {
 // app/components/ParameterConfig.tsx
 'use client';
 
-import { ParameterPanel } from '@ai-progress-controls/next';
+import { ParameterPanel } from 'ai-progress-controls-next';
 import { useState } from 'react';
 import { updateLLMParameters } from '../actions';
 
@@ -221,7 +221,7 @@ export async function POST(request: Request) {
 // app/components/BatchProcessor.tsx
 'use client';
 
-import { BatchProgress } from '@ai-progress-controls/next';
+import { BatchProgress } from 'ai-progress-controls-next';
 import { useState } from 'react';
 
 export function BatchProcessor() {
@@ -280,7 +280,7 @@ export async function* streamResponse(prompt: string) {
 // app/components/StreamingWithAction.tsx
 'use client';
 
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 import { useState } from 'react';
 import { streamResponse } from '../actions';
 
@@ -345,7 +345,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ```tsx
 // app/dashboard/page.tsx
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
@@ -374,7 +374,7 @@ All components are responsive by default, but you can customize:
 ```tsx
 'use client';
 
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 export function ResponsiveProgress() {
@@ -399,7 +399,7 @@ export function ResponsiveProgress() {
 ```tsx
 'use client';
 
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 import { memo } from 'react';
 
 export const MemoizedProgress = memo(StreamProgress);
@@ -412,7 +412,7 @@ export const MemoizedProgress = memo(StreamProgress);
 import dynamic from 'next/dynamic';
 
 const StreamProgress = dynamic(
-  () => import('@ai-progress-controls/next').then((mod) => mod.StreamProgress),
+  () => import('ai-progress-controls-next').then((mod) => mod.StreamProgress),
   { ssr: false }
 );
 

@@ -1,5 +1,5 @@
 {
-  "name": "@ai-progress-controls/next",
+  "name": "ai-progress-controls-next",
   "version": "0.1.0",
   "description": "Next.js adapters for AI Progress Controls - Production-ready UI components for AI/ML workflows with SSR support",
   "main": "dist/cjs/index.js",

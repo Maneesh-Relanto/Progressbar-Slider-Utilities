@@ -1,5 +1,5 @@
 {
-  "name": "@ai-progress-controls/react",
+  "name": "ai-progress-controls-react",
   "version": "0.1.0",
   "description": "React adapters for AI Progress Controls - Production-ready UI components for AI/ML workflows",
   "main": "dist/cjs/index.js",

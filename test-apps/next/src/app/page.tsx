@@ -9,8 +9,12 @@ import {
   QueueProgress,
   RetryProgress,
   StreamProgress,
-} from '@ai-progress-controls/next';
+} from 'ai-progress-controls-next';
 import './page.css';
+
+// Disable static generation - these components need browser APIs
+export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<string>('batch');
@@ -18,10 +22,10 @@ export default function Home() {
   // BatchProgress state
   const [batchProgress, setBatchProgress] = useState(0);
   const [batchItems] = useState([
-    { id: 1, label: 'Task 1', status: 'completed' as const },
-    { id: 2, label: 'Task 2', status: 'processing' as const },
-    { id: 3, label: 'Task 3', status: 'pending' as const },
-    { id: 4, label: 'Task 4', status: 'pending' as const },
+    { id: '1', label: 'Task 1', status: 'completed' as const },
+    { id: '2', label: 'Task 2', status: 'processing' as const },
+    { id: '3', label: 'Task 3', status: 'pending' as const },
+    { id: '4', label: 'Task 4', status: 'pending' as const },
   ]);
 
   // ModelLoader state

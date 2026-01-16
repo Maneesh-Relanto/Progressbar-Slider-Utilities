@@ -8,7 +8,7 @@ import {
   QueueProgress,
   RetryProgress,
   StreamProgress,
-} from '@ai-progress-controls/react';
+} from 'ai-progress-controls-react';
 
 function App() {
   const [activeTab, setActiveTab] = useState<string>('batch');

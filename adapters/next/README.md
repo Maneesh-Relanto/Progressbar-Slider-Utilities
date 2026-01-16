@@ -1,8 +1,8 @@
-# @ai-progress-controls/next
+# ai-progress-controls-next
 
 Next.js adapters for [AI Progress Controls](https://github.com/Maneesh-Relanto/ai-progress-controls) - Production-ready UI components for AI/ML workflows with full SSR support.
 
-[![npm version](https://img.shields.io/npm/v/@ai-progress-controls/next.svg)](https://www.npmjs.com/package/@ai-progress-controls/next)
+[![npm version](https://img.shields.io/npm/v/ai-progress-controls-next.svg)](https://www.npmjs.com/package/ai-progress-controls-next)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-14%2B%20%7C%2015%2B%20%7C%2016%2B-000000?logo=next.js)](https://nextjs.org/)
 
@@ -25,7 +25,7 @@ The core `ai-progress-controls` library is built with Web Components. This packa
 ## 📦 Installation
 
 ```bash
-npm install ai-progress-controls @ai-progress-controls/next
+npm install ai-progress-controls ai-progress-controls-next
 ```
 
 **Note:** Both packages are required. The core package contains the Web Components, while this package provides the Next.js wrappers.
@@ -35,7 +35,7 @@ npm install ai-progress-controls @ai-progress-controls/next
 ### App Router (Recommended)
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 
 export default function Page() {
   const [tokens, setTokens] = useState(0);
@@ -50,7 +50,7 @@ That's it! No `'use client'` needed in your page - the adapter handles it.
 ### Pages Router
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 
 export default function HomePage() {
   const [tokens, setTokens] = useState(0);
@@ -67,7 +67,7 @@ All 7 components from the core library are available with SSR support:
 ### 1. BatchProgress
 
 ```tsx
-import { BatchProgress } from '@ai-progress-controls/next';
+import { BatchProgress } from 'ai-progress-controls-next';
 
 export default function MyComponent() {
   const items = [
@@ -83,7 +83,7 @@ export default function MyComponent() {
 ### 2. ModelLoader
 
 ```tsx
-import { ModelLoader } from '@ai-progress-controls/next';
+import { ModelLoader } from 'ai-progress-controls-next';
 
 export default function MyComponent() {
   const [loading, setLoading] = useState(false);
@@ -103,7 +103,7 @@ export default function MyComponent() {
 ### 3. ParameterPanel
 
 ```tsx
-import { ParameterPanel } from '@ai-progress-controls/next';
+import { ParameterPanel } from 'ai-progress-controls-next';
 
 export default function MyComponent() {
   const [params, setParams] = useState({
@@ -125,7 +125,7 @@ export default function MyComponent() {
 ### 4. ParameterSlider
 
 ```tsx
-import { ParameterSlider } from '@ai-progress-controls/next';
+import { ParameterSlider } from 'ai-progress-controls-next';
 
 export default function MyComponent() {
   const [temperature, setTemperature] = useState(0.7);
@@ -146,7 +146,7 @@ export default function MyComponent() {
 ### 5. QueueProgress
 
 ```tsx
-import { QueueProgress } from '@ai-progress-controls/next';
+import { QueueProgress } from 'ai-progress-controls-next';
 
 export default function MyComponent() {
   const [position, setPosition] = useState(5);
@@ -157,7 +157,7 @@ export default function MyComponent() {
 ### 6. RetryProgress
 
 ```tsx
-import { RetryProgress } from '@ai-progress-controls/next';
+import { RetryProgress } from 'ai-progress-controls-next';
 
 export default function MyComponent() {
   const [attempt, setAttempt] = useState(1);
@@ -168,7 +168,7 @@ export default function MyComponent() {
 ### 7. StreamProgress
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 
 export default function MyComponent() {
   const [tokens, setTokens] = useState(0);
@@ -183,7 +183,7 @@ export default function MyComponent() {
 The components inherit all styling capabilities from the core library:
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 
 export default function ThemedComponent() {
   return (
@@ -239,7 +239,7 @@ Both work identically! The adapter uses `'use client'` internally.
 Full TypeScript support included:
 
 ```tsx
-import type { StreamProgressProps } from '@ai-progress-controls/next';
+import type { StreamProgressProps } from 'ai-progress-controls-next';
 
 const props: StreamProgressProps = {
   tokensGenerated: 100,
@@ -285,4 +285,4 @@ MIT © Maneesh Thakur
 - [Core Library](https://github.com/Maneesh-Relanto/ai-progress-controls)
 - [Documentation](https://github.com/Maneesh-Relanto/ai-progress-controls#readme)
 - [Examples](../../test-apps/next)
-- [React Adapter](../@ai-progress-controls/react)
+- [React Adapter](../ai-progress-controls-react)

@@ -1,8 +1,8 @@
-# @ai-progress-controls/react
+# ai-progress-controls-react
 
 React adapters for [AI Progress Controls](https://github.com/Maneesh-Relanto/ai-progress-controls) - Production-ready UI components for AI/ML workflows.
 
-[![npm version](https://img.shields.io/npm/v/@ai-progress-controls/react.svg)](https://www.npmjs.com/package/@ai-progress-controls/react)
+[![npm version](https://img.shields.io/npm/v/ai-progress-controls-react.svg)](https://www.npmjs.com/package/ai-progress-controls-react)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B%20%7C%2019%2B-61dafb?logo=react)](https://reactjs.org/)
 
@@ -25,7 +25,7 @@ The core `ai-progress-controls` library is built with Web Components for maximum
 ## 📦 Installation
 
 ```bash
-npm install ai-progress-controls @ai-progress-controls/react
+npm install ai-progress-controls ai-progress-controls-react
 ```
 
 **Note:** Both packages are required. The core package contains the Web Components, while this package provides the React wrappers.
@@ -33,7 +33,7 @@ npm install ai-progress-controls @ai-progress-controls/react
 ## 🚀 Quick Start
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 
 function App() {
   const [tokens, setTokens] = useState(0);
@@ -54,7 +54,7 @@ All 7 components from the core library are available:
 Track batch processing with multiple items:
 
 ```tsx
-import { BatchProgress } from '@ai-progress-controls/react';
+import { BatchProgress } from 'ai-progress-controls-react';
 
 function MyComponent() {
   const items = [
@@ -80,7 +80,7 @@ function MyComponent() {
 Display model loading progress with stages:
 
 ```tsx
-import { ModelLoader } from '@ai-progress-controls/react';
+import { ModelLoader } from 'ai-progress-controls-react';
 
 function MyComponent() {
   const [loading, setLoading] = useState(false);
@@ -111,7 +111,7 @@ function MyComponent() {
 Unified panel for multiple AI parameters:
 
 ```tsx
-import { ParameterPanel } from '@ai-progress-controls/react';
+import { ParameterPanel } from 'ai-progress-controls-react';
 
 function MyComponent() {
   const [params, setParams] = useState({
@@ -146,7 +146,7 @@ function MyComponent() {
 Individual parameter slider:
 
 ```tsx
-import { ParameterSlider } from '@ai-progress-controls/react';
+import { ParameterSlider } from 'ai-progress-controls-react';
 
 function MyComponent() {
   const [temperature, setTemperature] = useState(0.7);
@@ -182,7 +182,7 @@ function MyComponent() {
 Display queue position with ETA:
 
 ```tsx
-import { QueueProgress } from '@ai-progress-controls/react';
+import { QueueProgress } from 'ai-progress-controls-react';
 
 function MyComponent() {
   const [position, setPosition] = useState(5);
@@ -204,7 +204,7 @@ function MyComponent() {
 Track retry attempts with backoff:
 
 ```tsx
-import { RetryProgress } from '@ai-progress-controls/react';
+import { RetryProgress } from 'ai-progress-controls-react';
 
 function MyComponent() {
   const [attempt, setAttempt] = useState(1);
@@ -226,7 +226,7 @@ function MyComponent() {
 Visualize token streaming:
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 
 function MyComponent() {
   const [tokens, setTokens] = useState(0);
@@ -250,7 +250,7 @@ function MyComponent() {
 The components inherit all styling capabilities from the core library:
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 
 // Use CSS variables for theming
 <div
@@ -271,7 +271,7 @@ See the [core library documentation](https://github.com/Maneesh-Relanto/ai-progr
 Full TypeScript support is included. All props are strongly typed:
 
 ```tsx
-import { ParameterPanelProps, ParameterConfig } from '@ai-progress-controls/react';
+import { ParameterPanelProps, ParameterConfig } from 'ai-progress-controls-react';
 
 // Types are automatically inferred
 const config: ParameterConfig = {
@@ -330,7 +330,7 @@ Components re-render efficiently when props change. No need for manual optimizat
 **Solution:** Import the type interfaces:
 
 ```tsx
-import { StreamProgressProps } from '@ai-progress-controls/react';
+import { StreamProgressProps } from 'ai-progress-controls-react';
 ```
 
 ## 📖 Examples

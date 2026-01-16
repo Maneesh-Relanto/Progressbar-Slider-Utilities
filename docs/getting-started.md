@@ -55,7 +55,7 @@ AI Progress Controls provides **7 production-ready components** for AI/ML workfl
 ### ⚛️ **React (Recommended)**
 
 ```bash
-npm install ai-progress-controls @ai-progress-controls/react
+npm install ai-progress-controls ai-progress-controls-react
 ```
 
 See [⚛️ React Adapter Documentation](../adapters/react/README.md) for complete guide.
@@ -65,7 +65,7 @@ See [⚛️ React Adapter Documentation](../adapters/react/README.md) for comple
 ### ▲ **Next.js (Recommended)**
 
 ```bash
-npm install ai-progress-controls @ai-progress-controls/next
+npm install ai-progress-controls ai-progress-controls-next
 ```
 
 See [▲ Next.js Adapter Documentation](../adapters/next/README.md) for complete guide.
@@ -124,7 +124,7 @@ npm install ai-progress-controls
 ### 1️⃣ **React**
 
 ```tsx
-import { StreamProgress } from '@ai-progress-controls/react';
+import { StreamProgress } from 'ai-progress-controls-react';
 import { useState } from 'react';
 
 function App() {
@@ -142,7 +142,7 @@ function App() {
 
 ```tsx
 // app/page.tsx (App Router)
-import { StreamProgress } from '@ai-progress-controls/next';
+import { StreamProgress } from 'ai-progress-controls-next';
 
 export default function Page() {
   return <StreamProgress maxTokens={2000} model="gpt-4" showRate={true} />;
