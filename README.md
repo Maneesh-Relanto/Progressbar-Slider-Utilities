@@ -6,19 +6,20 @@
 
 ### **React • Next.js • Web Components • Drop in with one import**
 
+[![npm version](https://img.shields.io/npm/v/ai-progress-controls?style=for-the-badge&logo=npm&label=Core)](https://www.npmjs.com/package/ai-progress-controls)
+[![npm version](https://img.shields.io/npm/v/ai-progress-controls-react?style=for-the-badge&logo=react&label=React)](https://www.npmjs.com/package/ai-progress-controls-react)
+[![npm version](https://img.shields.io/npm/v/ai-progress-controls-next?style=for-the-badge&logo=next.js&label=Next.js&logoColor=white)](https://www.npmjs.com/package/ai-progress-controls-next)
+
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![MIT License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
-[![Web Components](https://img.shields.io/badge/Web_Components-Native-f97316?style=for-the-badge&logo=webcomponents.org&logoColor=white)](https://www.webcomponents.org/)
 [![Bundle Size](https://img.shields.io/badge/Size-~28KB_gzipped-8b5cf6?style=for-the-badge)](https://bundlephobia.com)
 
 [![Tests](https://img.shields.io/badge/Tests-292_passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Coverage](https://img.shields.io/badge/Coverage-91.34%25-22c55e?style=for-the-badge&logo=codecov&logoColor=white)](https://vitest.dev/)
-[![Code Quality](https://img.shields.io/badge/SonarQube-Clean-22c55e?style=for-the-badge)](https://www.sonarsource.com/)
-[![Lighthouse](https://img.shields.io/badge/Lighthouse-95%2B-22c55e?style=for-the-badge&logo=lighthouse&logoColor=white)](https://developers.google.com/web/tools/lighthouse)
 [![Accessibility](https://img.shields.io/badge/WCAG-AA_Compliant-22c55e?style=for-the-badge)](https://www.w3.org/WAI/WCAG21/quickref/)
 
 <p align="center">
-  <strong>🎯 7 Components • 📦 10 Examples • 📖 Complete Docs • ✅ WCAG AA Compliant</strong>
+  <strong>🎯 7 Components • 📦 10 Examples • 📖 Complete Docs • ✅ Published on npm</strong>
 </p>
 
 </div>
@@ -81,6 +82,8 @@ Stop rebuilding the same AI UI components for every project. Get production-read
 
 ## ⚡ Quick Start - Choose Your Framework
 
+> **[🎯 2-Minute Quick Start Guide](./docs/QUICK_START.md)** - Get running in 30 seconds!
+
 <table>
 <tr>
 <td width="50%">
@@ -129,10 +132,17 @@ document.body.appendChild(progress);
 
 ### 📚 **Documentation**
 
-[⚛️ React Adapter](./adapters/react/README.md) • [▲ Next.js Adapter](./adapters/next/README.md) • [🌐 Web Components](./docs/getting-started.md) • [📚 API Docs](./docs/api/)
+**Getting Started:**  
+[📦 Installation Guide](./docs/installation-guide.md) • [💻 npm Usage Examples](./docs/npm-usage-examples.md) • [🚀 Getting Started](./docs/getting-started.md)
+
+**Framework Guides:**  
+[⚛️ React Adapter](./adapters/react/README.md) • [▲ Next.js Adapter](./adapters/next/README.md) • [🌐 Web Components](./docs/getting-started.md)
 
 **Code Examples:**  
 [⚛️ React Examples](./docs/react-examples.md) • [▲ Next.js Examples](./docs/nextjs-examples.md) • [🎮 Vanilla JS Examples](./examples/index.html)
+
+**Reference:**  
+[📚 API Docs](./docs/api/) • [🎨 Theming](./docs/theming.md) • [🎭 Visual Variants](./docs/visual-variants.md)
 
 </div>
 
